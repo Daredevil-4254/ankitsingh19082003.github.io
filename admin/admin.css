@@ -1,0 +1,182 @@
+/* =========================
+   Global polish
+   ========================= */
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  margin: 0;
+  padding: 32px;
+  background: #f2f4f8;
+  color: #1f2933;
+}
+
+h1 {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+p {
+  margin-top: 0;
+  color: #616e7c;
+}
+
+/* =========================
+   Layout
+   ========================= */
+
+.admin-container {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  margin-top: 28px;
+}
+
+section {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   Table
+   ========================= */
+
+.highlight-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 14px;
+}
+
+.highlight-table th,
+.highlight-table td {
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.highlight-table th {
+  background: #f5f7fa;
+  font-weight: 600;
+  color: #334e68;
+  border-bottom: 2px solid #e4e7eb;
+}
+
+.highlight-table td {
+  border-bottom: 1px solid #e4e7eb;
+}
+
+.highlight-table tr:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   Empty state
+   ========================= */
+
+#emptyState {
+  margin-top: 16px;
+  font-style: italic;
+  color: #7b8794;
+}
+
+.hidden {
+  display: none;
+}
+
+/* =========================
+   Form
+   ========================= */
+
+form label {
+  display: block;
+  margin-bottom: 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #334e68;
+}
+
+form input,
+form textarea,
+form select {
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #cbd2d9;
+  background: #ffffff;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* =========================
+   Buttons
+   ========================= */
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+button {
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="submit"],
+#saveBtn {
+  background: #2563eb;
+  color: white;
+}
+
+button[type="submit"]:hover {
+  background: #1e4fd6;
+}
+
+button[data-edit] {
+  background: #e5e7eb;
+  color: #111827;
+}
+
+button[data-delete] {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   Footer
+   ========================= */
+
+.admin-footer {
+  margin-top: 32px;
+}
+
+#exportBtn {
+  background: #111827;
+  color: #ffffff;
+}

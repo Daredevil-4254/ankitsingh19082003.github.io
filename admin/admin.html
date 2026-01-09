@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin • Highlights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Minimal, readable, not cute -->
+    <link rel="stylesheet" href="admin.css" />
+  </head>
+  <body>
+    <header class="admin-header">
+      <h1>Highlights Admin</h1>
+      <p>Manage highlights content (JSON-based)</p>
+    </header>
+
+    <main class="admin-container">
+      <!-- LEFT: List -->
+      <section class="highlight-list-section">
+        <h2>Existing Highlights</h2>
+
+        <table class="highlight-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Tags</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="highlightTableBody">
+            <!-- JS injects rows here -->
+          </tbody>
+        </table>
+
+        <p id="emptyState" class="hidden">
+          No highlights found. Create one. The site is empty without content.
+        </p>
+      </section>
+
+      <!-- RIGHT: Form -->
+      <section class="highlight-form-section">
+        <h2 id="formTitle">Add New Highlight</h2>
+
+        <form id="highlightForm" novalidate>
+          <label>
+            ID (unique, immutable)
+            <input type="text" id="idInput" required disabled />
+          </label>
+
+          <label>
+            Title
+            <input type="text" id="titleInput" required />
+          </label>
+
+          <label>
+            Short Description
+            <textarea id="shortDescInput" rows="2" required></textarea>
+          </label>
+
+          <label>
+            Full Content
+            <textarea id="contentInput" rows="6" required></textarea>
+          </label>
+
+          <label>
+            Tags (comma separated)
+            <input type="text" id="tagsInput" placeholder="machine learning, system softwares" />
+          </label>
+
+          <label>
+            Status
+            <select id="statusInput">
+              <option value="published">Published</option>
+              <option value="draft">Draft</option>
+            </select>
+          </label>
+
+          <div class="form-actions">
+            <button type="submit" id="saveBtn">Save</button>
+            <button type="button" id="cancelEditBtn" class="hidden">
+              Cancel Edit
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Footer actions -->
+    <footer class="admin-footer">
+      <button id="exportBtn">Download highlights.json</button>
+    </footer>
+
+    <script src="admin.js"></script>
+  </body>
+</html>
