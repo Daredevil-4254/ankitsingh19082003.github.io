@@ -37,6 +37,7 @@
 *::after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box; }
+  
 
 html {
   font-family: sans-serif;
@@ -5129,22 +5130,26 @@ a.close.disabled {
       -o-transition: none;
       transition: none; } }
 
+/* --- 1. Carousel Item Transitions (Keep these as they are) --- */
 .carousel-item.active,
 .carousel-item-next,
 .carousel-item-prev {
-  display: block; }
+  display: block; 
+}
 
 .carousel-item-next:not(.carousel-item-left),
 .active.carousel-item-right {
   -webkit-transform: translateX(100%);
   -ms-transform: translateX(100%);
-  transform: translateX(100%); }
+  transform: translateX(100%); 
+}
 
 .carousel-item-prev:not(.carousel-item-right),
 .active.carousel-item-left {
   -webkit-transform: translateX(-100%);
   -ms-transform: translateX(-100%);
-  transform: translateX(-100%); }
+  transform: translateX(-100%); 
+}
 
 .carousel-fade .carousel-item {
   opacity: 0;
@@ -5153,13 +5158,15 @@ a.close.disabled {
   transition-property: opacity;
   -webkit-transform: none;
   -ms-transform: none;
-  transform: none; }
+  transform: none; 
+}
 
 .carousel-fade .carousel-item.active,
 .carousel-fade .carousel-item-next.carousel-item-left,
 .carousel-fade .carousel-item-prev.carousel-item-right {
   z-index: 1;
-  opacity: 1; }
+  opacity: 1; 
+}
 
 .carousel-fade .active.carousel-item-left,
 .carousel-fade .active.carousel-item-right {
@@ -5167,69 +5174,73 @@ a.close.disabled {
   opacity: 0;
   -webkit-transition: 0s 0.6s opacity;
   -o-transition: 0s 0.6s opacity;
-  transition: 0s 0.6s opacity; }
-  @media (prefers-reduced-motion: reduce) {
-    .carousel-fade .active.carousel-item-left,
-    .carousel-fade .active.carousel-item-right {
-      -webkit-transition: none;
-      -o-transition: none;
-      transition: none; } }
+  transition: 0s 0.6s opacity; 
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .carousel-fade .active.carousel-item-left,
+  .carousel-fade .active.carousel-item-right {
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none; 
+  } 
+}
+
+/* --- THE ULTIMATE CAROUSEL FIX --- */
 .carousel-control-prev,
 .carousel-control-next {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
+  /* Use 'px' for top to force it into the vertical center of a standard video height */
+  top: 140px !important; 
+  bottom: auto;
+  z-index: 10;
   display: flex;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
   justify-content: center;
-  width: 15%;
+  width: 45px !important;
+  height: 45px !important;
+  background: #000 !important; /* Solid black for better visibility */
+  border-radius: 50% !important;
   color: #fff;
-  text-align: center;
-  opacity: 0.5;
-  -webkit-transition: opacity 0.15s ease;
-  -o-transition: opacity 0.15s ease;
-  transition: opacity 0.15s ease; }
-  @media (prefers-reduced-motion: reduce) {
-    .carousel-control-prev,
-    .carousel-control-next {
-      -webkit-transition: none;
-      -o-transition: none;
-      transition: none; } }
-  .carousel-control-prev:hover, .carousel-control-prev:focus,
-  .carousel-control-next:hover,
-  .carousel-control-next:focus {
-    color: #fff;
-    text-decoration: none;
-    outline: 0;
-    opacity: 0.9; }
+  opacity: 0.8 !important;
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+}
 
+/* Push them OUTSIDE the video area to clear all gear/volume icons */
 .carousel-control-prev {
-  left: 0; }
+  left: -60px !important; 
+}
 
 .carousel-control-next {
-  right: 0; }
+  right: -60px !important; 
+}
 
+/* Ensure icons are centered and small */
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  display: inline-block;
   width: 20px;
   height: 20px;
-  background: no-repeat 50% / 100% 100%; }
+}
+
+/* MOBILE FIX: On small screens, move them back inside so they don't go off-edge */
+@media (max-width: 991px) {
+  .carousel-control-prev, .carousel-control-next {
+    top: 50% !important;
+    transform: translateY(-50%);
+  }
+  .carousel-control-prev { left: 5px !important; }
+  .carousel-control-next { right: 5px !important; }
+}
 
 .carousel-control-prev-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e"); }
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3e%3c/svg%3e"); 
+}
 
 .carousel-control-next-icon {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e"); }
-
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 8 8'%3e%3cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3e%3c/svg%3e"); 
+}
 .carousel-indicators {
   position: absolute;
   right: 0;
@@ -9842,4 +9853,92 @@ textarea.form-control {
 
 .project:hover .opaque-image {
   transform: scale(1.05);
+}
+/* ===============================
+   Project Gallery – Detail Page
+   =============================== */
+#project-gallery {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+}
+
+#project-gallery img {
+  height: 180px;
+  width: auto;
+  border-radius: 6px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+/* --- FULLSCREEN GALLERY OVERRIDES --- */
+
+/* Force the grid modal to take up 100% of the screen */
+.modal-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  max-width: none !important;
+}
+
+.modal-fullscreen .modal-content {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+/* Make the Lightbox (Single Image) background dark and immersive */
+#galleryModal {
+  background: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Z-INDEX STACKING: Grid is 1050, Lightbox is 1070 */
+/* This ensures you can close the image and still see the grid behind it */
+#galleryGridModal { z-index: 1050 !important; }
+#galleryModal { z-index: 1070 !important; }
+
+/* Grid Hover Effect */
+.gallery-item-wrapper {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+.gallery-item-wrapper:hover {
+  filter: brightness(0.8);
+  transform: scale(0.98);
+}
+
+/* --- SCOPED FIX: COMPLETED WORKS ONLY --- */
+
+/* 1. Only apply white-wash to the Projects Container, NOT the Gallery */
+#projects-container .project .overlay {
+    opacity: 1 !important;
+    background: rgba(255, 255, 255, 0.88) !important;
+    visibility: visible !important;
+}
+
+/* 2. Ensure text in Projects Container is always bold and visible */
+#projects-container .text {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+/* 3. Style headings only within the Portfolio grid */
+#projects-container h3 {
+    font-weight: 800 !important;
+    color: #000 !important;
+    margin-bottom: 5px !important;
+}
+
+/* --- GALLERY RESTORATION --- */
+
+/* 4. Force Gallery overlays to stay subtle (Olive Green) */
+#gallery-carousel .project .overlay {
+    background: rgba(177, 180, 147, 0.3) !important; /* Restore transparency */
+    opacity: 0; /* Hide by default, show on hover */
+}
+
+#gallery-carousel .project:hover .overlay {
+    opacity: 1 !important;
 }

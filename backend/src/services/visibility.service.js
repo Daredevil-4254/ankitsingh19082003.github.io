@@ -1,17 +1,19 @@
 const Settings = require("../models/Settings");
+console.log("DEBUG Settings import:", Settings);
 
-const applyHighlightVisibility = async (query = {}) => {
+
+const applyHighlightVisibility = async () => {
   const settings = await Settings.findOne();
-  const allowedStatuses =
-    settings?.visibilityRules?.highlights || ["Published"];
 
-  return {
-    ...query,
-    status: { $in: allowedStatuses },
-    visible: true,
-  };
+  if (!settings) {
+    return { visible: true };
+  }
+
+  if (settings.showDraftHighlights) {
+    return {};
+  }
+
+  return { status: "Published", visible: true };
 };
 
-module.exports = {
-  applyHighlightVisibility,
-};
+module.exports = { applyHighlightVisibility };

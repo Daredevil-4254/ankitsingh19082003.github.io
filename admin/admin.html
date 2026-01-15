@@ -1,97 +1,481 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
-    <title>Admin • Highlights</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Minimal, readable, not cute -->
+    <title>CMS Admin Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <link rel="stylesheet" href="admin.css" />
-  </head>
-  <body>
-    <header class="admin-header">
-      <h1>Highlights Admin</h1>
-      <p>Manage highlights content (JSON-based)</p>
-    </header>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <style>
+        /* --- CRITICAL LAYOUT STYLES --- */
+        body { background-color: #f4f6f9; }
+        
+        /* Utility */
+        .hidden { display: none !important; }
+        
+        /* Dark Sidebar */
+        .sidebar { 
+            display: block; 
+            height: 100vh; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 250px; 
+            background: #1a1a2e; 
+            color: white; 
+            padding-top: 20px; 
+            z-index: 1000; 
+            overflow-y: auto;
+        }
+        
+        /* Main Content Area */
+        main { 
+            margin-left: 250px; 
+            padding: 30px; 
+            min-height: 100vh;
+        }
+        
+        /* Nav Buttons */
+        .nav-btn { 
+            width: 100%; 
+            text-align: left; 
+            padding: 15px 25px; 
+            background: none; 
+            border: none; 
+            color: #a0a0a0; 
+            cursor: pointer; 
+            font-size: 16px; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+            transition: all 0.2s; 
+        }
+        .nav-btn:hover { background: #16213e; color: #fff; }
+        .nav-btn.active { background: #16213e; color: #fff; border-left: 4px solid #0d6efd; }
+        
+        /* Mobile Overlay */
+        .sidebar-overlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:900; }
+        
+        /* Visual Helpers */
+        .placeholder-text { color: #6c757d; font-style: italic; padding: 30px; text-align: center; border: 2px dashed #dee2e6; border-radius: 8px; background: #fff; }
+        .section-header { margin-top: 40px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #e9ecef; }
+        
+        /* Form Card Styling */
+        .card { border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .form-label { font-weight: 600; color: #495057; font-size: 0.9rem; }
+    </style>
+</head>
 
-    <main class="admin-container">
-      <!-- LEFT: List -->
-      <section class="highlight-list-section">
-        <h2>Existing Highlights</h2>
+<body>
 
-        <table class="highlight-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Tags</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="highlightTableBody">
-            <!-- JS injects rows here -->
-          </tbody>
-        </table>
-
-        <p id="emptyState" class="hidden">
-          No highlights found. Create one. The site is empty without content.
-        </p>
-      </section>
-
-      <!-- RIGHT: Form -->
-      <section class="highlight-form-section">
-        <h2 id="formTitle">Add New Highlight</h2>
-
-        <form id="highlightForm" novalidate>
-          <label>
-            ID (unique, immutable)
-            <input type="text" id="idInput" required disabled />
-          </label>
-
-          <label>
-            Title
-            <input type="text" id="titleInput" required />
-          </label>
-
-          <label>
-            Short Description
-            <textarea id="shortDescInput" rows="2" required></textarea>
-          </label>
-
-          <label>
-            Full Content
-            <textarea id="contentInput" rows="6" required></textarea>
-          </label>
-
-          <label>
-            Tags (comma separated)
-            <input type="text" id="tagsInput" placeholder="machine learning, system softwares" />
-          </label>
-
-          <label>
-            Status
-            <select id="statusInput">
-              <option value="published">Published</option>
-              <option value="draft">Draft</option>
-            </select>
-          </label>
-
-          <div class="form-actions">
-            <button type="submit" id="saveBtn">Save</button>
-            <button type="button" id="cancelEditBtn" class="hidden">
-              Cancel Edit
+    <aside class="sidebar">
+        <div style="padding: 0 20px 20px; border-bottom: 1px solid #2d2d44; margin-bottom: 10px;">
+            <h3 class="m-0 fw-bold">Atul's CMS</h3>
+            <small class="text-muted">Admin Dashboard</small>
+        </div>
+        <nav>
+            <button class="nav-btn active" onclick="showPage('highlightsPage', this)">
+                <i class="fas fa-certificate"></i> Highlights
             </button>
-          </div>
-        </form>
-      </section>
+            <button class="nav-btn" onclick="showPage('projectsPage', this)">
+                <i class="fas fa-code-branch"></i> Projects
+            </button>
+            <button class="nav-btn" onclick="showPage('statsPage', this)">
+                <i class="fas fa-chart-bar"></i> Stats
+            </button>
+            <button class="nav-btn" onclick="showPage('heroPage', this)">
+                <i class="fas fa-user-circle"></i> Hero Section
+            </button>
+            <button class="nav-btn" onclick="showPage('skillsPage', this)">
+                <i class="fas fa-tools"></i> Skills
+            </button>
+            <button class="nav-btn" onclick="showPage('videosPage', this)">
+                <i class="fab fa-youtube"></i> YouTube
+            </button>
+            <button class="nav-btn" onclick="showPage('galleryPage', this)">
+                <i class="fas fa-images"></i> Gallery
+            </button>
+        </nav>
+        <div style="position: absolute; bottom: 20px; width: 100%;">
+            <button class="nav-btn text-danger" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+    </aside>
+
+    <main>
+        
+        <div id="highlightsPage" class="page-section">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold"><i class="fas fa-certificate text-primary me-2"></i> Manage Highlights</h2>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadHighlights()">
+                    <i class="fas fa-sync me-1"></i> Refresh List
+                </button>
+            </div>
+
+            <div class="card p-4 border-0 mb-5">
+                <h5 class="text-primary mb-3">Add / Edit Entry</h5>
+                <form id="highlightForm">
+                    <input type="hidden" id="hlId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Title</label>
+                            <input type="text" id="hlTitle" class="form-control" placeholder="e.g. FireSense AI Model" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select id="hlCategory" class="form-select">
+                                <option>Research Paper</option>
+                                <option>Project</option>
+                                <option>Achievement</option>
+                                <option>Work Experience</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Status</label>
+                            <select id="hlStatus" class="form-select">
+                                <option>Published</option>
+                                <option>Presented</option>
+                                <option>Selected</option>
+                                <option>Ongoing</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Venue / Location</label>
+                            <input type="text" id="hlVenue" class="form-control" placeholder="e.g. IEEE Conference, Osaka" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Summary / Abstract</label>
+                            <textarea id="hlDesc" class="form-control" rows="2" placeholder="Brief overview of the achievement..." required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tags</label>
+                            <input type="text" id="hlTags" class="form-control" placeholder="e.g. AI, IoT, C++" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Event Date</label>
+                            <input type="date" id="hlDate" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Link (DOI or URL)</label>
+                            <input type="text" id="highlight-link-input" class="form-control" placeholder="https://doi.org/..." />
+                        </div>
+                        
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label text-primary">Poster Image</label>
+                            <input type="file" id="poster-upload-input" class="form-control" accept="image/*" />
+                            <input type="hidden" id="poster-hidden-value" />
+                            <div id="poster-preview-container" class="hidden mt-2 p-2 bg-white border rounded">
+                                <img id="poster-preview-img" style="height:60px; border-radius:4px;">
+                            </div>
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <label class="form-label text-primary">Gallery Images (Multiple)</label>
+                            <input type="file" id="gallery-upload-input" class="form-control" multiple accept="image/*" />
+                            <div id="gallery-preview-container" class="hidden mt-2 d-flex gap-2 flex-wrap"></div>
+                        </div>
+                        
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-2" id="save-entry-btn">
+                                <i class="fas fa-save me-2"></i> Save Entry
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="section-header">Existing Highlights</h3>
+            <div id="highlights-list">
+                <p class="placeholder-text">Loading highlights data...</p>
+            </div>
+        </div>
+
+
+        <div id="projectsPage" class="page-section hidden">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold"><i class="fas fa-code-branch text-primary me-2"></i> Manage Projects</h2>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadProjects()">
+                    <i class="fas fa-sync me-1"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="card p-4 border-0 mb-5">
+                <h5 class="text-primary mb-3">Project Details</h5>
+                <form id="projectForm">
+                    <input type="hidden" id="pId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Project Title</label>
+                            <input type="text" id="pTitle" class="form-control" placeholder="e.g. Smart Home System" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Category</label>
+                            <select id="pCategory" class="form-select">
+                                <option value="research">Research</option>
+                                <option value="iot">IoT & Hardware</option>
+                                <option value="web_dev">Web Development</option>
+                                <option value="ai_ml">AI / ML</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="misc">Miscellaneous</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Short Summary</label>
+                            <textarea id="pSummary" class="form-control" rows="2" placeholder="One-line tagline for the card view..." required></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Technologies</label>
+                            <input type="text" id="pTech" class="form-control" placeholder="e.g. React, Node.js, Python" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Live Link / GitHub</label>
+                            <input type="text" id="pLink" class="form-control" placeholder="https://github.com/..." />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Detailed Description</label>
+                            <textarea id="pDescription" class="form-control" rows="4" placeholder="Full details about the project..."></textarea>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Thumbnail Image</label>
+                            <input type="file" id="pThumbnail" class="form-control" accept="image/*" />
+                            <input type="hidden" id="pImage" />
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="fas fa-save me-2"></i> Save Project
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="section-header">Existing Projects</h3>
+            <div id="projectsList">
+                <p class="placeholder-text">Loading projects...</p>
+            </div>
+        </div>
+
+
+        <div id="statsPage" class="page-section hidden">
+            <h2 class="fw-bold mb-4"><i class="fas fa-chart-bar text-primary me-2"></i> Manage Stats</h2>
+            
+            <div class="card p-4 border-0 mt-4">
+                <form id="statsForm">
+                    <input type="hidden" id="statId" />
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-5">
+                            <label class="form-label">Value</label>
+                            <input type="text" id="statValue" class="form-control" placeholder="e.g. 50+" required />
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">Label</label>
+                            <input type="text" id="statLabel" class="form-control" placeholder="e.g. Projects Completed" required />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-primary w-100">Add</button>
+                        </div>
+                        <div class="col-12 mt-2">
+                            <label class="form-label">Icon (Optional)</label>
+                            <input type="file" id="statIcon" class="form-control" accept="image/*" />
+                            <input type="hidden" id="statIconBase64" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="section-header">Current Stats</h3>
+            <div id="statsList">
+                <p class="placeholder-text">Loading stats...</p>
+            </div>
+        </div>
+
+
+        <div id="heroPage" class="page-section hidden">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold"><i class="fas fa-user-circle text-primary me-2"></i> Edit Hero Section</h2>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadHero()">
+                    <i class="fas fa-sync me-1"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="card p-4 border-0">
+                <h5 class="text-primary mb-3">Profile Information</h5>
+                <form id="heroForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Greeting</label>
+                            <input type="text" id="hGreeting" class="form-control" placeholder="e.g. Hi, I am" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" id="hName" class="form-control" placeholder="e.g. Atul Dubey" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Subtitle / Role</label>
+                            <input type="text" id="hSubtitle" class="form-control" placeholder="e.g. IoT Developer" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Resume Link</label>
+                            <input type="text" id="hResume" class="form-control" placeholder="https://drive.google.com/..." />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Short Bio</label>
+                            <textarea id="hDesc" class="form-control" rows="3" placeholder="Brief introduction..."></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">LinkedIn URL</label>
+                            <input type="text" id="hLinkedin" class="form-control" placeholder="https://linkedin.com/in/..." />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">GitHub URL</label>
+                            <input type="text" id="hGithub" class="form-control" placeholder="https://github.com/..." />
+                        </div>
+                        <div class="col-12 mt-3">
+                            <label class="form-label">Profile Image</label>
+                            <div class="d-flex align-items-center gap-3">
+                                <input type="file" id="hImageInput" class="form-control" accept="image/*" />
+                                <input type="hidden" id="hImageBase64" />
+                                <div id="heroImgPreview" class="hidden">
+                                    <img id="hPreviewImg" style="height:60px; width:60px; object-fit:cover; border-radius:50%; border:2px solid #ddd;" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12 mt-4">
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                <i class="fas fa-save me-2"></i> Save Hero Details
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <div id="skillsPage" class="page-section hidden">
+            <h2 class="fw-bold mb-4"><i class="fas fa-tools text-primary me-2"></i> Manage Skills</h2>
+            
+            <div class="card p-4 border-0 mt-4">
+                <form id="skillForm">
+                    <input type="hidden" id="skillId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Skill Title</label>
+                            <input type="text" id="skTitle" class="form-control" placeholder="e.g. Python" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Description</label>
+                            <input type="text" id="skDesc" class="form-control" placeholder="e.g. 5 years experience" required />
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Icon</label>
+                            <input type="file" id="skIconInput" class="form-control" accept="image/*" />
+                            <input type="hidden" id="skIconBase64" />
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary w-100">Save Skill</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <h3 class="section-header">Current Skills</h3>
+            <div id="skillsList">
+                <p class="placeholder-text">Loading skills...</p>
+            </div>
+        </div>
+
+
+        <div id="videosPage" class="page-section hidden">
+            <h2 class="fw-bold mb-4"><i class="fab fa-youtube text-danger me-2"></i> Manage Videos</h2>
+            
+            <div class="card p-4 border-0 mt-4">
+                <div class="mb-3">
+                    <label class="form-label">Video Title</label>
+                    <input type="text" id="vidTitle" class="form-control" placeholder="e.g. Project Demo" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">YouTube URL</label>
+                    <input type="text" id="vidUrl" class="form-control" placeholder="https://youtube.com/watch?v=..." />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <input type="text" id="vidDesc" class="form-control" placeholder="Short description..." />
+                </div>
+                <button type="button" onclick="saveVideo()" class="btn btn-primary w-100">Save Video</button>
+            </div>
+
+            <h3 class="section-header">Existing Videos</h3>
+            <div id="videosList">
+                <p class="placeholder-text">Loading videos...</p>
+            </div>
+        </div>
+
+
+        <div id="galleryPage" class="page-section hidden">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="fw-bold"><i class="fas fa-images text-primary me-2"></i> Manage Gallery</h2>
+                <button class="btn btn-sm btn-outline-secondary" onclick="loadGallery()">
+                    <i class="fas fa-sync me-1"></i> Refresh
+                </button>
+            </div>
+            
+            <div class="card p-4 border-0">
+                <div class="mb-3">
+                    <label class="form-label">Caption / Title</label>
+                    <input type="text" id="imgTitle" class="form-control" placeholder="e.g. Award Ceremony" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Image File</label>
+                    <input type="file" id="imgFileInput" class="form-control" accept="image/*" onchange="previewGalleryImage(event)" />
+                </div>
+                <div id="galleryPreviewContainer" class="d-none mb-3 p-2 bg-light border text-center">
+                    <img id="galleryPreview" style="max-height:150px; border-radius:5px;" />
+                </div>
+                <button type="button" onclick="saveGalleryImage()" class="btn btn-primary w-100">Upload to Gallery</button>
+            </div>
+
+            <h3 class="section-header">Gallery Images</h3>
+            <div id="galleryList" class="gallery-grid">
+                <p class="placeholder-text">Loading gallery...</p>
+            </div>
+        </div>
+
+        <div id="toast-container"></div>
     </main>
 
-    <!-- Footer actions -->
-    <footer class="admin-footer">
-      <button id="exportBtn">Download highlights.json</button>
-    </footer>
 
-    <script src="admin.js"></script>
-  </body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/admin.js"></script>
+
+    <script>
+        // Tab Switching Logic
+        function showPage(pageId, btn) {
+            // Hide all pages
+            document.querySelectorAll('.page-section').forEach(el => el.classList.add('hidden'));
+            // Show selected page
+            document.getElementById(pageId).classList.remove('hidden');
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+            if(btn) btn.classList.add('active');
+
+            // Trigger Data Loaders
+            if (pageId === 'highlightsPage' && window.loadHighlights) loadHighlights();
+            if (pageId === 'projectsPage' && window.loadProjects) loadProjects();
+            if (pageId === 'statsPage' && window.loadStats) loadStats();
+            if (pageId === 'heroPage' && window.loadHero) loadHero();
+            if (pageId === 'skillsPage' && window.loadSkills) loadSkills();
+            if (pageId === 'videosPage' && window.loadVideos) loadVideos();
+            if (pageId === 'galleryPage' && window.loadGallery) loadGallery();
+        }
+
+        // Initialize on Load
+        window.onload = function() {
+            // Default to Highlights page
+            showPage('highlightsPage', document.querySelector('.nav-btn.active'));
+        };
+    </script>
+</body>
 </html>
