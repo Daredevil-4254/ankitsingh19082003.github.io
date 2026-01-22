@@ -1,10 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const { getGallery, addImage, deleteImage } = require("../../controllers/gallery.controller");
+// 🟢 Import the new updateImage function
+const { 
+  getGallery, 
+  addImage, 
+  deleteImage, 
+  updateImage 
+} = require("../../controllers/gallery.controller");
 
-// These now have 'router' defined above
 router.get("/", getGallery);
 router.post("/", addImage);
+router.put("/:id", updateImage); // 🟢 New route for editing
 router.delete("/:id", deleteImage);
 
 module.exports = router;

@@ -43,3 +43,35 @@ exports.deleteVideo = async (req, res) => {
     res.status(500).json({ message: "Server Error" });
   }
 };
+// 4. Update Video (Add this new function)
+exports.updateVideo = async (req, res) => {
+  try {
+    const { title, url, description } = req.body;
+    
+    // Prepare data to update
+    const updateData = { title, url, description };
+
+    // If the URL is being changed, we must re-extract the YouTube ID
+    if (url) {
+        const videoId = extractVideoId(url);
+        if (!videoId) {
+            return res.status(400).json({ message: "Invalid YouTube URL" });
+        }
+        updateData.videoId = videoId;
+    }
+
+    const updatedVideo = await Video.findByIdAndUpdate(
+        req.params.id,
+        updateData,
+        { new: true } // Returns the updated document instead of the old one
+    );
+
+    if (!updatedVideo) {
+        return res.status(404).json({ message: "Video not found" });
+    }
+
+    res.status(200).json(updatedVideo);
+  } catch (err) {
+    res.status(500).json({ message: "Update failed", error: err.message });
+  }
+};

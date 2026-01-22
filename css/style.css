@@ -9942,3 +9942,115 @@ textarea.form-control {
 #gallery-carousel .project:hover .overlay {
     opacity: 1 !important;
 }
+/* --- Fix for Stat Box Overflows --- */
+#stats-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.counter-wrap {
+    flex: 1 1 250px; /* Ensures boxes grow/shrink but stay at least 250px wide */
+    max-width: 300px;
+}
+
+.block-18 .text {
+    width: 100%;
+    overflow: hidden; /* Prevents long numbers like '6000000' from breaking the box */
+}
+
+.block-18 .number {
+    word-break: break-all;
+    font-size: 1.8rem !important; /* Slightly smaller to fit big numbers */
+}
+/* style.css */
+
+/* --- ELEGANT HIGHLIGHTS CARDS --- */
+.highlight-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.highlight-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+}
+
+.highlight-img-wrap {
+    height: 220px;
+    overflow: hidden;
+    position: relative;
+}
+
+.highlight-img-wrap img {
+    transition: transform 0.5s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.highlight-card:hover .highlight-img-wrap img {
+    transform: scale(1.08);
+}
+
+/* Subtle overlay on hover for a premium feel */
+.highlight-img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0);
+    transition: background 0.3s ease;
+}
+
+.highlight-card:hover .highlight-img-wrap::after {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* Tags Styling */
+.highlight-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.35em 0.8em;
+    border-radius: 50px;
+    background-color: #f3f4f6;
+    color: #4b5563;
+    border: 1px solid #e5e7eb;
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.highlight-tag:hover {
+    background-color: var(--primary, #2563eb); /* Use your theme's primary color */
+    color: #fff;
+    border-color: var(--primary, #2563eb);
+}
+/* style.css - Add/Update these */
+
+.highlight-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px; /* Slightly sharper corners like the screenshot */
+    background: #fff;
+}
+
+.highlight-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.highlight-card .card-body {
+    background-color: #fff;
+}
+
+/* The Meta Line (Category | Status) */
+.highlight-meta {
+    color: #b1b493; /* The gold/beige color from your theme */
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 10px;
+}

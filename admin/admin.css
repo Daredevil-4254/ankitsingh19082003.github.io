@@ -1,5 +1,5 @@
 /* ==========================================
-   SECTION 1: CORE THEME & RESET
+   1. VARIABLES & RESET
    ========================================== */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
@@ -9,33 +9,36 @@
     --bg-main: #f8fafc;
     --white: #ffffff;
     --border: #e2e8f0;
+    --text-muted: #94a3b8;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #10b981;
 }
 
 body {
     margin: 0;
     font-family: 'Inter', sans-serif;
     background: var(--bg-main);
-    display: flex;
-    /* Keeps sidebar and main side-by-side */
+    display: flex; /* Sidebar + Main */
     height: 100vh;
     overflow: hidden;
 }
 
 /* ==========================================
-   SECTION 2: SIDEBAR (Strictly Vertical)
+   2. SIDEBAR (Layout & Navigation)
    ========================================== */
 .sidebar {
     width: 260px;
     background: var(--sidebar-bg);
-    color: white;
+    color: var(--white);
     display: flex;
     flex-direction: column;
-    /* Force everything vertical */
     padding: 1.5rem;
     height: 100vh;
     flex-shrink: 0;
     z-index: 1000;
     box-sizing: border-box;
+    transition: left 0.3s ease; /* For mobile slide-in */
 }
 
 .sidebar-header h3 {
@@ -44,23 +47,20 @@ body {
     font-weight: 700;
 }
 
-/* --- THE FIX: Hide mobile buttons on Desktop --- */
-.close-btn,
-.menu-btn,
-.sidebar-overlay {
+/* Hide mobile-only elements on Desktop */
+.close-btn, .menu-btn, .sidebar-overlay {
     display: none !important;
 }
 
 nav {
     display: flex;
     flex-direction: column;
-    /* Ensures vertical stacking */
     gap: 8px;
 }
 
 .nav-btn {
     background: transparent;
-    color: #94a3b8;
+    color: var(--text-muted);
     border: none;
     padding: 12px 16px;
     text-align: left;
@@ -73,22 +73,25 @@ nav {
     transition: 0.2s ease;
 }
 
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
 .nav-btn i {
     width: 20px;
     text-align: center;
 }
 
-.nav-btn.active {
-    background: var(--primary);
-    color: white;
-}
-
-/* --- THE FIX: Force Logout to bottom --- */
 .logout-btn {
-    margin-top: auto;
-    /* Pushes button to the bottom of the flex container */
-    background: #ef4444;
-    color: white;
+    margin-top: auto; /* Push to bottom */
+    background: var(--danger);
+    color: var(--white);
     border: none;
     padding: 12px;
     border-radius: 8px;
@@ -97,7 +100,7 @@ nav {
 }
 
 /* ==========================================
-   SECTION 3: MAIN LAYOUT
+   3. MAIN CONTENT AREA
    ========================================== */
 main {
     flex-grow: 1;
@@ -113,20 +116,18 @@ header {
 
 .page-section.hidden {
     display: none !important;
-    /* Ensure inactive tabs stay hidden */
 }
 
 /* ==========================================
-   SECTION 4: CARDS & FORMS (Vertical/Clean)
+   4. COMPONENTS: Cards & Forms
    ========================================== */
-.card,
-.form-card {
+.card, .form-card {
     background: var(--white);
     padding: 2rem;
     border-radius: 12px;
     border: 1px solid var(--border);
     margin-bottom: 2rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .form-group {
@@ -142,181 +143,79 @@ label {
     margin-bottom: 8px;
 }
 
-input,
-select,
-textarea {
+input, select, textarea {
     padding: 12px;
     border: 1.5px solid var(--border);
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
+    font-family: inherit;
 }
 
 /* ==========================================
-   SECTION 7: MOBILE OVERRIDES (Phone view ONLY)
+   5. COMPONENT: Gallery Grid & Cards
    ========================================== */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed;
-        left: -280px;
-        /* Hide off-screen */
-        transition: left 0.3s ease;
-    }
-
-    .sidebar.active {
-        left: 0 !important;
-    }
-
-
-    /* Show buttons ONLY in mobile view */
-    .menu-btn {
-        display: block !important;
-        margin-bottom: 15px;
-        padding: 8px 12px;
-        cursor: pointer;
-    }
-
-    .close-btn {
-        display: block !important;
-        background: none;
-        border: none;
-        color: white;
-        font-size: 1.2rem;
-        cursor: pointer;
-    }
-
-    .sidebar-overlay.active {
-        display: block !important;
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: 999;
-    }
-}
-
-.hidden {
-    display: none !important;
-}
-
-.modal {
-    position: fixed;
-    z-index: 10000;
-    /* Higher than sidebar */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    /* Dark backdrop */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.close-modal {
-    position: absolute;
-    top: 20px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.modal-content {
-    max-width: 80%;
-    max-height: 80%;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-}
-
-.preview-mode,
-#previewMode,
-[id*="preview"],
-[class*="preview"] {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-/* FIX: Stop Carousel Arrows from covering YouTube controls */
-.carousel-control-prev, 
-.carousel-control-next {
-    width: 5% !important; /* Reduce width from 15% to 5% */
-    height: 100px;        /* Only make them 100px tall */
-    top: 50%;             /* Center them vertically */
-    transform: translateY(-50%);
-    background: rgba(0,0,0,0.5); /* Optional: Make them visible so you know where they are */
-    border-radius: 5px;
-}
-
-/* Ensure the icons inside remain centered */
-.carousel-control-prev-icon, 
-.carousel-control-next-icon {
-    width: 20px;
-    height: 20px;
-}
-/* alert polish */
-/* Animation for the skeleton pulse effect */
-.skeleton-loader {
-  width: 100%;
-  height: 80px;
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-  background-size: 200% 100%;
-  animation: skeleton-pulse 1.5s infinite ease-in-out;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-
-@keyframes skeleton-pulse {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
-}
 #galleryList {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    padding: 10px;
-}
-/* Gallery Grid Layout */
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Clean Grid */
     gap: 20px;
     padding: 10px 0;
 }
 
-/* Modal Overlay Polish */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    z-index: 2000;
+.gallery-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eee !important;
     display: flex;
+    flex-direction: column;
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+.gallery-card img {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+    background: #f8f9fa;
+}
+
+/* Batch Upload Preview Area */
+#galImgPreview {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    align-items: center;
-    transition: opacity 0.3s ease;
-}
-
-.modal-content-img {
-    max-width: 90%;
-    max-height: 80vh;
-    border-radius: 8px;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
-.modal-caption {
-    color: #fff;
+    gap: 12px;
+    padding: 20px;
+    background: #fdfdfd;
+    border: 2px dashed #b1b493;
+    border-radius: 10px;
     margin-top: 15px;
-    text-align: center;
-    font-size: 1.2rem;
+    min-height: 100px;
 }
 
-.hidden { display: none !important; }
-#toast-container:empty { display: none !important; }
-/* Custom Toast Styles */
+#galImgPreview img {
+    height: 90px;
+    width: 90px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+#galImgPreview img:hover {
+    transform: scale(1.1);
+}
+
+/* ==========================================
+   6. COMPONENT: Toasts & Buttons
+   ========================================== */
 .custom-toast {
     position: fixed;
     bottom: 30px;
@@ -325,57 +224,106 @@ textarea {
     min-width: 300px;
     padding: 15px 20px;
     border-radius: 8px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
     color: #fff;
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    animation: slideIn 0.3s ease-out forwards;
+    animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-/* Vibrant Colors */
-.toast-success { background-color: #10b981 !important; /* Bright Emerald Green */ }
-.toast-danger  { background-color: #ef4444 !important; /* Bright Red */ }
-.toast-warning { background-color: #f59e0b !important; /* Amber/Orange */ }
+.toast-success { background-color: var(--success) !important; border-left: 6px solid #065f46; }
+.toast-danger  { background-color: var(--danger) !important; border-left: 6px solid #991b1b; }
+.toast-warning { background-color: var(--warning) !important; border-left: 6px solid #92400e; }
 
-/* Animation */
 @keyframes slideIn {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* Close Button Override */
-.toast-close {
-    background: none;
+.btn-warning {
+    background-color: #f39c12 !important;
+    border: none !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+.btn-warning:hover { background-color: #e67e22 !important; }
+
+/* ==========================================
+   7. UTILITIES & MODAL
+   ========================================== */
+.hidden { display: none !important; }
+
+/* Simple Modal Override (if needed) */
+.modal {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.modal-content {
     border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    opacity: 0.8;
-}
-.toast-close:hover { opacity: 1; }
-/* Project Item Card Styling */
-.item-card {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    background: #fff;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
 }
 
-.item-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+/* Skeleton Loading Animation */
+.skeleton-loader {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s infinite ease-in-out;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+@keyframes skeleton-pulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
-/* Status Badges */
-.badge {
-    font-weight: 500;
-    letter-spacing: 0.5px;
-    padding: 0.5em 0.8em;
+/* ==========================================
+   8. RESPONSIVE (Mobile Layout)
+   ========================================== */
+@media (max-width: 991px) {
+    /* Stack layout vertically */
+    body {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    /* Sidebar becomes a top header or hidden drawer */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        position: relative;
+    }
+    
+    /* Show mobile menu triggers if implemented */
+    .menu-btn { display: block !important; }
+
+    /* Main content takes full width */
+    main {
+        width: 100%;
+        padding: 1.5rem;
+        height: auto;
+    }
+
+    /* Gallery Adjustments */
+    #galleryList {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 15px;
+    }
+
+    .gallery-card .d-flex.gap-2 {
+        flex-direction: column; /* Stack Edit/Delete buttons on mobile */
+    }
 }
 
-/* Form Polish */
-.form-label {
-    font-size: 0.9rem;
-    color: #4b5563;
+@media (max-width: 576px) {
+    #galleryList {
+        grid-template-columns: 1fr; /* Single column for gallery on tiny screens */
+    }
+    .gallery-card img {
+        height: 200px;
+    }
 }
