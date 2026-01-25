@@ -1,77 +1,202 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title id="page-title">Highlight Details - Atul's Portfolio</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900"
+      rel="stylesheet"
+    />
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet"/>
+    <link rel="stylesheet" href="css/owl.carousel.min.css" />
+    <link rel="stylesheet" href="css/owl.theme.default.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
     <link rel="stylesheet" href="css/animate.css" />
     <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"/>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+
+    <style>
+      .hero-wrap {
+        width: 100%;
+        height: 55vh;
+        min-height: 450px;
+        position: relative;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #222;
+      }
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        width: 100%;
+        max-width: 900px;
+        padding: 0 20px;
+      }
+      #highlight-title {
+        color: #ffffff;
+        font-family: "Poppins", sans-serif;
+        font-weight: 800;
+        font-size: 3rem;
+        line-height: 1.2;
+        margin-bottom: 10px;
+        text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
+      }
+      #highlight-category {
+        display: inline-block;
+        color: #b1b493;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 14px;
+        margin-bottom: 15px;
+        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
+      }
+
+      /* Meta bar styling */
+      .meta-details {
+        background: rgba(177, 180, 147, 0.08);
+        border-radius: 8px;
+        border-left: 4px solid #b1b493;
+      }
+      /* Ensure the Nav doesn't float over the text awkwardly */
+      .ftco-navbar-light.scrolled.awake {
+        background: #fff !important;
+        padding: 10px 0 !important;
+        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05) !important;
+      }
+
+      /* Push the Hero/Content down so it doesn't hide behind the Nav */
+      .hero-wrap {
+        margin-top: 0;
+        padding-top: 80px; /* Adjust this value based on your navbar height */
+      }
+
+      /* Fix the specific brand overlap seen in screenshots */
+      .navbar-brand {
+        z-index: 1001;
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Ensure the Detail section doesn't crash into the top on mobile */
+      #details-section {
+        padding-top: 4em !important;
+      }
+
+      @media (max-width: 768px) {
+        #highlight-title {
+          font-size: 2.2rem;
+        }
+        .hero-wrap {
+          height: 45vh;
+        }
+      }
+    </style>
   </head>
 
-  <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light site-navbar-target scrolled awake">
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark ftco-navbar-light site-navbar-target scrolled awake"
+      style="background: transparent !important; box-shadow: none"
+    >
       <div class="container">
-        <a class="navbar-brand" href="index.html">Atul.</a>
-        <a href="index.html" class="btn btn-primary py-2 px-3">Back to Portfolio</a>
+        <a class="navbar-brand powerhouse-logo" href="index.html"
+          >Atul<span>.</span></a
+        >
+        <a href="index.html#highlights-section" class="btn btn-back-portfolio">
+          <i class="fas fa-arrow-left mr-2"></i> Back to Portfolio
+        </a>
       </div>
     </nav>
 
-    <section class="hero-wrap hero-wrap-2" id="hero-section" style="background-image: url('images/bg_1.jpg'); background-position: center; background-size: cover;">
-      <div class="overlay" style="background: rgba(0,0,0,0.6);"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text align-items-end justify-content-center">
-          <div class="col-md-9 ftco-animate pb-5 text-center">
-            <h1 class="mb-0 bread" id="highlight-title" style="font-weight: 800;">Loading...</h1>
-            <p class="text-white mt-3" id="highlight-date"></p>
-          </div>
-        </div>
+    <section class="hero-wrap" id="hero-bg">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span id="highlight-category">HIGHLIGHT</span>
+        <h1 id="highlight-title">Loading...</h1>
       </div>
     </section>
 
-    <section class="ftco-section">
+    <section class="ftco-section bg-light" id="details-section">
       <div class="container">
         <div id="loading-spinner" class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
+          <div class="spinner-border text-secondary" role="status"></div>
         </div>
 
         <div id="main-content" class="row d-none">
-          <div class="col-lg-8 ftco-animate">
-            <h2 class="mb-3 font-weight-bold">Abstract / Summary</h2>
-            <div class="p-4 bg-light rounded">
-                <p id="highlight-desc" style="line-height: 1.8; color: #555; white-space: pre-line;"></p>
+          <div class="col-lg-8 pr-lg-5">
+            <div
+              class="meta-details p-3 mb-4 d-flex flex-wrap align-items-center"
+            >
+              <div class="mr-4 mb-2 mb-md-0">
+                <i class="fas fa-calendar-alt mr-2" style="color: #b1b493"></i>
+                <span id="highlight-date" class="font-weight-bold text-dark"
+                  >--/--/----</span
+                >
+              </div>
+              <div>
+                <i
+                  class="fas fa-map-marker-alt mr-2"
+                  style="color: #b1b493"
+                ></i>
+                <span id="highlight-location" class="text-secondary italic"
+                  >Location loading...</span
+                >
+              </div>
             </div>
 
-            <div class="mt-5">
-                <h3 class="mb-3">Resources & Links</h3>
-                <div id="highlight-links" class="d-flex flex-wrap gap-3">
-                    </div>
+            <div class="mb-5 bg-white p-4 rounded shadow-sm border-0">
+              <h4 class="mb-4 font-weight-bold">Abstract / Summary</h4>
+              <div
+                id="highlight-desc"
+                style="color: #555; line-height: 1.8; font-size: 1.05rem"
+              ></div>
             </div>
 
-            <div class="mt-5">
-                <h3 class="mb-3">Project Gallery</h3>
-                <div id="project-gallery" class="row">
-                    </div>
+            <div class="mb-5">
+              <h5 class="mb-3 font-weight-bold">Resources & Links</h5>
+              <div id="highlight-links" class="d-flex flex-wrap gap-2"></div>
+            </div>
+
+            <div class="mb-5">
+              <h5 class="mb-3 font-weight-bold">Project Gallery</h5>
+              <div id="project-gallery" class="gallery-grid-container"></div>
             </div>
           </div>
 
-          <div class="col-lg-4 sidebar ftco-animate">
-            
-            <div class="sidebar-box p-4 bg-white shadow-sm rounded">
-              <h3 class="heading-sidebar">Tech Stack & Tags</h3>
-              <div class="tagcloud" id="highlight-tags">
-                 </div>
+          <div class="col-lg-4">
+            <div class="sidebar-box">
+              <h3 class="sidebar-heading">Tech Stack</h3>
+              <div class="tagcloud" id="highlight-tags"></div>
             </div>
 
-            <div class="sidebar-box p-4 bg-white shadow-sm rounded mt-4">
-              <h3 class="heading-sidebar">Related Projects</h3>
-              <div id="related-highlights">
-                 </div>
+            <div class="sidebar-box">
+              <h3 class="sidebar-heading">Related Work</h3>
+              <div id="related-highlights"></div>
             </div>
-
           </div>
         </div>
       </div>
@@ -83,8 +208,8 @@
     <script src="js/jquery.waypoints.min.js"></script>
     <script src="js/jquery.stellar.min.js"></script>
     <script src="js/owl.carousel.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
     <script src="js/main.js"></script>
-
     <script src="js/highlight-details.js"></script>
   </body>
 </html>

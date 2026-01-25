@@ -11,7 +11,7 @@ const parseTags = (tagInput) => {
     try {
       return JSON.parse(tagInput);
     } catch (e) {
-      // ignore error, fall through to split
+      // fall through to split
     }
   }
   // Fallback: Comma separated string
@@ -26,6 +26,7 @@ const getHighlights = async (req, res) => {
       .sort({ eventDate: -1, createdAt: -1 });
     res.status(200).json(highlights);
   } catch (err) {
+    console.error("Get Highlights Error:", err);
     res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
@@ -39,6 +40,7 @@ const getHighlightById = async (req, res) => {
     }
     res.status(200).json(highlight);
   } catch (err) {
+    console.error("Get Highlight ID Error:", err);
     res.status(500).json({ message: "Server Error", error: err.message });
   }
 };
@@ -46,8 +48,6 @@ const getHighlightById = async (req, res) => {
 // --- 3. Create Highlight ---
 const createHighlight = async (req, res) => {
   try {
-    // 1. Destructure fields from text body
-    // Note: We use 'content' here because that's what your Schema expects
     const { 
       title, 
       content, 
@@ -58,26 +58,23 @@ const createHighlight = async (req, res) => {
       eventDate 
     } = req.body;
 
-    // 2. Handle Files (if Multer is working)
-    // If you haven't set up Multer yet, these will just be ignored/empty
+    // Handle Poster Image (Safe Access)
     let imagePath = "";
-    if (req.files && req.files['poster'] && req.files['poster'][0]) {
-      imagePath = req.files['poster'][0].path; // or .location for S3
-    }
-    // Fallback: If frontend sent a URL string instead of a file
-    else if (req.body.image) {
+    if (req.files?.['poster']?.[0]) {
+      imagePath = `${req.protocol}://${req.get('host')}/uploads/${req.files['poster'][0].filename}`;
+    } else if (req.body.image) {
       imagePath = req.body.image;
     }
 
+    // Handle Gallery Images
     let galleryPaths = [];
-    if (req.files && req.files['gallery']) {
-      galleryPaths = req.files['gallery'].map(f => f.path);
+    if (req.files?.['gallery']) {
+      galleryPaths = req.files['gallery'].map(f => `${req.protocol}://${req.get('host')}/uploads/${f.filename}`);
     }
 
-    // 3. Create Data Object
     const highlightData = {
       title,
-      content, // Mapped from frontend 'content'
+      content, 
       category,
       status,
       venue,
@@ -92,7 +89,7 @@ const createHighlight = async (req, res) => {
     res.status(201).json(newHighlight);
 
   } catch (err) {
-    console.error("Create Error:", err);
+    console.error("Create Highlight Error:", err);
     res.status(400).json({ message: "Invalid data", error: err.message });
   }
 };
@@ -108,8 +105,6 @@ const updateHighlight = async (req, res) => {
     }
 
     const updates = {};
-
-    // Standard Fields
     if (req.body.title) updates.title = req.body.title;
     if (req.body.content) updates.content = req.body.content;
     if (req.body.category) updates.category = req.body.category;
@@ -117,30 +112,43 @@ const updateHighlight = async (req, res) => {
     if (req.body.venue) updates.venue = req.body.venue;
     if (req.body.link) updates.link = req.body.link;
     if (req.body.eventDate) updates.eventDate = new Date(req.body.eventDate);
-    if (req.body.tags) updates.tags = parseTags(req.body.tags);
+    
+    // Handle Tags
+    if (req.body.tags !== undefined) {
+      updates.tags = parseTags(req.body.tags);
+    }
 
-    // Image Logic
-    if (req.files && req.files['poster'] && req.files['poster'][0]) {
-      updates.image = req.files['poster'][0].path;
+    // Update Poster Image
+    if (req.files?.['poster']?.[0]) {
+      updates.image = `${req.protocol}://${req.get('host')}/uploads/${req.files['poster'][0].filename}`;
     } else if (req.body.image) {
       updates.image = req.body.image;
     }
 
-    // Gallery Logic (Merge old + new)
+    // --- Gallery Update (Critical Fixes) ---
+    // 1. Handle Kept Images (Existing URLs sent from frontend)
     let keptImages = [];
     if (req.body.gallery) {
-       // If it's a string (one url), make it array. If array, keep it.
-       keptImages = Array.isArray(req.body.gallery) ? req.body.gallery : [req.body.gallery];
+       // Ensure we handle both single string and array of strings
+       const rawGallery = Array.isArray(req.body.gallery) ? req.body.gallery : [req.body.gallery];
+       // Filter out empty strings if any
+       keptImages = rawGallery.filter(img => img && img.trim() !== "");
     }
     
+    // 2. Handle New Uploaded Images
     let newImages = [];
-    if (req.files && req.files['gallery']) {
-      newImages = req.files['gallery'].map(f => f.path);
+    if (req.files?.['gallery']) {
+      newImages = req.files['gallery'].map(f => `${req.protocol}://${req.get('host')}/uploads/${f.filename}`);
     }
 
-    // Only update gallery if we have new info
-    if (req.body.gallery || newImages.length > 0) {
+    // 3. Merge: If we have kept images OR new images, update the field.
+    // Note: If you want to delete ALL images, the frontend should send an empty gallery array or we might need specific logic.
+    // Currently, this updates if there is at least one image to set.
+    if (keptImages.length > 0 || newImages.length > 0) {
       updates.gallery = [...keptImages, ...newImages];
+    } else if (req.body.gallery === "") {
+        // Explicit clear if frontend sent empty string for gallery
+        updates.gallery = [];
     }
 
     const updatedHighlight = await Highlight.findByIdAndUpdate(
@@ -152,7 +160,7 @@ const updateHighlight = async (req, res) => {
     res.status(200).json(updatedHighlight);
 
   } catch (err) {
-    console.error("Update Error:", err);
+    console.error("Update Highlight Error:", err);
     res.status(400).json({ message: "Update failed", error: err.message });
   }
 };
@@ -161,9 +169,7 @@ const updateHighlight = async (req, res) => {
 const deleteHighlight = async (req, res) => {
   try {
     const deleted = await Highlight.findByIdAndDelete(req.params.id);
-    if (!deleted) {
-      return res.status(404).json({ message: "Not found" });
-    }
+    if (!deleted) return res.status(404).json({ message: "Not found" });
     res.status(200).json({ message: "Deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: "Server Error" });

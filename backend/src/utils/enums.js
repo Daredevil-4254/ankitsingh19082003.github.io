@@ -4,7 +4,7 @@ const HIGHLIGHT_STATUS = {
   SUBMITTED: "Submitted",
   ASSISTED: "Assisted",
   ONGOING: "Ongoing",
-  SELECTED: "Selected" // Added "Selected" from your summary screenshot
+  SELECTED: "Selected" 
 };
 
 const ROLES = {

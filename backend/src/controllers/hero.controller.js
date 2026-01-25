@@ -13,9 +13,11 @@ exports.getHero = async (req, res) => {
 };
 
 // 2. Update (or Create) Hero Data
+// hero.controller.js
 exports.updateHero = async (req, res) => {
   try {
-    const { greeting, name, subtitle, description, image, resumeLink, linkedin, github, twitter } = req.body;
+    // Destructure everything including the socialLinks object sent by admin.js
+    const { greeting, name, subtitle, description, image, resumeLink, socialLinks } = req.body;
 
     const heroData = {
       greeting,
@@ -23,17 +25,20 @@ exports.updateHero = async (req, res) => {
       subtitle,
       description,
       resumeLink,
-      socialLinks: { linkedin, github, twitter }
+      // Correctly map the nested object from the request
+      socialLinks: { 
+        linkedin: socialLinks?.linkedin || "", 
+        github: socialLinks?.github || "", 
+        twitter: socialLinks?.twitter || "" 
+      }
     };
 
-    // Only update image if a new one is sent
     if (image && image.length > 100) {
       heroData.image = image;
     }
 
-    // "findOneAndUpdate" with upsert: true means "Create if not found"
     const updatedHero = await Hero.findOneAndUpdate(
-      {}, // Filter (empty means match anything)
+      {}, 
       { $set: heroData },
       { new: true, upsert: true, setDefaultsOnInsert: true }
     );

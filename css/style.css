@@ -9790,267 +9790,756 @@ textarea.form-control {
   100% {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px; } }
+/* =========================================
+   2. GALLERY & MODALS (FIXED)
+   ========================================= */
 
+/* --- Clean Grid Gallery (Used in Highlight Details) --- */
+.gallery-grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+  width: 100%; /* Ensure it fills container */
+}
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
+.gallery-item {
   position: relative;
-  display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f1f1f1;
-  min-width: 170px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-}
-
-/* Links inside the dropdown */
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
   display: block;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #ddd;}
-
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {display: block;}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
-
-.opaque-image {
-  width: 100%;
-  height: auto;
-  opacity: 0.5; /* Adjust opacity as needed */
-}
-
-.text-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-  text-align: center;
-  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
-  z-index: 2; /* Ensures the text appears above the image */
-}
-
-.project {
-  position: relative;
+  height: 180px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  background: #f0f0f0; /* Fallback color */
 }
 
-.project .opaque-image {
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.gallery-item:hover .gallery-img {
+  transform: scale(1.1);
+}
+
+.gallery-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  opacity: 1;
+}
+
+.gallery-icon {
+  color: white;
+  font-size: 24px;
+  transform: translateY(10px);
   transition: transform 0.3s ease;
 }
 
-.project:hover .opaque-image {
-  transform: scale(1.05);
-}
-/* ===============================
-   Project Gallery – Detail Page
-   =============================== */
-#project-gallery {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
+.gallery-item:hover .gallery-icon {
+  transform: translateY(0);
 }
 
-#project-gallery img {
-  height: 180px;
-  width: auto;
-  border-radius: 6px;
-  flex-shrink: 0;
-  object-fit: cover;
-}
-/* --- FULLSCREEN GALLERY OVERRIDES --- */
-
-/* Force the grid modal to take up 100% of the screen */
-.modal-fullscreen {
-  width: 100vw;
-  height: 100vh;
-  margin: 0;
-  padding: 0;
-  max-width: none !important;
+/* --- Sidebar Styling (Fixes Gray Boxes) --- */
+.sidebar-box {
+  background: #ffffff !important; /* Force white background */
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05); /* Soft shadow */
+  margin-bottom: 30px;
+  border: 1px solid #eee;
 }
 
-.modal-fullscreen .modal-content {
-  height: 100%;
-  border: 0;
-  border-radius: 0;
+.sidebar-heading {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #b1b493; /* Olive/Gold */
+  margin-bottom: 20px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
 }
 
-/* Make the Lightbox (Single Image) background dark and immersive */
-#galleryModal {
-  background: rgba(0, 0, 0, 0.9) !important;
-}
-
-/* Z-INDEX STACKING: Grid is 1050, Lightbox is 1070 */
-/* This ensures you can close the image and still see the grid behind it */
-#galleryGridModal { z-index: 1050 !important; }
-#galleryModal { z-index: 1070 !important; }
-
-/* Grid Hover Effect */
-.gallery-item-wrapper {
+/* --- Tag Cloud --- */
+.tag-cloud-link {
+  display: inline-block;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  color: #666;
+  padding: 5px 12px;
+  border-radius: 30px; /* Pill shape */
+  font-size: 11px;
+  margin-right: 5px;
+  margin-bottom: 8px;
   transition: all 0.3s ease;
-  overflow: hidden;
-}
-.gallery-item-wrapper:hover {
-  filter: brightness(0.8);
-  transform: scale(0.98);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 
-/* --- SCOPED FIX: COMPLETED WORKS ONLY --- */
+.tag-cloud-link:hover {
+  background: #b1b493;
+  color: #fff;
+  border-color: #b1b493;
+}
 
-/* 1. Only apply white-wash to the Projects Container, NOT the Gallery */
-#projects-container .project .overlay {
+/* --- Related Project Thumbs --- */
+.related-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  text-decoration: none;
+}
+
+.related-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  background-size: cover;
+  background-position: center;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.related-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  line-height: 1.3;
+  transition: color 0.2s;
+}
+
+.related-item:hover .related-title {
+  color: #b1b493;
+}
+
+/* --- Lightbox Z-Index Fix --- */
+.mfp-bg, .mfp-wrap {
+    z-index: 9999 !important;
+}
+.mfp-close {
+    color: #fff !important;
+    font-size: 40px !important;
     opacity: 1 !important;
-    background: rgba(255, 255, 255, 0.88) !important;
-    visibility: visible !important;
 }
 
-/* 2. Ensure text in Projects Container is always bold and visible */
-#projects-container .text {
-    opacity: 1 !important;
-    transform: none !important;
-    visibility: visible !important;
+
+/* Highlight Card Hover Effect */
+.highlight-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Base shadow */
 }
 
-/* 3. Style headings only within the Portfolio grid */
-#projects-container h3 {
+.highlight-card-hover:hover {
+    transform: translateY(-7px); /* Lift up */
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15) !important; /* Stronger shadow */
+}
+
+/* Ensure image zooms slightly on hover */
+.highlight-card-hover:hover .block-20 {
+    background-size: 110% !important; /* Zoom effect */
+    transition: background-size 0.5s ease;
+}
+
+/* Ensure the background image transition is smooth */
+.block-20 {
+    transition: background-size 0.5s ease;
+    background-size: 100%;
+    background-position: center center;
+}
+/* --- FINAL FIXES FOR HIGHLIGHTS --- */
+
+/* 1. Highlight Card Hover (Home Page) */
+.highlight-card {
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+}
+
+.highlight-card:hover {
+    transform: translateY(-7px) !important;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important;
+}
+
+/* 2. Gallery Overlay (Details Page) */
+.gallery-overlay-hover {
+    position: absolute;
+    top: 0; 
+    left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.4); 
+    opacity: 0; 
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+.gallery-item-link:hover .gallery-overlay-hover {
+    opacity: 1;
+}
+
+/* 3. Related Items Hover (Details Page) */
+.related-item {
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+.related-item:hover {
+    background-color: #f0f0f0;
+}
+/* --- Glassmorphism Back Button --- */
+.btn-back-portfolio {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #fff !important;
+    padding: 10px 25px !important;
+    border-radius: 50px !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 1px;
+    transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-back-portfolio:hover {
+    background: #b1b493 !important; /* Your signature olive color */
+    border-color: #b1b493 !important;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(177, 180, 147, 0.4);
+    color: #fff !important;
+}
+
+/* Ensure the navbar doesn't hide the button on mobile */
+@media (max-width: 768px) {
+    .btn-back-portfolio {
+        padding: 8px 18px !important;
+        font-size: 10px;
+    }
+}
+/* --- CUSTOM CAROUSEL NAV BUTTONS --- */
+
+/* Position the nav container */
+.owl-carousel .owl-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Allows clicking images through the container */
+}
+
+/* Style the actual buttons */
+.owl-carousel .owl-nav button.owl-prev,
+.owl-carousel .owl-nav button.owl-next {
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: #333 !important;
+    border-radius: 50% !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease !important;
+    pointer-events: auto; /* Re-enable clicks for buttons */
+    border: 1px solid #eee !important;
+}
+
+/* Hover Effect */
+.owl-carousel .owl-nav button.owl-prev:hover,
+.owl-carousel .owl-nav button.owl-next:hover {
+    background: #b1b493 !important; /* Your signature olive color */
+    color: #fff !important;
+    border-color: #b1b493 !important;
+    transform: scale(1.1);
+}
+
+/* Left Arrow Position */
+.owl-carousel .owl-nav button.owl-prev {
+    left: -22.5px; /* Halfway off the edge for a sleek look */
+}
+
+/* Right Arrow Position */
+.owl-carousel .owl-nav button.owl-next {
+    right: -22.5px;
+}
+
+/* Style the dots at the bottom */
+.owl-theme .owl-dots .owl-dot span {
+    background: #e0e0e0 !important;
+    width: 8px;
+    height: 8px;
+    transition: all 0.3s ease;
+}
+
+.owl-theme .owl-dots .owl-dot.active span {
+    background: #b1b493 !important;
+    width: 20px; /* Lengthens the active dot */
+}
+
+/* Adjust for smaller screens */
+@media (max-width: 992px) {
+    .owl-carousel .owl-nav button.owl-prev { left: 0; }
+    .owl-carousel .owl-nav button.owl-next { right: 0; }
+}
+/* --- Final Pro Stats Design --- */
+#section-counter {
+    padding: 80px 0;
+    background-color: #f8f9fa; 
+}
+
+.stat-item {
+    margin-bottom: 50px;
+    display: flex;
+    align-items: center; /* Vertical centering */
+    justify-content: flex-start; 
+}
+
+.stat-icon-wrap {
+    width: 80px;
+    height: 80px;
+    background: #b1b493; /* Signature Olive */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 25px; /* Fixed spacing to prevent overlap */
+    flex-shrink: 0; /* Prevents icon from squishing */
+}
+
+.stat-icon-wrap img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* Makes icons white */
+}
+
+.stat-icon-wrap i {
+    color: #fff;
+    font-size: 28px;
+}
+
+.stat-text-wrap {
+    text-align: left;
+}
+
+.stat-text-wrap .number {
+    display: block;
+    font-size: 34px;
+    font-weight: 700;
+    color: #333;
+    line-height: 1.1;
+}
+
+.stat-text-wrap span {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: #888;
+    line-height: 1.4;
+    margin-top: 5px;
+}
+/* --- Final OG-Matched High-Contrast Skills --- */
+
+/* The Card - Solid white, no transparency */
+.skill-card-main {
+    position: relative;
+    padding: 60px 25px 35px 25px !important;
+    margin-top: 50px;
+    background: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    overflow: visible !important;
+    text-align: center;
+}
+
+/* Floating Circle - Solid OG Olive-Grey */
+.skill-icon-circle {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 85px !important;
+    height: 85px !important;
+    background: #e9eadb !important; /* Solid OG Pale Olive */
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    transition: all 0.3s ease !important;
+}
+
+/* Typography - Ultra Sharp and Bold */
+.skill-card-main h3 {
+    font-size: 20px !important;
     font-weight: 800 !important;
-    color: #000 !important;
+    color: #000000 !important; /* Pure Black for impact */
+    margin-bottom: 15px !important;
+}
+
+.skill-card-main p {
+    font-size: 14.5px !important;
+    color: #444444 !important; /* Dark Grey, not pale */
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+/* --- THE HOVER RESPONSE --- */
+.skill-card-main:hover {
+    background: #b1b493 !important; /* Solid Olive Background */
+    transform: translateY(-10px) !important; /* Snappy Lift */
+    box-shadow: 0 20px 40px rgba(177, 180, 147, 0.5) !important;
+}
+
+/* Text flips to pure white instantly */
+.skill-card-main:hover h3, 
+.skill-card-main:hover p {
+    color: #ffffff !important; 
+}
+
+/* Circle flips to pure white */
+.skill-card-main:hover .skill-icon-circle {
+    background: #ffffff !important; 
+}
+
+/* Icon - Sharp and Black */
+.skill-custom-img {
+    width: 42px !important;
+    height: 42px !important;
+    object-fit: contain;
+    filter: brightness(0); /* Pure black icon for OG look */
+    transition: all 0.3s ease;
+}
+/* --- Premium YouTube Carousel Polish --- */
+
+.video-player-wrap {
+    border: 8px solid #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    background: #000;
+}
+
+/* THE TITLE BAR FIX */
+.video-info-bar {
+    background: #ffffff; /* Solid white background for clear text */
+    padding: 25px 20px;
+    margin-top: -5px; /* Joins with the player border */
+    border-radius: 0 0 15px 15px;
+    border: 1px solid #eee;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.vid-title {
+    font-size: 22px !important;
+    font-weight: 800 !important;
+    color: #1a1a1a !important; /* Deep black for max visibility */
     margin-bottom: 5px !important;
 }
 
-/* --- GALLERY RESTORATION --- */
-
-/* 4. Force Gallery overlays to stay subtle (Olive Green) */
-#gallery-carousel .project .overlay {
-    background: rgba(177, 180, 147, 0.3) !important; /* Restore transparency */
-    opacity: 0; /* Hide by default, show on hover */
+.vid-desc {
+    font-size: 13px !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #b1b493 !important; /* Theme Olive */
+    font-weight: 700;
 }
 
-#gallery-carousel .project:hover .overlay {
+/* Control Arrows Fix */
+.carousel-control-prev, .carousel-control-next {
+    width: 6% !important;
+}
+
+.carousel-control-prev i, .carousel-control-next i {
+    font-size: 40px;
+    color: #333;
+    background: rgba(255,255,255,0.8);
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+/* --- Video Navigation Arrows --- */
+.custom-nav {
+    width: 5% !important;
     opacity: 1 !important;
 }
-/* --- Fix for Stat Box Overflows --- */
-#stats-display {
+
+.custom-nav span {
+    background: #ffffff;
+    color: #333;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
+    align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 18px;
 }
 
-.counter-wrap {
-    flex: 1 1 250px; /* Ensures boxes grow/shrink but stay at least 250px wide */
-    max-width: 300px;
+.custom-nav:hover span {
+    background: #b1b493; /* Theme Olive */
+    color: #fff;
+    transform: scale(1.1);
 }
 
-.block-18 .text {
-    width: 100%;
-    overflow: hidden; /* Prevents long numbers like '6000000' from breaking the box */
-}
-
-.block-18 .number {
-    word-break: break-all;
-    font-size: 1.8rem !important; /* Slightly smaller to fit big numbers */
-}
-/* style.css */
-
-/* --- ELEGANT HIGHLIGHTS CARDS --- */
-.highlight-card {
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    border-radius: 12px;
-    overflow: hidden;
+/* --- Fix for Small/Pale Video Titles --- */
+.video-info-bar {
     background: #fff;
+    padding: 20px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+    border: 1px solid #eee;
+    border-top: none;
 }
 
-.highlight-card:hover {
-    transform: translateY(-7px);
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1) !important;
+.vid-title {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #1a1a1a !important; /* Pure high-contrast black */
+    margin-bottom: 5px !important;
+}
+/* --- Force Gallery Grid Logic --- */
+
+/* Fix the container to act as a proper wrapping grid */
+#galleryList {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    align-items: stretch !important;
 }
 
-.highlight-img-wrap {
-    height: 220px;
-    overflow: hidden;
+/* Fix the column items so they don't turn into thin strips */
+#galleryList > div[class*="col-"] {
+    min-width: 280px !important; /* Force a minimum width */
+    flex: 1 0 auto !important;
+    max-width: 100% !important;
+}
+
+/* Fix the image scaling inside the cards */
+.gallery-card img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+/* --- Final Full Gallery Modal Polish --- */
+
+/* Modal Backdrop Polish */
+#galleryGridModal .modal-content {
+    background: #f8f9fa !important;
+    border: none !important;
+}
+
+/* Modal Header - High Contrast */
+#galleryGridModal .modal-header {
+    border-bottom: 2px solid #f0f1e6 !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+#galleryGridModal .modal-title {
+    font-size: 1.1rem !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* The Grid Item Wrapper */
+.gallery-grid-item-wrap {
     position: relative;
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border: 1px solid #eee;
 }
 
-.highlight-img-wrap img {
-    transition: transform 0.5s ease;
+/* The Image inside the Grid */
+.gallery-grid-item-wrap img {
     width: 100%;
-    height: 100%;
+    height: 240px; /* Increased for better visibility */
     object-fit: cover;
+    transition: transform 0.6s ease;
+    display: block;
 }
 
-.highlight-card:hover .highlight-img-wrap img {
+/* Hover Effect: Scale and Shadow */
+.gallery-grid-item-wrap:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(177, 180, 147, 0.25);
+    border-color: #b1b493;
+}
+
+.gallery-grid-item-wrap:hover img {
     transform: scale(1.08);
 }
 
-/* Subtle overlay on hover for a premium feel */
-.highlight-img-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0);
-    transition: background 0.3s ease;
-}
-
-.highlight-card:hover .highlight-img-wrap::after {
-    background: rgba(0, 0, 0, 0.1);
-}
-
-/* Tags Styling */
-.highlight-tag {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    padding: 0.35em 0.8em;
-    border-radius: 50px;
-    background-color: #f3f4f6;
-    color: #4b5563;
-    border: 1px solid #e5e7eb;
-    transition: all 0.2s ease;
-    cursor: pointer;
-}
-
-.highlight-tag:hover {
-    background-color: var(--primary, #2563eb); /* Use your theme's primary color */
-    color: #fff;
-    border-color: var(--primary, #2563eb);
-}
-/* style.css - Add/Update these */
-
-.highlight-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 8px; /* Slightly sharper corners like the screenshot */
+/* Captions inside the Grid Modal */
+.grid-cap-area {
+    padding: 15px;
     background: #fff;
 }
 
-.highlight-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+.grid-cap-area h6 {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #333 !important;
+    margin-bottom: 0;
+    text-transform: capitalize;
 }
 
-.highlight-card .card-body {
-    background-color: #fff;
+/* Fullscreen Lightbox Image Polish */
+#galleryModalImg {
+    border: 8px solid #ffffff !important;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3) !important;
+    transition: all 0.3s ease;
+    cursor: default;
 }
 
-/* The Meta Line (Category | Status) */
-.highlight-meta {
-    color: #b1b493; /* The gold/beige color from your theme */
-    font-size: 11px;
-    font-weight: 700;
+/* Custom Scrollbar for Modal Archive */
+.modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #b1b493;
+    border-radius: 10px;
+}
+/* --- Blog Card Polish --- */
+.blog-entry {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    border: 1px solid #f0f0f0;
+}
+
+.blog-entry:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+}
+
+.blog-entry .heading a {
+    color: #1a1a1a !important;
+    font-weight: 800 !important;
+    transition: 0.3s;
+}
+
+.blog-entry:hover .heading a {
+    color: #b1b493 !important;
+}
+
+/* --- Footer Refinement --- */
+.ftco-footer-widget h2 {
+    letter-spacing: 1px;
     text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 10px;
+    font-size: 18px !important;
+}
+
+.ftco-footer-social li a:hover {
+    background: #b1b493 !important;
+    border-color: #b1b493 !important;
+}
+
+.block-23 ul li span.icon {
+    width: 20px;
+}
+/* --- Powerhouse Brand Logo Polish --- */
+.powerhouse-logo {
+    font-size: 24px !important;
+    font-weight: 900 !important;
+    color: #1a1a1a !important; /* High-contrast black */
+    letter-spacing: -1px !important;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+}
+
+/* Signature Olive Period */
+.powerhouse-logo span {
+    color: #b1b493 !important; /* Your signature olive color */
+    transition: all 0.3s ease;
+}
+
+/* Hover Interaction */
+.powerhouse-logo:hover {
+    transform: scale(1.05);
+    letter-spacing: 0px !important;
+}
+
+.powerhouse-logo:hover span {
+    color: #000 !important;
+    text-shadow: 0 0 10px rgba(177, 180, 147, 0.5);
+}
+
+/* Optional: Underline Accent */
+.powerhouse-logo::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #b1b493;
+    transition: width 0.3s ease;
+}
+
+.powerhouse-logo:hover::after {
+    width: 100%;
+}
+/* --- High-Contrast Back Button --- */
+.back-to-portfolio {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 10px 25px !important;
+    background: #b1b493 !important; /* Signature Olive */
+    color: #fff !important;
+    border-radius: 50px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    box-shadow: 0 10px 20px rgba(177, 180, 147, 0.3) !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+}
+
+.back-to-portfolio:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 15px 25px rgba(177, 180, 147, 0.4) !important;
+    background: #000 !important; /* High-contrast black on hover */
 }

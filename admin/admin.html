@@ -1,618 +1,1029 @@
 <!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>CMS Admin Panel</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <link rel="stylesheet" href="admin.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
     <style>
-        /* --- CRITICAL LAYOUT STYLES --- */
-        body {
-            background-color: #f4f6f9;
-        }
+      /* --- CRITICAL LAYOUT STYLES --- */
+      body {
+        background-color: #f4f6f9;
+      }
 
-        /* Utility */
-        .hidden {
-            display: none !important;
-        }
+      /* Utility */
+      .hidden {
+        display: none !important;
+      }
 
-        /* Dark Sidebar */
-        .sidebar {
-            display: block;
-            height: 100vh;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            background: #1a1a2e;
-            color: white;
-            padding-top: 20px;
-            z-index: 1000;
-            overflow-y: auto;
-        }
+      /* Dark Sidebar */
+      .sidebar {
+        display: block;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 250px;
+        background: #1a1a2e;
+        color: white;
+        padding-top: 20px;
+        z-index: 1000;
+        overflow-y: auto;
+      }
 
-        /* Main Content Area */
-        main {
-            margin-left: 250px;
-            padding: 30px;
-            min-height: 100vh;
-        }
+      /* Main Content Area */
+      main {
+        margin-left: 250px;
+        padding: 30px;
+        min-height: 100vh;
+      }
 
-        /* Nav Buttons */
-        .nav-btn {
-            width: 100%;
-            text-align: left;
-            padding: 15px 25px;
-            background: none;
-            border: none;
-            color: #a0a0a0;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.2s;
-        }
+      /* Nav Buttons */
+      .nav-btn {
+        width: 100%;
+        text-align: left;
+        padding: 15px 25px;
+        background: none;
+        border: none;
+        color: #a0a0a0;
+        cursor: pointer;
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        transition: all 0.2s;
+      }
 
-        .nav-btn:hover {
-            background: #16213e;
-            color: #fff;
-        }
+      .nav-btn:hover {
+        background: #16213e;
+        color: #fff;
+      }
 
-        .nav-btn.active {
-            background: #16213e;
-            color: #fff;
-            border-left: 4px solid #0d6efd;
-        }
+      .nav-btn.active {
+        background: #16213e;
+        color: #fff;
+        border-left: 4px solid #0d6efd;
+      }
 
-        /* Mobile Overlay */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 900;
-        }
+      /* Mobile Overlay */
+      .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 900;
+      }
 
-        /* Visual Helpers */
-        .placeholder-text {
-            color: #6c757d;
-            font-style: italic;
-            padding: 30px;
-            text-align: center;
-            border: 2px dashed #dee2e6;
-            border-radius: 8px;
-            background: #fff;
-        }
+      /* Visual Helpers */
+      .placeholder-text {
+        color: #6c757d;
+        font-style: italic;
+        padding: 30px;
+        text-align: center;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        background: #fff;
+      }
 
-        .section-header {
-            margin-top: 40px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #e9ecef;
-        }
+      .section-header {
+        margin-top: 40px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #e9ecef;
+      }
 
-        /* Form Card Styling */
-        .card {
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
+      /* Form Card Styling */
+      .card {
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
 
-        .form-label {
-            font-weight: 600;
-            color: #495057;
-            font-size: 0.9rem;
-        }
+      .form-label {
+        font-weight: 600;
+        color: #495057;
+        font-size: 0.9rem;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <aside class="sidebar">
-        <div style="
-          padding: 0 20px 20px;
-          border-bottom: 1px solid #2d2d44;
-          margin-bottom: 10px;
-        ">
-            <h3 class="m-0 fw-bold">Atul's CMS</h3>
-            <small class="text-muted">Admin Dashboard</small>
-        </div>
-        <nav>
-            <button class="nav-btn active" onclick="showPage('highlightsPage', this)">
-                <i class="fas fa-certificate"></i> Highlights
-            </button>
-            <button class="nav-btn" onclick="showPage('projectsPage', this)">
-                <i class="fas fa-code-branch"></i> Projects
-            </button>
-            <button class="nav-btn" onclick="showPage('statsPage', this)">
-                <i class="fas fa-chart-bar"></i> Stats
-            </button>
-            <button class="nav-btn" onclick="showPage('heroPage', this)">
-                <i class="fas fa-user-circle"></i> Hero Section
-            </button>
-            <button class="nav-btn" onclick="showPage('skillsPage', this)">
-                <i class="fas fa-tools"></i> Skills
-            </button>
-            <button class="nav-btn" onclick="showPage('videosPage', this)">
-                <i class="fab fa-youtube"></i> YouTube
-            </button>
-            <button class="nav-btn" onclick="showPage('galleryPage', this)">
-                <i class="fas fa-images"></i> Gallery
-            </button>
-        </nav>
-        <div style="position: absolute; bottom: 20px; width: 100%">
-            <button class="nav-btn text-danger" onclick="logout()">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </div>
+  <body>
+    <aside
+      class="sidebar d-flex flex-column"
+      style="height: 100vh; position: fixed"
+    >
+      <div class="sidebar-header p-4">
+        <h3 class="fw-bold mb-0">Atul's CMS</h3>
+      </div>
+
+      <nav class="flex-grow-1 px-2">
+        <button class="nav-btn" onclick="showPage('highlightsPage', this)">
+          <i class="fas fa-certificate"></i> Highlights
+        </button>
+        <button class="nav-btn" onclick="showPage('projectsPage', this)">
+          <i class="fas fa-code-branch"></i> Projects
+        </button>
+        <button class="nav-btn" onclick="showPage('statsPage', this)">
+          <i class="fas fa-chart-bar"></i> Stats
+        </button>
+        <button class="nav-btn" onclick="showPage('heroPage', this)">
+          <i class="fas fa-user-circle"></i> Hero Section
+        </button>
+        <button class="nav-btn" onclick="showPage('skillsPage', this)">
+          <i class="fas fa-tools"></i> Skills
+        </button>
+        <button class="nav-btn" onclick="showPage('videosPage', this)">
+          <i class="fab fa-youtube"></i> YouTube
+        </button>
+        <button class="nav-btn" onclick="showPage('galleryPage', this)">
+          <i class="fas fa-images"></i> Gallery
+        </button>
+        <button class="nav-btn" onclick="showPage('blogsPage', this)">
+          <i class="fas fa-blog"></i> Blogs
+        </button>
+      </nav>
+
+      <div class="sidebar-footer p-3 border-top border-secondary mt-auto">
+        <button
+          class="nav-btn logout-btn w-100 text-danger"
+          onclick="handleLogout()"
+          style="background: rgba(220, 53, 69, 0.05); border: none"
+        >
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </button>
+      </div>
     </aside>
 
     <main>
-        <!-- HIGHLIGHTS SECTION -->
-        <div id="highlightsPage" class="page-section">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">
-                    <i class="fas fa-certificate text-primary me-2"></i> Manage
-                    Highlights
-                </h2>
-                <button class="btn btn-sm btn-outline-secondary" onclick="loadHighlights()">
-                    <i class="fas fa-sync me-1"></i> Refresh List
-                </button>
-            </div>
-
-            <div class="card p-4 border-0 mb-5">
-                <h5 class="text-primary mb-3">Add / Edit Entry</h5>
-                <form id="highlightForm">
-                    <input type="hidden" id="hlId" />
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Title</label>
-                            <input type="text" id="hlTitle" class="form-control" placeholder="e.g. FireSense AI Model"
-                                required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Category</label>
-                            <select id="hlCategory" class="form-select">
-                                <option>Research Paper</option>
-                                <option>Project</option>
-                                <option>Achievement</option>
-                                <option>Work Experience</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Status</label>
-                            <select id="hlStatus" class="form-select">
-                                <option>Published</option>
-                                <option>Presented</option>
-                                <option>Selected</option>
-                                <option>Ongoing</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Venue / Location</label>
-                            <input type="text" id="hlVenue" class="form-control"
-                                placeholder="e.g. IEEE Conference, Osaka" />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Summary / Abstract</label>
-                            <textarea id="hlDesc" class="form-control" rows="2"
-                                placeholder="Brief overview of the achievement..." required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Tags</label>
-                            <input type="text" id="hlTags" class="form-control" placeholder="e.g. AI, IoT, C++" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Event Date</label>
-                            <input type="date" id="hlDate" class="form-control" />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Link (DOI or URL)</label>
-                            <input type="text" id="highlight-link-input" class="form-control"
-                                placeholder="https://doi.org/..." />
-                        </div>
-
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label text-primary">Poster Image</label>
-                            <input type="file" id="poster-upload-input" class="form-control" accept="image/*" />
-                            <input type="hidden" id="poster-hidden-value" />
-                            <div id="poster-preview-container" class="hidden mt-2 p-2 bg-white border rounded">
-                                <img id="poster-preview-img" style="height: 60px; border-radius: 4px" />
-                            </div>
-                        </div>
-                        <div class="col-md-6 mt-4">
-                            <label class="form-label text-primary">Gallery Images (Multiple)</label>
-                            <input type="file" id="gallery-upload-input" class="form-control" multiple
-                                accept="image/*" />
-                            <div id="gallery-preview-container" class="hidden mt-2 d-flex gap-2 flex-wrap"></div>
-                        </div>
-
-                        <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-primary w-100 py-2" id="save-entry-btn">
-                                <i class="fas fa-save me-2"></i> Save Entry
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header">Existing Highlights</h3>
-            <div id="highlights-list">
-                <p class="placeholder-text">Loading highlights data...</p>
-            </div>
+      <div id="highlightsPage" class="page-section">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">
+            <i class="fas fa-certificate text-primary me-2"></i> Manage
+            Highlights
+          </h2>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            onclick="loadHighlights()"
+          >
+            <i class="fas fa-sync me-1"></i> Refresh List
+          </button>
         </div>
 
-        <!-- PROJECTS SECTION -->
-        <div id="projectsPage" class="page-section hidden">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">
-                    <i class="fas fa-code-branch text-primary me-2"></i> Manage Projects
-                </h2>
-                <button class="btn btn-sm btn-outline-secondary" onclick="loadProjects()">
-                    <i class="fas fa-sync me-1"></i> Refresh
+        <div class="card p-4 border-0 mb-5">
+          <h5 class="text-primary mb-3">Add / Edit Entry</h5>
+          <form id="highlightForm">
+            <input type="hidden" id="hlId" />
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Title</label>
+                <input
+                  type="text"
+                  id="hlTitle"
+                  class="form-control"
+                  placeholder="e.g. FireSense AI Model"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Category</label>
+                <select id="hlCategory" class="form-select">
+                  <option>Research Paper</option>
+                  <option>Project</option>
+                  <option>Achievement</option>
+                  <option>Work Experience</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <select id="hlStatus" class="form-select">
+                  <option>Published</option>
+                  <option>Presented</option>
+                  <option>Selected</option>
+                  <option>Ongoing</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Venue / Location</label>
+                <input
+                  type="text"
+                  id="hlVenue"
+                  class="form-control"
+                  placeholder="e.g. IEEE Conference, Osaka"
+                />
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label">Summary / Abstract</label>
+                  <span id="char-count" class="badge bg-light text-muted border"
+                    >0 / 2000</span
+                  >
+                </div>
+                <textarea
+                  id="hlDesc"
+                  class="form-control"
+                  rows="3"
+                  placeholder="Brief overview of the achievement..."
+                  maxlength="2000"
+                  required
+                ></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Tags (comma separated)</label>
+                <input
+                  type="text"
+                  id="hlTags"
+                  class="form-control"
+                  placeholder="e.g. AI, IoT, C++"
+                />
+                <div class="mt-2">
+                  <span
+                    class="badge bg-light text-dark border p-2"
+                    style="cursor: pointer"
+                    onclick="addTag('AI')"
+                    >+ AI</span
+                  >
+                  <span
+                    class="badge bg-light text-dark border p-2"
+                    style="cursor: pointer"
+                    onclick="addTag('IoT')"
+                    >+ IoT</span
+                  >
+                  <span
+                    class="badge bg-light text-dark border p-2"
+                    style="cursor: pointer"
+                    onclick="addTag('Research')"
+                    >+ Research</span
+                  >
+                  <span
+                    class="badge bg-light text-dark border p-2"
+                    style="cursor: pointer"
+                    onclick="addTag('Python')"
+                    >+ Python</span
+                  >
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Event Date</label>
+                <input type="date" id="hlDate" class="form-control" />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Link (DOI or URL)</label>
+                <input
+                  type="text"
+                  id="highlight-link-input"
+                  class="form-control"
+                  placeholder="https://doi.org/..."
+                />
+              </div>
+
+              <div class="col-md-6 mt-4">
+                <label class="form-label text-primary">Poster Image</label>
+                <input
+                  type="file"
+                  id="poster-upload-input"
+                  class="form-control"
+                  accept="image/*"
+                />
+                <input type="hidden" id="poster-hidden-value" />
+                <div
+                  id="poster-preview-container"
+                  class="hidden mt-2 p-2 bg-white border rounded"
+                >
+                  <img
+                    id="poster-preview-img"
+                    style="height: 60px; border-radius: 4px"
+                  />
+                </div>
+              </div>
+
+              <div class="col-md-6 mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label class="form-label text-primary"
+                    >Gallery Images (Multiple)</label
+                  >
+                  <a
+                    href="javascript:void(0)"
+                    class="text-danger small text-decoration-none"
+                    onclick="
+                      galleryFilesArray = [];
+                      renderGalleryPreviews();
+                    "
+                    >Clear All</a
+                  >
+                </div>
+                <input
+                  type="file"
+                  id="gallery-upload-input"
+                  class="form-control"
+                  multiple
+                  accept="image/*"
+                />
+                <div
+                  id="gallery-preview-container"
+                  class="hidden mt-2 d-flex gap-2 flex-wrap"
+                ></div>
+              </div>
+
+              <div class="col-12 mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100 py-2"
+                  id="save-entry-btn"
+                >
+                  <i class="fas fa-save me-2"></i> Save Entry
                 </button>
+              </div>
             </div>
-
-            <div class="card p-4 border-0 mb-5">
-                <h5 class="text-primary mb-3">Project Details</h5>
-                <form id="projectForm">
-                    <input type="hidden" id="pId" />
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Project Title</label>
-                            <input type="text" id="pTitle" class="form-control" placeholder="e.g. Smart Home System"
-                                required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Category</label>
-                            <select id="pCategory" class="form-select">
-                                <option value="research">Research</option>
-                                <option value="iot">IoT & Hardware</option>
-                                <option value="web_dev">Web Development</option>
-                                <option value="ai_ml">AI / ML</option>
-                                <option value="consulting">Consulting</option>
-                                <option value="misc">Miscellaneous</option>
-                            </select>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Short Summary</label>
-                            <textarea id="pSummary" class="form-control" rows="2"
-                                placeholder="One-line tagline for the card view..." required></textarea>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Technologies</label>
-                            <input type="text" id="pTech" class="form-control"
-                                placeholder="e.g. React, Node.js, Python" />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Live Link / GitHub</label>
-                            <input type="text" id="pLink" class="form-control" placeholder="https://github.com/..." />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Detailed Description</label>
-                            <textarea id="pDescription" class="form-control" rows="4"
-                                placeholder="Full details about the project..."></textarea>
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label">Thumbnail Image</label>
-                            <input type="file" id="pThumbnail" class="form-control" accept="image/*" />
-                            <input type="hidden" id="pImage" />
-                        </div>
-                        <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-primary w-100 py-2">
-                                <i class="fas fa-save me-2"></i> Save Project
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header">Existing Projects</h3>
-            <div id="projectsList">
-                <p class="placeholder-text">Loading projects...</p>
-            </div>
+          </form>
         </div>
-        <!-- STATS SECTION  -->
-        <div id="statsPage" class="page-section hidden">
-            <h2 class="fw-bold mb-4">
-                <i class="fas fa-chart-bar text-primary me-2"></i> Manage Stats
-            </h2>
 
-            <div class="card p-4 border-0 mt-4 shadow-sm">
-                <form id="statsForm">
-                    <input type="hidden" id="statId" />
-                    <input type="hidden" id="originalStatIconBase64" />
-
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-3">
-                            <label class="form-label fw-bold">Value</label>
-                            <input type="text" id="statValue" class="form-control" placeholder="e.g. 50+" required />
-                        </div>
-
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold">Stat Category</label>
-                            <select id="statLabelDropdown" class="form-select" onchange="toggleCustomStatInput()">
-                                <option value="Mentored">People trained (Mentored)</option>
-                                <option value="Projects">IoT & AI Projects (Projects)</option>
-                                <option value="Prototypes">
-                                    Prototypes Built (Prototypes)
-                                </option>
-                                <option value="Hardware">Hardware products (Hardware)</option>
-                                <option value="Papers">Papers Published (Papers)</option>
-                                <option value="Assisted">Assisted Research (Assisted)</option>
-                                <option value="Countries">Global Students (Countries)</option>
-                                <option value="Workshops">Workshops held (Workshops)</option>
-                                <option value="CUSTOM">-- Add New Custom Stat --</option>
-                            </select>
-                        </div>
-
-                        <div id="customStatGroup" class="col-md-3 hidden">
-                            <label class="form-label fw-bold">Custom Label</label>
-                            <input type="text" id="statLabelCustom" class="form-control" placeholder="e.g. Patents" />
-                        </div>
-
-                        <div class="col-md-2">
-                            <button type="submit" id="statSubmitBtn" class="btn btn-primary w-100">
-                                Add Stat
-                            </button>
-                        </div>
-
-                        <div class="col-12 mt-2">
-                            <label class="form-label">Icon (Optional)</label>
-                            <input type="file" id="statIcon" class="form-control" accept="image/*" />
-                            <input type="hidden" id="statIconBase64" />
-
-                            <div id="statImgPreview" class="mt-3 hidden p-2 border rounded bg-light text-center">
-                                <p class="mb-1 text-muted small">Icon Preview</p>
-                                <img id="statPreviewImg" src="" alt="Icon Preview"
-                                    style="width: 60px; height: 60px; object-fit: cover"
-                                    class="rounded-circle shadow-sm" />
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header mt-4">Current Stats</h3>
-            <div id="statsList" class="mt-3">
-                <p class="placeholder-text">Loading stats...</p>
-            </div>
+        <h3 class="section-header">Existing Highlights</h3>
+        <div id="highlights-list">
+          <p class="placeholder-text">Loading highlights data...</p>
         </div>
-        <!-- Hero Section -->
-        <div id="heroPage" class="page-section hidden">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">
-                    <i class="fas fa-id-card text-primary me-2"></i> Profile Identity
-                </h2>
-                <button class="btn btn-sm btn-outline-secondary shadow-sm" onclick="loadHero()">
-                    <i class="fas fa-sync-alt me-1"></i> Sync Data
+      </div>
+
+      <!-- PROJECTS SECTION -->
+      <div id="projectsPage" class="page-section hidden">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">
+            <i class="fas fa-code-branch text-primary me-2"></i> Manage Projects
+          </h2>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            onclick="loadProjects()"
+          >
+            <i class="fas fa-sync me-1"></i> Refresh
+          </button>
+        </div>
+
+        <div class="card p-4 border-0 mb-5">
+          <h5 class="text-primary mb-3">Project Details</h5>
+          <form id="projectForm">
+            <input type="hidden" id="pId" />
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label">Project Title</label>
+                <input
+                  type="text"
+                  id="pTitle"
+                  class="form-control"
+                  placeholder="e.g. Smart Home System"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Category</label>
+                <select id="pCategory" class="form-select">
+                  <option value="research">Research</option>
+                  <option value="iot">IoT & Hardware</option>
+                  <option value="web_dev">Web Development</option>
+                  <option value="ai_ml">AI / ML</option>
+                  <option value="consulting">Consulting</option>
+                  <option value="misc">Miscellaneous</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label">Short Summary</label>
+                  <span
+                    id="short-summary-count"
+                    class="badge bg-light text-muted border"
+                    >0 / 300</span
+                  >
+                </div>
+                <textarea
+                  id="pSummary"
+                  class="form-control"
+                  rows="2"
+                  placeholder="One-line tagline for the card view..."
+                  maxlength="300"
+                  required
+                ></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Technologies</label>
+                <input
+                  type="text"
+                  id="pTech"
+                  class="form-control"
+                  placeholder="e.g. React, Node.js, Python"
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Live Link / GitHub</label>
+                <input
+                  type="text"
+                  id="pLink"
+                  class="form-control"
+                  placeholder="https://github.com/..."
+                />
+              </div>
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label">Detailed Description</label>
+                  <span
+                    id="project-char-count"
+                    class="badge bg-light text-muted border"
+                    >0 / 5000</span
+                  >
+                </div>
+                <textarea
+                  id="pDescription"
+                  class="form-control"
+                  rows="4"
+                  placeholder="Full details about the project..."
+                  maxlength="5000"
+                  required
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Thumbnail Image</label>
+                <input
+                  type="file"
+                  id="pThumbnail"
+                  class="form-control"
+                  accept="image/*"
+                />
+                <input type="hidden" id="pImage" />
+              </div>
+              <div class="col-12 mt-4">
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                  <i class="fas fa-save me-2"></i> Save Project
                 </button>
+              </div>
             </div>
+          </form>
+        </div>
 
-            <div class="card p-4 border-0 shadow-sm">
-                <h5 class="text-secondary mb-4 border-bottom pb-2">
-                    Primary Information
-                </h5>
-                <form id="heroForm">
-                    <div class="row g-4">
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold"><i class="fas fa-hand-sparkles me-1 text-muted"></i>
-                                Greeting</label>
-                            <input type="text" id="hGreeting" class="form-control" placeholder="e.g. Hello, I am" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold"><i class="fas fa-user me-1 text-muted"></i> Full
-                                Name</label>
-                            <input type="text" id="hName" class="form-control" placeholder="e.g. Atul Dubey" />
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label fw-bold"><i class="fas fa-briefcase me-1 text-muted"></i> Role /
-                                Subtitle</label>
-                            <input type="text" id="hSubtitle" class="form-control" placeholder="e.g. IoT Developer" />
-                        </div>
+        <h3 class="section-header">Existing Projects</h3>
+        <div id="projectsList">
+          <p class="placeholder-text">Loading projects...</p>
+        </div>
+      </div>
 
-                        <div class="col-md-12">
-                            <label class="form-label fw-bold"><i class="fas fa-file-pdf me-1 text-muted"></i> Resume /
-                                CV
-                                Link</label>
-                            <input type="text" id="hResume" class="form-control"
-                                placeholder="Direct URL to PDF (Google Drive/Dropbox)" />
-                        </div>
+      <!-- STATS SECTION  -->
+      <div id="statsPage" class="page-section hidden">
+        <h2 class="fw-bold mb-4">
+          <i class="fas fa-chart-bar text-primary me-2"></i> Manage Stats
+        </h2>
 
-                        <div class="col-12">
-                            <label class="form-label fw-bold"><i class="fas fa-quote-left me-1 text-muted"></i>
-                                Professional Bio</label>
-                            <textarea id="hDesc" class="form-control" rows="4"
-                                placeholder="Write a short, impactful introduction..."></textarea>
-                        </div>
+        <div class="card p-4 border-0 mt-4 shadow-sm">
+          <form id="statsForm">
+            <input type="hidden" id="statId" />
+            <div class="row g-3 align-items-end">
+              <div class="col-md-2">
+                <label class="form-label fw-bold">Value</label>
+                <input
+                  type="text"
+                  id="statValue"
+                  class="form-control"
+                  placeholder="e.g. 50+"
+                  maxlength="10"
+                  required
+                />
+              </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold"><i class="fab fa-linkedin me-1 text-muted"></i> LinkedIn
-                                URL</label>
-                            <input type="text" id="hLinkedin" class="form-control"
-                                placeholder="https://linkedin.com/in/..." />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold"><i class="fab fa-github me-1 text-muted"></i> GitHub
-                                URL</label>
-                            <input type="text" id="hGithub" class="form-control" placeholder="https://github.com/..." />
-                        </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Stat Category</label>
+                <select
+                  id="statLabelDropdown"
+                  class="form-select"
+                  onchange="toggleCustomStatInput()"
+                >
+                  <option value="Mentored">People trained (Mentored)</option>
+                  <option value="Projects">IoT & AI Projects</option>
+                  <option value="Prototypes">Prototypes Built</option>
+                  <option value="Hardware">Hardware products</option>
+                  <option value="Papers">Papers Published</option>
+                  <option value="Assisted">Assisted Research</option>
+                  <option value="Countries">Global Students</option>
+                  <option value="Workshops">Workshops held</option>
+                  <option value="CUSTOM">-- Add New Custom Stat --</option>
+                </select>
+              </div>
 
-                        <div class="col-12 mt-3">
-                            <label class="form-label fw-bold"><i class="fas fa-camera me-1 text-muted"></i> Profile
-                                Photo</label>
-                            <div class="d-flex align-items-center gap-4 p-3 bg-light rounded">
-                                <input type="file" id="hImageInput" class="form-control w-auto" accept="image/*" />
-                                <input type="hidden" id="hImageBase64" />
+              <div id="customStatGroup" class="col-md-3 hidden">
+                <label class="form-label fw-bold">Custom Label</label>
+                <input
+                  type="text"
+                  id="statLabelCustom"
+                  class="form-control"
+                  placeholder="e.g. Patents"
+                  maxlength="20"
+                />
+              </div>
 
-                                <div id="heroImgPreview" class="hidden text-center">
-                                    <img id="hPreviewImg" class="shadow-sm border border-white" style="
-                        height: 80px;
-                        width: 80px;
+              <div class="col-md-3">
+                <label class="form-label fw-bold">Icon (Optional)</label>
+                <input
+                  type="file"
+                  id="statIconInput"
+                  class="form-control"
+                  accept="image/*"
+                />
+                <input type="hidden" id="statIconValue" />
+              </div>
+
+              <div class="col-md-2">
+                <button
+                  type="submit"
+                  id="statSubmitBtn"
+                  class="btn btn-primary w-100"
+                >
+                  Add Stat
+                </button>
+              </div>
+
+              <div id="statImgPreview" class="col-12 mt-3 hidden">
+                <div
+                  class="p-2 border rounded bg-light d-inline-block text-center"
+                >
+                  <p class="mb-1 text-muted small">Icon Preview</p>
+                  <img
+                    id="statPreviewImg"
+                    src=""
+                    style="width: 50px; height: 50px; object-fit: cover"
+                    class="rounded-circle shadow-sm"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- hero section -->
+
+        <h3 class="section-header mt-5">Current Active Stats</h3>
+        <div id="statsList" class="mt-3">
+          <p class="placeholder-text">Loading stats data...</p>
+        </div>
+      </div>
+      <div id="heroPage" class="page-section hidden">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">Profile Identity</h2>
+          <button class="btn btn-sm btn-outline-secondary" onclick="loadHero()">
+            Sync Data
+          </button>
+        </div>
+
+        <div class="card p-4 border-0 shadow-sm">
+          <h5 class="text-secondary mb-4 border-bottom pb-2">
+            Primary Information
+          </h5>
+          <form id="heroForm">
+            <div class="row g-4">
+              <div class="col-md-4">
+                <label class="form-label fw-bold"
+                  >Section Heading (Small)</label
+                >
+                <input
+                  type="text"
+                  id="hGreeting"
+                  class="form-control"
+                  placeholder="e.g. ABOUT ME"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Full Name (Large)</label>
+                <input
+                  type="text"
+                  id="hName"
+                  class="form-control"
+                  placeholder="e.g. Atul Dubey"
+                />
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-bold">Role / Subtitle</label>
+                <input
+                  type="text"
+                  id="hSubtitle"
+                  class="form-control"
+                  placeholder="e.g. Backend Developer"
+                />
+              </div>
+
+              <div class="col-md-12">
+                <label class="form-label fw-bold">Resume / CV Link</label>
+                <input
+                  type="text"
+                  id="hResume"
+                  class="form-control"
+                  placeholder="Direct URL to PDF"
+                />
+              </div>
+
+              <div class="col-12">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label fw-bold">Professional Bio</label>
+                  <span
+                    id="hero-bio-count"
+                    class="badge bg-light text-muted border"
+                    >0 / 1000</span
+                  >
+                </div>
+                <textarea
+                  id="hDesc"
+                  class="form-control"
+                  rows="5"
+                  maxlength="1000"
+                  placeholder="Write your professional journey..."
+                ></textarea>
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-bold">LinkedIn URL</label>
+                <input
+                  type="text"
+                  id="hLinkedin"
+                  class="form-control"
+                  placeholder="https://linkedin.com/in/..."
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">GitHub URL</label>
+                <input
+                  type="text"
+                  id="hGithub"
+                  class="form-control"
+                  placeholder="https://github.com/..."
+                />
+              </div>
+
+              <div class="col-12 mt-3">
+                <label class="form-label fw-bold">Profile Photo</label>
+                <div
+                  class="d-flex align-items-center gap-4 p-3 bg-light rounded"
+                >
+                  <input
+                    type="file"
+                    id="hImageInput"
+                    class="form-control w-auto"
+                    accept="image/*"
+                  />
+                  <input type="hidden" id="hImageBase64" />
+                  <div id="heroImgPreview" class="hidden text-center">
+                    <img
+                      id="hPreviewImg"
+                      class="shadow-sm border border-white"
+                      style="
+                        height: 100px;
+                        width: 100px;
                         object-fit: cover;
                         border-radius: 12px;
-                      " />
-                                    <p class="mb-0 mt-1 small text-muted">Preview</p>
-                                </div>
-                            </div>
-                        </div>
+                      "
+                    />
+                    <p class="mb-0 mt-1 small text-muted">Preview</p>
+                  </div>
+                </div>
+              </div>
 
-                        <div class="col-12 mt-4">
-                            <button type="submit" class="btn btn-primary w-100 py-3 fw-bold shadow">
-                                <i class="fas fa-cloud-upload-alt me-2"></i> Publish Profile
-                                Changes
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <!-- Skills Section -->
-        <div id="skillsPage" class="page-section hidden">
-            <h2 class="fw-bold mb-4">
-                <i class="fas fa-tools text-primary me-2"></i> Manage Skills
-            </h2>
-
-            <div class="card p-4 border-0 mt-4 shadow-sm">
-                <form id="skillForm">
-                    <input type="hidden" id="skillId" />
-                    <input type="hidden" id="originalSkIconBase64" />
-
-                    <div class="row g-3 align-items-end">
-                        <div class="col-md-5">
-                            <label class="form-label fw-bold">Skill Title</label>
-                            <input type="text" id="skTitle" class="form-control" placeholder="e.g. Python" required />
-                        </div>
-                        <div class="col-md-7">
-                            <label class="form-label fw-bold">Description / Experience</label>
-                            <input type="text" id="skDesc" class="form-control"
-                                placeholder="e.g. 5 years experience, Advanced" required />
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-bold">Icon (Optional)</label>
-                            <div class="d-flex gap-3 align-items-center bg-light p-2 rounded">
-                                <input type="file" id="skIconInput" class="form-control w-auto" accept="image/*" />
-                                <input type="hidden" id="skIconBase64" />
-
-                                <div id="skImgPreview" class="hidden text-center">
-                                    <img id="skPreviewImg" src=""
-                                        style="width: 40px; height: 40px; object-fit: contain" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <button type="submit" id="skillSubmitBtn" class="btn btn-primary w-100 py-2">
-                                <i class="fas fa-plus-circle me-1"></i> Add Skill
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header mt-4">Current Skills</h3>
-            <div id="skillsList" class="row g-2 mt-2">
-                <p class="placeholder-text">Loading skills...</p>
-            </div>
-        </div>
-        <div id="videosPage" class="page-section hidden">
-            <h2 class="fw-bold mb-4">
-                <i class="fab fa-youtube text-danger me-2"></i> Manage Videos
-            </h2>
-
-            <div class="card p-4 border-0 mt-4 shadow-sm">
-                <form id="videoForm">
-                    <input type="hidden" id="videoId" />
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">Video Title</label>
-                            <input type="text" id="vidTitle" class="form-control" placeholder="e.g. Project Demo"
-                                required />
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-bold">YouTube URL</label>
-                            <input type="text" id="vidUrl" class="form-control"
-                                placeholder="https://youtube.com/watch?v=..." required />
-                        </div>
-                        <div class="col-12">
-                            <label class="form-label fw-bold">Description</label>
-                            <input type="text" id="vidDesc" class="form-control" placeholder="Short description..." />
-                        </div>
-                        <div class="col-12 mt-3">
-                            <button type="submit" id="videoSubmitBtn" class="btn btn-primary w-100 py-2">
-                                <i class="fas fa-video me-2"></i> Add Video
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header mt-4">Existing Videos</h3>
-            <div id="videosList" class="d-flex flex-column gap-3 mt-2">
-                <p class="placeholder-text">Loading videos...</p>
-            </div>
-        </div>
-        <div id="galleryPage" class="page-section hidden">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="fw-bold">
-                    <i class="fas fa-images text-primary me-2"></i> Manage Gallery
-                </h2>
-                <button class="btn btn-sm btn-outline-secondary" onclick="window.loadGallery()">
-                    <i class="fas fa-sync me-1"></i> Refresh
+              <div class="col-12 mt-4">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100 py-3 fw-bold"
+                >
+                  Publish Profile Changes
                 </button>
+              </div>
             </div>
-
-            <div class="card p-4 border-0 shadow-sm mb-4">
-                <form id="galleryForm">
-                    <input type="hidden" id="galId" />
-
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label fw-bold">Caption / Title</label>
-                            <input type="text" id="galCaption" class="form-control"
-                                placeholder="e.g. Innovation Summit 2025" required />
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-bold text-secondary">Select Images (Batch Upload
-                                Supported)</label>
-                            <div class="p-4 border rounded bg-light text-center">
-                                <input type="file" id="galImageInput" class="form-control mb-3" accept="image/*"
-                                    multiple />
-                                <input type="hidden" id="galImageBase64" />
-
-                                <div id="galImgPreview" class="hidden shadow-inner"></div>
-                                <p class="mb-0 mt-2 small text-muted">Selected images will appear above for review</p>
-                            </div>
-                        </div>
-
-                        <div class="col-12 mt-3">
-                            <button type="submit" id="gallerySubmitBtn" class="btn btn-primary w-100 py-3 shadow-sm">
-                                <i class="fas fa-cloud-upload-alt me-2"></i> Confirm Upload to Gallery
-                            </button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <h3 class="section-header mt-4">Gallery Feed</h3>
-            <div id="galleryList">
-                <p class="placeholder-text">Syncing with server...</p>
-            </div>
+          </form>
         </div>
+      </div>
+
+      <!-- Skills Section -->
+      <div id="skillsPage" class="page-section hidden">
+        <h2 class="fw-bold mb-4">
+          <i class="fas fa-tools text-primary me-2"></i> Manage Skills
+        </h2>
+
+        <div class="card p-4 border-0 mt-4 shadow-sm">
+          <form id="skillForm">
+            <input type="hidden" id="skillId" />
+            <input type="hidden" id="originalSkIconBase64" />
+
+            <div class="row g-3 align-items-end">
+              <div class="col-md-5">
+                <label class="form-label fw-bold">Skill Title</label>
+                <input
+                  type="text"
+                  id="skTitle"
+                  class="form-control"
+                  placeholder="e.g. Python"
+                  required
+                />
+              </div>
+              <div class="col-md-7">
+                <div class="d-flex justify-content-between">
+                  <label class="form-label fw-bold"
+                    >Description / Experience</label
+                  >
+                  <span
+                    id="skill-desc-count"
+                    class="badge bg-light text-muted border"
+                    >0 / 150</span
+                  >
+                </div>
+                <input
+                  type="text"
+                  id="skDesc"
+                  class="form-control"
+                  placeholder="e.g. 5 years experience, Advanced"
+                  maxlength="150"
+                  required
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold">Icon (Optional)</label>
+                <div
+                  class="d-flex gap-3 align-items-center bg-light p-2 rounded"
+                >
+                  <input
+                    type="file"
+                    id="skIconInput"
+                    class="form-control w-auto"
+                    accept="image/*"
+                  />
+                  <input type="hidden" id="skIconBase64" />
+
+                  <div id="skImgPreview" class="hidden text-center">
+                    <img
+                      id="skPreviewImg"
+                      src=""
+                      style="width: 40px; height: 40px; object-fit: contain"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-12 mt-3">
+                <button
+                  type="submit"
+                  id="skillSubmitBtn"
+                  class="btn btn-primary w-100 py-2"
+                >
+                  <i class="fas fa-plus-circle me-1"></i> Add Skill
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="section-header mt-4">Current Skills</h3>
+        <div id="skillsList" class="row g-2 mt-2">
+          <p class="placeholder-text">Loading skills...</p>
+        </div>
+      </div>
+
+      <!-- Youtube Section -->
+
+      <div id="videosPage" class="page-section hidden">
+        <h2 class="fw-bold mb-4">
+          <i class="fab fa-youtube text-danger me-2"></i> Manage Videos
+        </h2>
+
+        <div class="card p-4 border-0 mt-4 shadow-sm">
+          <form id="videoForm">
+            <input type="hidden" id="videoId" />
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold">Video Title</label>
+                <input
+                  type="text"
+                  id="vidTitle"
+                  class="form-control"
+                  placeholder="e.g. Project Demo"
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold">YouTube URL</label>
+                <input
+                  type="text"
+                  id="vidUrl"
+                  class="form-control"
+                  placeholder="https://youtube.com/watch?v=..."
+                  required
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold">Description</label>
+                <input
+                  type="text"
+                  id="vidDesc"
+                  class="form-control"
+                  placeholder="Short description..."
+                />
+              </div>
+              <div class="col-12 mt-3">
+                <button
+                  type="submit"
+                  id="videoSubmitBtn"
+                  class="btn btn-primary w-100 py-2"
+                >
+                  <i class="fas fa-video me-2"></i> Add Video
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="section-header mt-4">Existing Videos</h3>
+        <div id="videosList" class="d-flex flex-column gap-3 mt-2">
+          <p class="placeholder-text">Loading videos...</p>
+        </div>
+      </div>
+
+      <!-- Gallery Section -->
+
+      <div id="galleryPage" class="page-section hidden">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold">
+            <i class="fas fa-images text-primary me-2"></i> Manage Gallery
+          </h2>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            onclick="window.loadGallery()"
+          >
+            <i class="fas fa-sync me-1"></i> Refresh
+          </button>
+        </div>
+
+        <div class="card p-4 border-0 shadow-sm mb-4">
+          <form id="galleryForm">
+            <input type="hidden" id="galId" />
+
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label fw-bold">Caption / Title</label>
+                <input
+                  type="text"
+                  id="galCaption"
+                  class="form-control"
+                  placeholder="e.g. Innovation Summit 2025"
+                  required
+                />
+              </div>
+
+              <div class="col-12">
+                <label class="form-label fw-bold text-secondary">
+                  Select Images (Batch Upload Supported)
+                </label>
+                <div class="p-4 border rounded bg-light text-center">
+                  <input
+                    type="file"
+                    id="galImageInput"
+                    class="form-control mb-3"
+                    accept="image/*"
+                    multiple
+                  />
+                  <input type="hidden" id="galImageBase64" />
+
+                  <div
+                    id="galImgPreview"
+                    class="hidden d-flex flex-wrap justify-content-center gap-2 p-2 bg-white rounded border border-dashed"
+                  ></div>
+
+                  <p class="mb-0 mt-2 small text-muted">
+                    Selected images will appear above for review
+                  </p>
+                </div>
+              </div>
+
+              <div class="col-12 mt-3">
+                <button
+                  type="submit"
+                  id="gallerySubmitBtn"
+                  class="btn btn-primary w-100 py-3 shadow-sm"
+                >
+                  <i class="fas fa-cloud-upload-alt me-2"></i> Confirm Upload to
+                  Gallery
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="section-header mt-4">Gallery Feed</h3>
+
+        <div id="galleryList" class="mt-2">
+          <div class="text-center py-5">
+            <span class="placeholder-text">Syncing with server...</span>
+          </div>
+        </div>
+      </div>
+      <!-- Blog Section  -->
+      <div id="blogsPage" class="page-section hidden">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="fw-bold m-0">
+            <i class="fas fa-blog text-primary me-2"></i> Manage Blogs
+          </h2>
+          <button
+            class="btn btn-sm btn-outline-secondary"
+            onclick="window.loadBlogs()"
+          >
+            <i class="fas fa-sync me-1"></i> Refresh
+          </button>
+        </div>
+
+        <div class="card p-4 border-0 shadow-sm mb-4">
+          <form id="blogForm">
+            <input type="hidden" id="blogId" />
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-secondary"
+                  >Blog Title</label
+                >
+                <input
+                  type="text"
+                  id="blogTitle"
+                  class="form-control shadow-none"
+                  placeholder="Enter a catchy title..."
+                  required
+                />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-bold text-secondary"
+                  >Category</label
+                >
+                <input
+                  type="text"
+                  id="blogCategory"
+                  class="form-control shadow-none"
+                  placeholder="e.g. IoT, Research"
+                />
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold text-secondary"
+                  >Content Summary</label
+                >
+                <textarea
+                  id="blogDesc"
+                  class="form-control shadow-none"
+                  rows="3"
+                  placeholder="Write a short teaser for the home page..."
+                  required
+                ></textarea>
+              </div>
+              <div class="col-12">
+                <label class="form-label fw-bold text-secondary"
+                  >Cover Image</label
+                >
+                <div class="p-3 border rounded bg-light text-center">
+                  <input
+                    type="file"
+                    id="blogImageInput"
+                    class="form-control mb-2"
+                    accept="image/*"
+                  />
+                  <input type="hidden" id="blogImageBase64" />
+                  <div
+                    id="blogImgPreview"
+                    class="mt-2 hidden d-inline-block position-relative"
+                  ></div>
+                </div>
+              </div>
+              <div class="col-12 mt-4">
+                <button
+                  type="submit"
+                  id="blogSubmitBtn"
+                  class="btn btn-primary w-100 py-3 shadow-sm fw-bold"
+                >
+                  <i class="fas fa-cloud-upload-alt me-2"></i> SAVE BLOG POST
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="section-header mt-4">Blog Feed</h3>
+        <div id="blogsList" class="row g-3">
+          <div class="col-12 text-center py-5">
+            <span class="fa fa-spinner fa-spin fa-2x text-muted"></span>
+            <p class="mt-2 text-muted">Fetching your insights...</p>
+          </div>
+        </div>
+      </div>
     </main>
-    <div id="toast-container" class="position-fixed bottom-0 end-0 p-3" style="z-index: 9999"></div>
+    <div
+      id="toast-container"
+      class="position-fixed bottom-0 end-0 p-3"
+      style="z-index: 9999"
+    ></div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="admin.js"></script>
-</body>
-
+  </body>
 </html>

@@ -1,40 +1,102 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    const API_BASE = 'http://localhost:5050/api'; //
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoryType = urlParams.get('type');
+// js/category.js
+const API_BASE = "http://127.0.0.1:5050/api";
 
-    const titleMap = {
+document.addEventListener("DOMContentLoaded", async () => {
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get("type");
+
+    const titles = {
         'research': 'Research Publications',
-        'ai_ml': 'AI, ML & Deep Learning',
-        'iot': 'Internet of Things (IoT)',
-        // ... add other keys if needed
+        'ai_ml': 'Deep Tech (AI/ML)',
+        'iot': 'IoT & Hardware',
+        'training': 'Workshops & Trainings',
+        'consulting': 'Consulting Services',
+        'misc': 'Other Projects'
     };
 
-    document.getElementById('category-title').innerText = titleMap[categoryType] || 'Portfolio Archives';
+    const titleEl = document.getElementById('category-title');
+    if (titleEl) titleEl.innerText = titles[slug] || 'Portfolio Archives';
+
+    const container = document.getElementById("filtered-projects-container");
 
     try {
-        // Fetch from the SECURE public endpoint
-        const res = await fetch(`${API_BASE}/public/projects?category=${categoryType}`);
-        const projects = await res.json();
-        const container = document.getElementById('filtered-projects-container');
+        const [projRes, highRes] = await Promise.all([
+            fetch(`${API_BASE}/public/projects`),
+            fetch(`${API_BASE}/public/highlights`)
+        ]);
 
-        if (projects.length > 0) {
-            container.innerHTML = projects.map(p => `
-                <div class="col-md-4 mb-4">
-                    <div class="project img d-flex justify-content-center align-items-center shadow rounded" 
-                         style="background-image: url('${p.thumbnail || p.image}'); height: 350px; position: relative; background-color:#fff; background-size:contain; background-repeat:no-repeat; background-position:center;">
-                        <div style="position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(255, 255, 255, 0.88); z-index:1;"></div>
-                        <div class="text text-center px-3" style="z-index: 5; opacity: 1 !important; visibility: visible !important;">
-                            <h3 class="font-weight-bold" style="color:#000; font-size:22px;">${p.title}</h3>
-                            <span style="color:#b1b493; font-weight:700; text-transform:uppercase; font-size:11px; letter-spacing:2px;">${p.category}</span>
+        const allProjects = await projRes.json();
+        const allHighlights = await highRes.json();
+
+        const filterBySlug = (item) => {
+            if (!item.category) return false;
+            const cat = item.category.toLowerCase();
+
+            if (slug === 'research') return cat.includes('research') || cat.includes('paper');
+            if (slug === 'ai_ml') return cat.includes('ai') || cat.includes('ml') || cat.includes('deep') || cat.includes('tech');
+            if (slug === 'iot') return cat.includes('iot') || cat.includes('hardware') || cat.includes('arduino');
+            if (slug === 'training') return cat.includes('workshop') || cat.includes('training');
+            if (slug === 'consulting') return cat.includes('consulting');
+            return true;
+        };
+
+        const filteredProjects = allProjects.filter(filterBySlug);
+        const filteredHighlights = allHighlights.filter(filterBySlug);
+
+        let htmlContent = "";
+
+        // HELPER: Safe Image Function
+        const getSafeImage = (img) => {
+            return (img && img.trim() !== "") ? img : "images/bg_1.jpg"; // Default fallback
+        };
+
+        // 1. RENDER PROJECTS
+        htmlContent += filteredProjects.map(p => `
+            <div class="col-md-4 mb-4 ftco-animate fadeInUp ftco-animated">
+               <div class="project-card shadow-sm rounded bg-white h-100 p-0" onclick="window.location.href='portfolio-detail.html?id=${p._id}'" style="cursor: pointer; overflow: hidden; border: 1px solid #eee;">
+                   
+                   <div style="height: 220px; overflow: hidden; position: relative; background-color: #f8f9fa;">
+                       <div class="img-bg" style="height: 100%; width: 100%; background: url('${getSafeImage(p.image)}') center/cover no-repeat; transition: transform 0.3s;"></div>
+                   </div>
+                   
+                   <div class="p-4 text-center">
+                        <span class="d-block text-uppercase font-weight-bold mb-2" style="font-size: 10px; letter-spacing: 2px; color: #b1b493;">
+                            ${p.category || "Project"}
+                        </span>
+                        <h5 class="font-weight-bold text-dark mb-0" style="font-size: 18px;">
+                            ${p.title}
+                        </h5>
+                   </div>
+               </div>
+           </div>
+        `).join('');
+
+        // 2. RENDER HIGHLIGHTS
+        if (filteredHighlights.length > 0) {
+            htmlContent += filteredHighlights.map(h => `
+                 <div class="col-md-4 mb-4 ftco-animate fadeInUp ftco-animated">
+                    <div class="project-card shadow-sm rounded bg-white h-100 p-0" onclick="window.location.href='highlight-details.html?id=${h._id}'" style="cursor: pointer; border-bottom: 4px solid #b1b493;">
+                        <div style="height: 220px; overflow: hidden; position: relative;">
+                            <div class="img-bg" style="height: 100%; width: 100%; background: url('${getSafeImage(h.image)}') center/cover;"></div>
+                            <div style="position: absolute; top: 10px; right: 10px; background: #b1b493; color: #fff; padding: 2px 8px; font-size: 10px; font-weight: 700; border-radius: 4px;">EVENT</div>
+                        </div>
+                        
+                        <div class="p-4 text-center">
+                             <span class="d-block text-uppercase font-weight-bold mb-2" style="font-size: 10px; letter-spacing: 2px; color: #666;">Highlight</span>
+                             <h5 class="font-weight-bold text-dark mb-0" style="font-size: 18px;">${h.title}</h5>
                         </div>
                     </div>
                 </div>
             `).join('');
-        } else {
-            container.innerHTML = `<div class="col-12 text-center p-5"><h3>No projects found in this category.</h3></div>`;
         }
+
+        if (htmlContent === "") {
+            container.innerHTML = `<div class="col-12 text-center py-5"><h4 class="text-muted font-weight-light">No items found.</h4></div>`;
+        } else {
+            container.innerHTML = htmlContent;
+        }
+
     } catch (err) {
-        console.error("Connection Error:", err);
+        console.error("Error:", err);
     }
 });

@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
-const { HIGHLIGHT_STATUS, ROLES, CATEGORIES } = require("../utils/enums");
+// Ensure this path matches your project structure
+const { HIGHLIGHT_STATUS, ROLES, CATEGORIES } = require("../utils/enums"); 
 
 const highlightSchema = new mongoose.Schema(
   {
     title: { type: String, required: true, trim: true },
-    // Renamed from summary to content to match your controller req.body.content
+    // Content matches your controller logic
     content: { type: String, required: true, maxlength: 2000 }, 
     category: {
       type: String,
@@ -24,16 +25,18 @@ const highlightSchema = new mongoose.Schema(
       default: ROLES.PRIMARY,
     },
     venue: { type: String, trim: true },
-    tags: [{ type: String, trim: true }],
+    
+    // Changed to simple [String] to prevent subdocument creation
+    tags: { type: [String], default: [] }, 
+    
     eventDate: { type: Date, default: Date.now },
     link: { type: String, trim: true },
     
-    // --- IMAGES SECTION (MATCHES FRONTEND) ---
-    // Renamed to 'image' to match admin.js payload
-    image: { type: String, trim: true }, 
+    // --- IMAGES SECTION ---
+    image: { type: String, trim: true }, // Main Poster
 
-    // Renamed to 'gallery' to match admin.js payload
-    gallery: [{ type: String, trim: true }],
+    // Changed to simple [String] for better array handling
+    gallery: { type: [String], default: [] }, 
 
     priority: { type: Number, default: 0 },
     visible: { type: Boolean, default: true },

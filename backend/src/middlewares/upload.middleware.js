@@ -1,27 +1,39 @@
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
-// Configure Storage
+// 1. Ensure 'uploads' directory exists
+// This creates a folder named "uploads" in your backend root if it doesn't exist
+const uploadDir = path.join(__dirname, "../../uploads");
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// 2. Configure Storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Make sure this folder exists in your backend root!
-    cb(null, "uploads/"); 
+    cb(null, uploadDir); 
   },
   filename: (req, file, cb) => {
-    // Rename file to avoid conflicts (timestamp + original name)
-    cb(null, Date.now() + path.extname(file.originalname));
+    // Unique filename: fieldname-timestamp.ext
+    cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
   },
 });
 
-// File Filter (Optional: Only accept images)
+// 3. File Filter (Images Only)
 const fileFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image/")) {
     cb(null, true);
   } else {
-    cb(new Error("Only images are allowed"), false);
+    cb(new Error("Only images are allowed!"), false);
   }
 };
 
-const upload = multer({ storage: storage, fileFilter: fileFilter });
+// 4. Initialize Multer
+const upload = multer({ 
+    storage: storage, 
+    fileFilter: fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 } // Limit: 5MB
+});
 
 module.exports = upload;
