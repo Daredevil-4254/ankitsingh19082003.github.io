@@ -1,4 +1,4 @@
-const API_BASE = "http://127.0.0.1:5050/api";
+const API_BASE = window.portfolioConfig.API_BASE;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const titleEl = document.getElementById("highlight-title");

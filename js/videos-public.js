@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
     const videoContainer = document.getElementById("video-container");
-    const API_URL = "http://127.0.0.1:5050/api/public/videos";
+    const API_URL = "${API_BASE}/public/videos";
 
     if (!videoContainer) return;
 

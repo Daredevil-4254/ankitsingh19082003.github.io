@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_URL = "http://127.0.0.1:5050/api/public/highlights";
+    const API_URL = "${API_BASE}/public/highlights";
     const container = document.getElementById("highlights-container");
     // This targets the specific "Highlights" text block in your index.html
     const staticHeader = document.querySelector("#highlights-section .heading-section");

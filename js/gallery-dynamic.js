@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_ENDPOINT = "http://127.0.0.1:5050/api/public/gallery"; 
+    const API_ENDPOINT = "${API_BASE}/public/gallery"; 
     const $carousel = $('#gallery-carousel');
     const $grid = $('#gallery-grid-container');
 

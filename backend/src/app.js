@@ -26,7 +26,9 @@ app.use(cors({
         'http://127.0.0.1:5500', 
         'https://ankitsingh19082003.github.io',
         'https://ankitsingh19082003.github.io/atul-dubey.github.io' ,
-        'https://ankitsingh19082003.github.io/portfolio'
+        'https://ankitsingh19082003.github.io/portfolio',
+        'https://daredevil-4254.github.io'
+
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],

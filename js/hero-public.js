@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const githubLink = document.getElementById("hero-github");
 
   // Your local API endpoint for the public hero data
-  const API_URL = "http://127.0.0.1:5050/api/public/hero";
+  const API_URL = "${API_BASE}/public/hero";
 
   try {
     const res = await fetch(API_URL);

@@ -1,6 +1,5 @@
 // 1. GLOBAL SYNC: Using Port 5050 and 127.0.0.1 for MacBook stability
-const API_BASE = "http://127.0.0.1:5050/api";
-
+const API_BASE = window.portfolioConfig.API_BASE;
 // Global State for Highlights
 let showingAllHighlights = false;
 

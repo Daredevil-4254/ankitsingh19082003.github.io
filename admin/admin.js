@@ -1,9 +1,9 @@
 // =========================================================
 //  MASTER CMS CONTROLLER
-//  Target: http://127.0.0.1:5050/api
+//  Target: window.portfolioConfig.API_BASE
 // =========================================================
 
-const API_BASE = "http://127.0.0.1:5050/api";
+const API_BASE = window.portfolioConfig.API_BASE;
 const TOKEN_KEY = "token"; // Unified token key
 
 // --- 1. GLOBAL HELPERS -----------------------------------
@@ -1101,7 +1101,7 @@ window.loadGallery = async function () {
                 </div>
             </div>
         </div>`).join("");
-        
+
   } catch (e) {
     console.error("Gallery Sync Error:", e);
     list.innerHTML = '<div class="text-center w-100 text-danger py-5">Failed to load images.</div>';
@@ -1305,7 +1305,7 @@ window.loadBlogs = async function () {
 // Handle Blog Image Preview
 const blogInput = document.getElementById("blogImageInput");
 if (blogInput) {
-  blogInput.onchange = function(e) {
+  blogInput.onchange = function (e) {
     const file = e.target.files[0];
     const reader = new FileReader();
     reader.onload = (event) => {
@@ -1325,7 +1325,7 @@ if (bForm) {
     e.preventDefault();
     const id = document.getElementById("blogId").value;
     const isEdit = !!id;
-    
+
     const payload = {
       title: document.getElementById("blogTitle").value,
       category: document.getElementById("blogCategory").value,
@@ -1404,7 +1404,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("input", () => {
       const len = input.value.length;
       counter.textContent = `${len} / ${max}`;
-      
+
       // Color coding logic
       if (len >= max * 0.95) counter.className = "badge bg-danger text-white";
       else if (len >= max * 0.75) counter.className = "badge bg-warning text-dark";
@@ -1420,22 +1420,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 3. Project Short Summary (300 chars)
   setupCounter("pSummary", "short-summary-count", 300);
-  
+
   // 4. Blog Summary (Optional - if you added a counter for it)
   setupCounter("blogDesc", "blog-char-count", 1000);
 });
 // --- LOGOUT FUNCTIONALITY ---
-window.handleLogout = function() {
-    if(confirm("Are you sure you want to logout from Atul's CMS?")) {
-        // 1. Clear the Auth Token
-        localStorage.removeItem("token");
-        
-        // 2. Show a quick confirmation toast if your system uses them
-        if (window.showToast) window.showToast("Logged out successfully", "info");
-        
-        // 3. Redirect to login page
-        setTimeout(() => {
-            window.location.href = "login.html"; // Ensure this matches your login filename
-        }, 500);
-    }
+window.handleLogout = function () {
+  if (confirm("Are you sure you want to logout from Atul's CMS?")) {
+    // 1. Clear the Auth Token
+    localStorage.removeItem("token");
+
+    // 2. Show a quick confirmation toast if your system uses them
+    if (window.showToast) window.showToast("Logged out successfully", "info");
+
+    // 3. Redirect to login page
+    setTimeout(() => {
+      window.location.href = "login.html"; // Ensure this matches your login filename
+    }, 500);
+  }
 };

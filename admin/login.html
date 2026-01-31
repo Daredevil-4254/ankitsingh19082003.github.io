@@ -72,10 +72,11 @@
         <p id="errorMsg" class="error"></p>
       </form>
     </div>
+     <script src="js/config.js"></script>
 
    <script>
     // MATCHED TO YOUR app.js MOUNT POINT: app.use("/api/admin/auth", ...)
-    const API_URL = "http://127.0.0.1:5050/api/admin/auth/login"; 
+    const API_URL = "${API_BASE}/admin/auth/login"; 
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();

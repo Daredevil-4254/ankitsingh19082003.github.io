@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const skillContainer = document.getElementById("skills-container");
-  const API_URL = "http://127.0.0.1:5050/api/public/skills";
+  const API_URL = "${API_BASE}/public/skills";
 
   if (!skillContainer) return;
 

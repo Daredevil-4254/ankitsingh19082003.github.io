@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const statsContainer = document.getElementById("public-stats-container");
-  const API_URL = "http://127.0.0.1:5050/api/public/stats";
+  const API_URL = "${API_BASE}/public/stats";
 
   if (!statsContainer) return;
 
