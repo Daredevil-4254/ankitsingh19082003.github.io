@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-// 🟢 FIXED PATH: 'middlewares' (plural) and 'upload.middleware'
+
 const upload = require("../../middlewares/upload.middleware");
 
 const { 

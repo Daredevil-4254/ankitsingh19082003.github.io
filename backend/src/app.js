@@ -22,11 +22,11 @@ app.use(express.urlencoded({ limit: "200mb", extended: true }));
 
 
 app.use(cors({
-    origin: [
+   origin: [
         'http://127.0.0.1:5500', 
-        'http://localhost:5500', 
-        'https://ankitsingh19082003.github.io', // Your test site
-        'https://atuldubey.github.io'           // Sir's live site
+        'https://ankitsingh19082003.github.io',
+        'https://ankitsingh19082003.github.io/atul-dubey.github.io' ,
+        'https://ankitsingh19082003.github.io/portfolio'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],

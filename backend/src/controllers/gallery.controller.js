@@ -29,7 +29,7 @@ exports.getGallery = async (req, res) => {
 // 2. Add New Image(s)
 exports.addImage = async (req, res) => {
   try {
-    // 🟢 Using 'image' (singular) to match Model, 'images' (plural) for batch logic
+    //  Using 'image' (singular) to match Model, 'images' (plural) for batch logic
     const { title, image, images } = req.body; 
     
     // Batch Upload Logic
