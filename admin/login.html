@@ -76,8 +76,7 @@
 
    <script>
     // MATCHED TO YOUR app.js MOUNT POINT: app.use("/api/admin/auth", ...)
-    const API_URL = "${API_BASE}/admin/auth/login"; 
-
+    const API_URL = `${config.API_BASE}/admin/auth/login`;
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const errorMsg = document.getElementById('errorMsg');
