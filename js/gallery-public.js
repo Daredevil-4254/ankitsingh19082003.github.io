@@ -1,7 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const carouselContainer = document.getElementById("gallery-carousel");
   const gridContainer = document.getElementById("gallery-grid-container");
-  const API_URL = "${API_BASE}/public/gallery";
+  const API_URL =`${API_BASE}/public/gallery`;
+  
 
   try {
     const res = await fetch(API_URL);

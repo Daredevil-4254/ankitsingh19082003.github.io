@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -72,43 +72,47 @@
         <p id="errorMsg" class="error"></p>
       </form>
     </div>
-     <script src="js/config.js"></script>
+    <script src="js/config.js"></script>
 
-   <script>
-    // MATCHED TO YOUR app.js MOUNT POINT: app.use("/api/admin/auth", ...)
-    const API_URL = `${config.API_BASE}/admin/auth/login`;
-    document.getElementById('loginForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const errorMsg = document.getElementById('errorMsg');
-        errorMsg.style.display = 'none';
+    <script>
+      const API_URL = `${CONFIG.API_BASE}/admin/auth/login`;
 
-        try {
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const errorMsg = document.getElementById("errorMsg");
+          errorMsg.style.display = "none";
+
+          try {
             const res = await fetch(API_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ 
-                    username: document.getElementById('username').value, 
-                    password: document.getElementById('password').value 
-                })
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username: document.getElementById("username").value,
+                password: document.getElementById("password").value,
+              }),
             });
 
             const data = await res.json();
 
             if (res.ok) {
-                // SUCCESS: Matches your admin.js token check
-                localStorage.setItem('token', data.token);
-                window.location.href = 'admin.html';
+              // SUCCESS: Matches your admin.js token check
+              localStorage.setItem("token", data.token);
+              window.location.href = "admin.html";
             } else {
-                // Your backend uses { error: "..." }
-                errorMsg.textContent = data.error || data.message || "Login failed";
-                errorMsg.style.display = 'block';
+              // Your backend uses { error: "..." }
+              errorMsg.textContent =
+                data.error || data.message || "Login failed";
+              errorMsg.style.display = "block";
             }
-        } catch (err) {
+          } catch (err) {
             console.error("Connection Error:", err);
-            errorMsg.textContent = "Server connection failed. Is Backend running on 5050?";
-            errorMsg.style.display = 'block';
-        }
-    });
-</script>
+            errorMsg.textContent =
+              "Server connection failed. Is Backend running on 5050?";
+            errorMsg.style.display = "block";
+          }
+        });
+    </script>
   </body>
 </html>
