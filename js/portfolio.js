@@ -1,5 +1,7 @@
 // 1. GLOBAL SYNC: Using Port 5050 and 127.0.0.1 for MacBook stability
-const API_BASE = window.portfolioConfig.API_BASE;
+const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE) 
+                 ? window.portfolioConfig.API_BASE 
+                 : (window.CONFIG ? window.CONFIG.API_BASE : '');
 // Global State for Highlights
 let showingAllHighlights = false;
 
@@ -112,7 +114,7 @@ async function loadPortfolio() {
               <div class="img-wrap" style="height: 220px; position: relative; overflow: hidden; cursor: pointer;" 
                    onclick="window.location.href='portfolio-detail.html?id=${proj._id}'">
                   <div class="project-img" 
-                       style="background-image: url('${proj.image || "images/default.webp"}'); 
+                      style="background-image: url('${proj.image || 'images/default.webp'}');"
                               background-size: cover; background-position: center; 
                               height: 100%; width: 100%; transition: transform 0.5s ease;">
                   </div>
