@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 // Ensure this path matches your project structure
-const { HIGHLIGHT_STATUS, ROLES, CATEGORIES } = require("../utils/enums"); 
+const { HIGHLIGHT_STATUS, ROLES, CATEGORIES } = require("../services/utils/enums"); 
 
 const highlightSchema = new mongoose.Schema(
   {
