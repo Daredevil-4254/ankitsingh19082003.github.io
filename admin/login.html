@@ -73,7 +73,13 @@
       </form>
     </div>
     <script src="../js/config.js"></script>
+
     <script>
+      // DIAGNOSTIC STEP: Check if CONFIG loaded
+      if (typeof CONFIG === "undefined") {
+        alert("CRITICAL ERROR: config.js is not loaded! Check the path.");
+      }
+
       const API_URL = `${CONFIG.API_BASE}/admin/login`;
 
       document
@@ -82,6 +88,9 @@
           e.preventDefault();
           const errorMsg = document.getElementById("errorMsg");
           errorMsg.style.display = "none";
+
+          // 1. ALERT THE USER (This tells us the bad URL instantly)
+          alert("Attempting to connect to:\n" + API_URL);
 
           try {
             const res = await fetch(API_URL, {
@@ -96,19 +105,16 @@
             const data = await res.json();
 
             if (res.ok) {
-              // SUCCESS: Matches your admin.js token check
               localStorage.setItem("token", data.token);
               window.location.href = "admin.html";
             } else {
-              // Your backend uses { error: "..." }
-              errorMsg.textContent =
-                data.error || data.message || "Login failed";
+              errorMsg.textContent = data.error || "Login failed";
               errorMsg.style.display = "block";
             }
           } catch (err) {
             console.error("Connection Error:", err);
-            errorMsg.textContent =
-              "Server connection failed. Is Backend running on 5050?";
+            // Show the actual error to the user
+            errorMsg.innerHTML = `<strong>Connection Failed!</strong><br>Browser tried to hit:<br>${API_URL}<br><br>Check Console for details.`;
             errorMsg.style.display = "block";
           }
         });
