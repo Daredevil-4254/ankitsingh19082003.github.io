@@ -44,7 +44,7 @@ app.use("/api/public/videos", publicVideoRoutes);
 app.use("/api/public/gallery", publicGalleryRoutes);
 
 // 4. ADMIN ROUTES (Token Required)
-app.use("/api/admin/auth", authRoutes);
+app.use("/api/admin", authRoutes);
 app.use("/api/admin/hero", require("./routes/admin/hero.routes"));
 app.use("/api/admin/stats", require("./routes/admin/stats.routes"));
 app.use("/api/admin/skills", require("./routes/admin/skills.routes"));
