@@ -1,26 +1,18 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
-// Import your existing App logic from the src folder
+// This points to your existing app.js inside src
 const app = require("../src/app");
 
-// 1. Define the connection logic
 const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return; // Reuse connection
-
+  if (mongoose.connection.readyState >= 1) return;
   try {
-    if (!process.env.MONGO_URI) {
-      console.error(" MONGO_URI is missing from Vercel Environment Variables");
-      return;
-    }
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ MongoDB Connected via Vercel Adapter");
+    console.log(" MongoDB Connected");
   } catch (err) {
-    console.error(" MongoDB Connection Error:", err.message);
+    console.error(" DB Error:", err.message);
   }
 };
 
-// 2. Connect immediately
 connectDB();
 
-// 3. Export the app (Vercel requires this)
 module.exports = app;
