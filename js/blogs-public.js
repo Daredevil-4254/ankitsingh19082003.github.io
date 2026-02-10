@@ -1,4 +1,8 @@
+// js/blogs-public.js
 document.addEventListener("DOMContentLoaded", async () => {
+    // FIX: Define API_BASE properly
+    const API_BASE = window.portfolioConfig ? window.portfolioConfig.API_BASE : "https://atul-dubey-github-io.vercel.app/api";
+
     const container = document.getElementById("blog-container");
     if (!container) return;
 
@@ -18,8 +22,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     </div>
                 </div>`).join("");
             
-            // Critical: Re-trigger animations after content loads
             if (window.refreshAnimations) window.refreshAnimations();
         }
-    } catch (e) { container.innerHTML = "<p>Blog currently offline.</p>"; }
+    } catch (e) { 
+        console.error("Blog Error:", e);
+        container.innerHTML = "<p>Blog currently offline.</p>"; 
+    }
 });

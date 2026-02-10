@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const skillContainer = document.getElementById("skills-container");
-  const API_URL = "${API_BASE}/public/skills";
+  const API_BASE = window.portfolioConfig.API_BASE;
+  const API_URL = `${API_BASE}/public/skills`;
 
   if (!skillContainer) return;
 

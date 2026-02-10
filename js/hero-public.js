@@ -6,9 +6,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const heroImg = document.getElementById("hero-img");           // Profile Photo
   const linkedinLink = document.getElementById("hero-linkedin");
   const githubLink = document.getElementById("hero-github");
-
+  const API_BASE = window.portfolioConfig.API_BASE;
+  
   // Your local API endpoint for the public hero data
-  const API_URL = "${API_BASE}/public/hero";
+  const API_URL = `${API_BASE}/public/hero`;
 
   try {
     const res = await fetch(API_URL);

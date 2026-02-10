@@ -1,9 +1,10 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const API_URL = "${API_BASE}/public/highlights";
+    const API_BASE = window.portfolioConfig.API_BASE;
+    const API_URL = `${API_BASE}/public/highlights`;
     const container = document.getElementById("highlights-container");
     // This targets the specific "Highlights" text block in your index.html
     const staticHeader = document.querySelector("#highlights-section .heading-section");
-
+   
     if (!container) return;
 
     try {
