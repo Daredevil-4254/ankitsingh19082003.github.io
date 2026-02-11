@@ -15,4 +15,14 @@ const connectDB = async () => {
 
 connectDB();
 
-module.exports = app;
+// CRITICAL: Only handle /api/* routes, return 404 for everything else
+// This forces Vercel to serve static files for non-API routes
+module.exports = (req, res) => {
+  // Only process routes that start with /api/
+  if (req.url.startsWith('/api/')) {
+    return app(req, res);
+  }
+
+  // For all other routes, return 404 to let Vercel handle static files
+  res.status(404).json({ error: 'Not Found - This is the API endpoint' });
+};
