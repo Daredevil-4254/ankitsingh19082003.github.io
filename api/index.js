@@ -14,13 +14,6 @@ const connectDB = async () => {
 
 connectDB();
 
-// Vercel serverless function handler
-module.exports = async (req, res) => {
-  // Ensure this only handles /api/* routes
-  if (!req.url.startsWith('/api/')) {
-    return res.status(404).send('Not Found');
-  }
+// Export Express app for Vercel serverless function
+module.exports = app;
 
-  // Pass to Express app
-  return app(req, res);
-};
