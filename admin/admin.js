@@ -3,9 +3,9 @@
 //  Target: window.portfolioConfig.API_BASE
 // =========================================================
 
-const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE) 
-                 ? window.portfolioConfig.API_BASE 
-                 : (window.CONFIG ? window.CONFIG.API_BASE : '');const TOKEN_KEY = "token"; // Unified token key
+const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE)
+  ? window.portfolioConfig.API_BASE
+  : (window.CONFIG ? window.CONFIG.API_BASE : ''); const TOKEN_KEY = "token"; // Unified token key
 
 // --- 1. GLOBAL HELPERS -----------------------------------
 
@@ -54,7 +54,7 @@ function setupImagePreview(inputId, hiddenId, previewId, containerId) {
 
 // --- 2. AUTHENTICATION -----------------------------------
 (function checkAuth() {
-  if (window.location.pathname.includes("login.html")) return;
+  if (window.location.pathname.includes("login")) return;
   if (!localStorage.getItem(TOKEN_KEY)) window.location.href = "./login.html";
 })();
 
@@ -1028,7 +1028,7 @@ if (videoForm) {
     const url = isEdit
       ? `${API_BASE}/admin/videos/${id}`
       : `${API_BASE}/admin/videos`;
-    const method = isEdit ? "PATCH" : "POST"; 
+    const method = isEdit ? "PATCH" : "POST";
 
     try {
       const res = await fetch(url, {
