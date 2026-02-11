@@ -55,7 +55,7 @@ app.use("/api/admin/videos", adminVideoRoutes);
 app.use("/api/admin/gallery", adminGalleryRoutes);
 
 // 5. HEALTH CHECK
-app.get("/health", (_, res) => res.json({ status: "ok" }));
+app.get("/api/health", (_, res) => res.json({ status: "ok" }));
 
 // 6. ROOT PROBE
 app.get("/", (req, res) => res.send("Backend Reachable"));
