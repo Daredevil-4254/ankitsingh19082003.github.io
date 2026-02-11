@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Portfolio Main Root",
   "scripts": {
-    "start": "node backend/src/server.js",
+    "local": "node backend/src/server.js",
     "vercel-build": "echo 'No build step for static site + api'"
   },
   "dependencies": {
