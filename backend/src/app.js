@@ -20,12 +20,12 @@ app.use(express.urlencoded({ limit: "200mb", extended: true }));
 
 // Simplified CORS: Browser origins only need the domain/protocol, not the specific folder path.
 app.use(cors({
-   origin: [
-        'http://127.0.0.1:5500', 
-        'http://localhost:5500', 
+    origin: [
+        'http://127.0.0.1:5500',
+        'http://localhost:5500',
         'https://ankitsingh19082003.github.io',
         'https://daredevil-4254.github.io',
-        'https://atul-dubey-github-io.vercel.app' 
+        'https://atul-dubey-github-io.vercel.app'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
@@ -51,10 +51,13 @@ app.use("/api/admin/stats", require("./routes/admin/stats.routes"));
 app.use("/api/admin/skills", require("./routes/admin/skills.routes"));
 app.use("/api/admin/highlights", require("./routes/admin/highlights.routes"));
 app.use("/api/admin/projects", adminProjectRoutes);
-app.use("/api/admin/videos", adminVideoRoutes); 
-app.use("/api/admin/gallery", adminGalleryRoutes); 
+app.use("/api/admin/videos", adminVideoRoutes);
+app.use("/api/admin/gallery", adminGalleryRoutes);
 
 // 5. HEALTH CHECK
 app.get("/health", (_, res) => res.json({ status: "ok" }));
+
+// 6. ROOT PROBE
+app.get("/", (req, res) => res.send("Backend Reachable"));
 
 module.exports = app;
