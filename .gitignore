@@ -1,25 +1,21 @@
-# macOS
-.DS_Store
-
-# Node / Backend
-backend/node_modules/
-backend/.env
-backend/.env.*
-backend/npm-debug.log*
-backend/yarn-error.log*
 
 # Build / cache
-backend/dist/
-backend/build/
-
-# Logs
-*.log
-
 # Editor junk
-.vscode/
-.idea/
-
 # Global safety
-node_modules/
+# Logs
+# Node / Backend
+# macOS
+*.log
+.DS_Store
 .env
+.idea/
 .vercel
+.vscode/
+backend/.env
+backend/.env.*
+backend/build/
+backend/dist/
+backend/node_modules/
+backend/npm-debug.log*
+backend/yarn-error.log*
+node_modules/
