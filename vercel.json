@@ -5,6 +5,10 @@
     {
       "src": "backend/api/index.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "*",
+      "use": "@vercel/static"
     }
   ],
   "rewrites": [
