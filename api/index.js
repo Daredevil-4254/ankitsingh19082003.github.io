@@ -1,6 +1,6 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
-const app = require("../backend/src/app");
+const app = require("./src/app");
 
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return;
