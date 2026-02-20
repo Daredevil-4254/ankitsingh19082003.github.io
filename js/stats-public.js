@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const statsContainer = document.getElementById("public-stats-container");
-  const API_URL = "${API_BASE}/public/stats";
+  const _apiBase = (window.portfolioConfig && window.portfolioConfig.API_BASE) ? window.portfolioConfig.API_BASE : '/api';
+  const API_URL = `${_apiBase}/public/stats`;
 
   if (!statsContainer) return;
 
