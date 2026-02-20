@@ -26,15 +26,15 @@ exports.updateStat = async (req, res) => {
   try {
     const { value, label, icon, order } = req.body;
     const updates = { value, label, order };
-    
-    // Only update icon if a new one is provided
-    if (icon && icon.length > 100) {
-        updates.icon = icon;
+
+    // Update icon if provided
+    if (icon) {
+      updates.icon = icon;
     }
 
     const updatedStat = await Stat.findByIdAndUpdate(
-      req.params.id, 
-      { $set: updates }, 
+      req.params.id,
+      { $set: updates },
       { new: true }
     );
     res.status(200).json(updatedStat);
