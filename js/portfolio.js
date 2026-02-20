@@ -1,7 +1,7 @@
 // 1. GLOBAL SYNC: Using Port 5050 and 127.0.0.1 for MacBook stability
-const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE) 
-                 ? window.portfolioConfig.API_BASE 
-                 : (window.CONFIG ? window.CONFIG.API_BASE : '');
+const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE)
+  ? window.portfolioConfig.API_BASE
+  : (window.CONFIG ? window.CONFIG.API_BASE : '');
 // Global State for Highlights
 let showingAllHighlights = false;
 
@@ -111,13 +111,12 @@ async function loadPortfolio() {
         <div class="col-md-4 col-lg-3 mb-4 ftco-animate fadeInUp ftco-animated">
           <div class="project-card shadow-sm rounded bg-white h-100" 
                style="overflow: hidden; transition: transform 0.3s ease; border: 1px solid #eee;">
-              <div class="img-wrap" style="height: 220px; position: relative; overflow: hidden; cursor: pointer;" 
+              <div class="img-wrap" style="height: 220px; position: relative; overflow: hidden; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); cursor: pointer;" 
                    onclick="window.location.href='portfolio-detail.html?id=${proj._id}'">
-                  <div class="project-img" 
-                      style="background-image: url('${proj.image || 'images/default.webp'}');"
-                              background-size: cover; background-position: center; 
-                              height: 100%; width: 100%; transition: transform 0.5s ease;">
-                  </div>
+                  ${proj.image
+            ? `<div class="project-img" style="background-image: url('${proj.image}'); background-size: cover; background-position: center; height: 100%; width: 100%; transition: transform 0.5s ease;"></div>`
+            : `<div style="height:100%;display:flex;align-items:center;justify-content:center;"><i class="fas fa-code" style="font-size:3rem;color:rgba(177,180,147,0.4);"></i></div>`
+          }
                   <div class="img-overlay" style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(177, 180, 147, 0.2); opacity: 0; transition: 0.3s;"></div>
               </div>
               <div class="p-3 text-center">
@@ -162,8 +161,8 @@ function renderHighlights(highlights, showAll = false) {
     return `
       <div class="col-lg-4 col-md-6 mb-4 ftco-animate fadeInUp ftco-animated">
         <div class="card highlight-card h-100 border-0 shadow-sm" style="transition: transform 0.3s ease;">
-          <div class="highlight-img-wrap" style="cursor: pointer; overflow: hidden; height: 200px;" onclick="window.location.href='highlight-details.html?id=${h._id}'">
-            <img src="${h.image || "images/default.webp"}" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;" alt="${h.title}">
+          <div class="highlight-img-wrap" style="cursor: pointer; overflow: hidden; height: 200px; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);" onclick="window.location.href='highlight-details.html?id=${h._id}'">
+            ${h.image ? `<img src="${h.image}" class="card-img-top" style="height: 100%; width: 100%; object-fit: cover;" alt="${h.title}" onerror="this.parentElement.innerHTML='<div style=height:100%;display:flex;align-items:center;justify-content:center;><i class=fas fa-file-alt style=font-size:3rem;color:rgba(177,180,147,0.4);></i></div>'">` : `<div style="height:100%;display:flex;align-items:center;justify-content:center;"><i class="fas fa-file-alt" style="font-size:3rem;color:rgba(177,180,147,0.4);"></i></div>`}
           </div>
           <div class="card-body d-flex flex-column p-4">
             <div class="mb-2 small font-weight-bold" style="color: #b1b493; letter-spacing: 1px; font-size: 0.75rem;">${meta}</div>
