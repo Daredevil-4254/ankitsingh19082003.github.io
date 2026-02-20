@@ -2,18 +2,25 @@ require('dotenv').config();
 const mongoose = require("mongoose");
 const app = require("./src/app");
 
+let isConnected = false;
+
 const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
+  if (isConnected || mongoose.connection.readyState >= 1) {
+    isConnected = true;
+    return;
+  }
   try {
     await mongoose.connect(process.env.MONGO_URI);
+    isConnected = true;
     console.log("✅ MongoDB Connected");
   } catch (err) {
     console.error("❌ DB Error:", err.message);
+    throw err;
   }
 };
 
-connectDB();
-
-// Export Express app for Vercel serverless function
-module.exports = app;
-
+// Vercel serverless: wrap app to ensure DB connected before each request
+module.exports = async (req, res) => {
+  await connectDB();
+  return app(req, res);
+};
