@@ -25,7 +25,7 @@ exports.getProjects = async (req, res) => {
 
     // Only apply the filter if a specific category is requested
     if (category && category !== 'all') {
-      filter.category = category; 
+      filter.category = category;
     }
 
     // Execute the query with the dynamic filter
@@ -66,7 +66,7 @@ exports.createProject = async (req, res) => {
     res.status(201).json(newProject);
   } catch (err) {
     console.error("Create Project Error:", err);
-    res.status(400).json({ message: err.message }); 
+    res.status(400).json({ message: err.message });
   }
 };
 
@@ -74,22 +74,22 @@ exports.createProject = async (req, res) => {
 exports.updateProject = async (req, res) => {
   try {
     const { title, category, technologies, summary, description, link, image } = req.body;
-    
+
     const updates = {
       title,
       category,
       technologies: parseTech(technologies),
       summary,
       description,
-      "links.live": link 
+      "links.live": link
     };
 
     if (title) {
-        updates.slug = generateSlug(title);
+      updates.slug = generateSlug(title);
     }
 
-    if (image && image.length > 100) { 
-        updates.thumbnail = image;
+    if (image) {
+      updates.thumbnail = image;
     }
 
     const updatedProject = await Project.findByIdAndUpdate(

@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                <div class="project-card shadow-sm rounded bg-white h-100 p-0" onclick="window.location.href='portfolio-detail.html?id=${p._id}'" style="cursor: pointer; overflow: hidden; border: 1px solid #eee;">
                    
                    <div style="height: 220px; overflow: hidden; position: relative; background-color: #f8f9fa;">
-                       ${makeImgDiv(p.image, p.title)}
+                       ${makeImgDiv(p.thumbnail, p.title)}
                    </div>
                    
                    <div class="p-4 text-center">
