@@ -26,15 +26,15 @@ exports.updateSkill = async (req, res) => {
   try {
     const { title, description, icon, order } = req.body;
     const updates = { title, description, order };
-    
-    // Only update icon if a new one is provided
-    if (icon && icon.length > 100) {
-        updates.icon = icon;
+
+    // Update icon if provided (supports both file paths and base64)
+    if (icon) {
+      updates.icon = icon;
     }
 
     const updatedSkill = await Skill.findByIdAndUpdate(
-      req.params.id, 
-      { $set: updates }, 
+      req.params.id,
+      { $set: updates },
       { new: true }
     );
     res.status(200).json(updatedSkill);
