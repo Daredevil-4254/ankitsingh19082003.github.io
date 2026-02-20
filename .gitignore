@@ -3,6 +3,12 @@
 # Editor junk
 # Global safety
 # Logs
+# Duplicate backend folder (api/src is the real one used by Vercel)
+backend/
+
+# Temporary setup endpoint (one-shot, already used)
+api/setup.js
+
 # Node / Backend
 # macOS
 *.log
