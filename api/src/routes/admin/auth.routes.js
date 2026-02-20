@@ -22,7 +22,7 @@ router.post("/login", async (req, res, next) => {
     const token = signToken(admin);
     res.json({ token });
   } catch (err) {
-    next(err);
+    res.status(500).json({ error: err.message, stack: err.stack });
   }
 });
 
