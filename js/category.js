@@ -45,9 +45,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         let htmlContent = "";
 
-        // HELPER: Safe Image Function
-        const getSafeImage = (img) => {
-            return (img && img.trim() !== "") ? img : "images/bg_1.jpg"; // Default fallback
+        // HELPER: Build image div — styled gradient placeholder when no image
+        const makeImgDiv = (img, title) => {
+            if (img && img.trim()) {
+                return `<div class="img-bg" style="height:100%;width:100%;background:url('${img}') center/cover no-repeat;transition:transform 0.3s;"></div>`;
+            }
+            const initial = (title || '?')[0].toUpperCase();
+            return `<div style="height:100%;width:100%;background:linear-gradient(135deg,#2c3e50 0%,#3d5a3e 100%);display:flex;align-items:center;justify-content:center;"><span style="font-size:72px;font-weight:900;color:rgba(255,255,255,0.13);font-family:Poppins,sans-serif;">${initial}</span></div>`;
         };
 
         // 1. RENDER PROJECTS
@@ -56,7 +60,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                <div class="project-card shadow-sm rounded bg-white h-100 p-0" onclick="window.location.href='portfolio-detail.html?id=${p._id}'" style="cursor: pointer; overflow: hidden; border: 1px solid #eee;">
                    
                    <div style="height: 220px; overflow: hidden; position: relative; background-color: #f8f9fa;">
-                       <div class="img-bg" style="height: 100%; width: 100%; background: url('${getSafeImage(p.image)}') center/cover no-repeat; transition: transform 0.3s;"></div>
+                       ${makeImgDiv(p.image, p.title)}
                    </div>
                    
                    <div class="p-4 text-center">
@@ -77,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                  <div class="col-md-4 mb-4 ftco-animate fadeInUp ftco-animated">
                     <div class="project-card shadow-sm rounded bg-white h-100 p-0" onclick="window.location.href='highlight-details.html?id=${h._id}'" style="cursor: pointer; border-bottom: 4px solid #b1b493;">
                         <div style="height: 220px; overflow: hidden; position: relative;">
-                            <div class="img-bg" style="height: 100%; width: 100%; background: url('${getSafeImage(h.image)}') center/cover;"></div>
+                            ${makeImgDiv(h.image, h.title)}
                             <div style="position: absolute; top: 10px; right: 10px; background: #b1b493; color: #fff; padding: 2px 8px; font-size: 10px; font-weight: 700; border-radius: 4px;">EVENT</div>
                         </div>
                         

@@ -22,10 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 <div class="col-md-6 col-lg-4 ftco-animate">
     <div class="stat-item d-flex align-items-center mb-5">
         <div class="stat-icon-wrap shadow-sm me-4">
-            ${s.icon
-            ? `<img src="${s.icon}" class="stat-custom-icon">`
-            : '<i class="fa fa-bar-chart"></i>'
-          }
+            <i class="fas ${s.icon || 'fa-bar-chart'}" style="font-size:30px;color:#b1b493;"></i>
         </div>
         <div class="stat-text-wrap">
             <strong class="number" 

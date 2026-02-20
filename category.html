@@ -76,13 +76,27 @@
 </head>
 <body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
     
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark ftco-navbar-light site-navbar-target scrolled awake">
+    <nav class="navbar navbar-expand-lg navbar-dark ftco-navbar-light site-navbar-target scrolled awake" id="ftco-navbar">
         <div class="container">
-          <a class="navbar-brand" href="index.html">Atul<span>.</span></a>
+          <a class="navbar-brand powerhouse-logo" href="index.html">Atul<span>.</span></a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+          </button>
           <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav nav ml-auto">
               <li class="nav-item"><a href="index.html#home-section" class="nav-link"><span>Home</span></a></li>
-              <li class="nav-item"><a href="index.html#projects-section" class="nav-link"><span>Back to Portfolio</span></a></li>
+              <li class="nav-item"><a href="index.html#services-section" class="nav-link"><span>I Am Good At</span></a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="portfolioDropdown" role="button" data-toggle="dropdown">
+                  <span>Portfolio</span>
+                </a>
+                <div class="dropdown-menu" aria-labelledby="portfolioDropdown">
+                  <a class="dropdown-item" href="index.html#highlights-section">Recent Highlights</a>
+                  <a class="dropdown-item" href="index.html#projects-section">All Projects</a>
+                </div>
+              </li>
+              <li class="nav-item"><a href="index.html#blog-section" class="nav-link"><span>Blog</span></a></li>
+              <li class="nav-item"><a href="index.html#contact-section" class="nav-link"><span>Contact</span></a></li>
             </ul>
           </div>
         </div>
