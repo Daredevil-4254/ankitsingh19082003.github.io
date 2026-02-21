@@ -458,10 +458,9 @@ window.loadStats = async function () {
         (s) => `
             <div class="card p-3 mb-2 shadow-sm border-0 d-flex flex-row align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-3">
-                     ${s.icon
-            ? `<img src="${s.icon}" style="width:35px; height:35px; border-radius:50%; object-fit:cover;">`
-            : '<div class="bg-light rounded-circle" style="width:35px; height:35px; display:flex; align-items:center; justify-content:center;"><i class="fas fa-chart-line text-muted"></i></div>'
-          }
+                     <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center" style="width:35px; height:35px; flex-shrink:0;">
+                       <i class="fa ${s.icon || 'fa-bar-chart'}" style="color:#fff; font-size:14px;"></i>
+                     </div>
                      <div>
                          <h5 class="mb-0 text-primary fw-bold">${s.value}</h5>
                          <small class="text-uppercase text-muted fw-bold" style="font-size: 0.7rem;">${s.label}</small>
@@ -739,7 +738,7 @@ window.loadSkills = async function () {
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
                         ${s.icon
-            ? `<img src="${s.icon}" style="width:40px; height:40px; object-fit:contain;">`
+            ? `<img src="${s.icon.startsWith('http') || s.icon.startsWith('data:') ? s.icon : '../' + s.icon}" style="width:40px; height:40px; object-fit:contain;">`
             : '<div class="bg-light rounded p-2"><i class="fas fa-code"></i></div>'
           }
                         <div>
@@ -784,7 +783,8 @@ window.editSkill = async function (id) {
     document.getElementById("originalSkIconBase64").value = item.icon || "";
 
     if (item.icon) {
-      document.getElementById("skPreviewImg").src = item.icon;
+      const iconSrc = item.icon.startsWith('http') || item.icon.startsWith('data:') ? item.icon : '../' + item.icon;
+      document.getElementById("skPreviewImg").src = iconSrc;
       document.getElementById("skImgPreview").classList.remove("hidden");
     } else {
       document.getElementById("skImgPreview").classList.add("hidden");
