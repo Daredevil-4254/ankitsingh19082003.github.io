@@ -59,14 +59,14 @@
   <body>
     <div class="login-card">
       <h2 style="text-align: center; margin-top: 0">CMS Login</h2>
-      <form id="loginForm">
+      <form id="loginForm" autocomplete="off">
         <div class="form-group">
           <label>Username</label>
-          <input type="text" id="username" required />
+          <input type="text" id="username" autocomplete="username" required />
         </div>
         <div class="form-group">
           <label>Password</label>
-          <input type="password" id="password" required />
+          <input type="password" id="password" autocomplete="current-password" required />
         </div>
         <button type="submit">Login</button>
         <p id="errorMsg" class="error"></p>
@@ -75,12 +75,7 @@
     <script src="../js/config.js"></script>
 
     <script>
-      // DIAGNOSTIC STEP: Check if CONFIG loaded
-      if (typeof CONFIG === "undefined") {
-        alert("CRITICAL ERROR: config.js is not loaded! Check the path.");
-      }
-
-      const API_URL = `${CONFIG.API_BASE}/admin/login`;
+      const API_URL = `${window.portfolioConfig ? window.portfolioConfig.API_BASE : (window.CONFIG ? window.CONFIG.API_BASE : '')}/admin/login`;
 
       document
         .getElementById("loginForm")
@@ -89,8 +84,9 @@
           const errorMsg = document.getElementById("errorMsg");
           errorMsg.style.display = "none";
 
-          // 1. ALERT THE USER (This tells us the bad URL instantly)
-          alert("Attempting to connect to:\n" + API_URL);
+          const btn = e.target.querySelector("button[type='submit']");
+          btn.textContent = "Logging in...";
+          btn.disabled = true;
 
           try {
             const res = await fetch(API_URL, {
@@ -108,14 +104,17 @@
               localStorage.setItem("token", data.token);
               window.location.href = "admin.html";
             } else {
-              errorMsg.textContent = data.error || "Login failed";
+              errorMsg.textContent = data.error || "Invalid credentials";
               errorMsg.style.display = "block";
+              btn.textContent = "Login";
+              btn.disabled = false;
             }
           } catch (err) {
             console.error("Connection Error:", err);
-            // Show the actual error to the user
-            errorMsg.innerHTML = `<strong>Connection Failed!</strong><br>Browser tried to hit:<br>${API_URL}<br><br>Check Console for details.`;
+            errorMsg.textContent = "Connection failed. Please try again.";
             errorMsg.style.display = "block";
+            btn.textContent = "Login";
+            btn.disabled = false;
           }
         });
     </script>
