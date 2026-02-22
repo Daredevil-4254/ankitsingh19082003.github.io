@@ -58,14 +58,46 @@ function setupImagePreview(inputId, hiddenId, previewId, containerId) {
 }
 
 // --- 2. AUTHENTICATION -----------------------------------
-(function checkAuth() {
+async function checkAuth() {
   if (window.location.pathname.includes("login")) return;
-  if (!localStorage.getItem(TOKEN_KEY)) window.location.href = "./login.html";
-})();
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) {
+    window.location.href = "./login.html";
+    return;
+  }
+
+  // Verify token validity with backend
+  try {
+    const res = await fetch(`${API_BASE}/admin/verify`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (!res.ok) {
+      throw new Error("Invalid token");
+    }
+  } catch (err) {
+    console.error("Auth check failed:", err);
+    localStorage.removeItem(TOKEN_KEY);
+    window.location.href = "./login.html";
+  }
+}
+checkAuth();
 
 window.logout = function () {
   localStorage.removeItem(TOKEN_KEY);
   window.location.href = "login.html";
+};
+
+// Global Fetch Interceptor for 401 Unauthorized
+const originalFetch = window.fetch;
+window.fetch = async function (...args) {
+  const response = await originalFetch(...args);
+  if (response.status === 401 && !window.location.pathname.includes("login")) {
+    localStorage.removeItem(TOKEN_KEY);
+    if (window.showToast) window.showToast("Session expired. Please log in again.", "danger");
+    setTimeout(() => { window.location.href = "login.html"; }, 1000);
+  }
+  return response;
 };
 // --- 3. HIGHLIGHTS SECTION -------------------------------
 let galleryFilesArray = [];
@@ -1452,3 +1484,47 @@ window.handleLogout = function () {
     window.location.href = "login.html"; // Ensure this matches your login filename
   }, 500);
 };
+
+// --- SECURITY (CREDENTIAL UPDATE) SECTION ---
+document.addEventListener("DOMContentLoaded", () => {
+  const secForm = document.getElementById("securityForm");
+  if (secForm) {
+    secForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const newUsername = document.getElementById("secUsername").value.trim();
+      const newPassword = document.getElementById("secPassword").value.trim();
+
+      if (!newUsername && !newPassword) {
+        window.showToast("Please provide a new username or password", "warning");
+        return;
+      }
+
+      const btn = document.getElementById("secSubmitBtn");
+      const oldText = btn.innerHTML;
+      btn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span>Updating...`;
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_BASE}/admin/update`, {
+          method: "PUT",
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ newUsername, newPassword })
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          window.showToast("Credentials updated successfully. Please login again.", "success");
+          secForm.reset();
+          setTimeout(() => { window.handleLogout(); }, 1500);
+        } else {
+          window.showToast(data.error || "Failed to update credentials", "danger");
+        }
+      } catch (err) {
+        window.showToast("Server error updating credentials", "danger");
+      } finally {
+        btn.innerHTML = oldText;
+        btn.disabled = false;
+      }
+    };
+  }
+});
