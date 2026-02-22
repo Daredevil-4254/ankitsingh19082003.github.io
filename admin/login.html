@@ -57,6 +57,14 @@
     </style>
   </head>
   <body>
+    <!-- Security: redirect already-authenticated users away from login page -->
+    <script>
+      (function () {
+        if (localStorage.getItem("token")) {
+          window.location.replace("admin.html");
+        }
+      })();
+    </script>
     <div class="login-card">
       <h2 style="text-align: center; margin-top: 0">CMS Login</h2>
       <form id="loginForm" autocomplete="off">

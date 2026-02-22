@@ -37,6 +37,11 @@ function setupImagePreview(inputId, hiddenId, previewId, containerId) {
   input.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 3 * 1024 * 1024) {
+        window.showToast("File size limit is 3MB", "danger");
+        e.target.value = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (evt) => {
         document.getElementById(hiddenId).value = evt.target.result;
@@ -220,6 +225,10 @@ if (hlForm) {
     .getElementById("gallery-upload-input")
     .addEventListener("change", (e) => {
       Array.from(e.target.files).forEach((file) => {
+        if (file.size > 3 * 1024 * 1024) {
+          window.showToast("Each gallery image must be under 3MB", "danger");
+          return;
+        }
         const reader = new FileReader();
         reader.onload = (evt) => {
           galleryFilesArray.push(evt.target.result);
@@ -293,7 +302,7 @@ window.loadProjects = async function () {
         (p) => `
             <div class="card p-3 mb-3 shadow-sm border-0">
                 <div class="d-flex align-items-center gap-3">
-                    <img src="${p.image || p.thumbnail || ""}" style="width:60px; height:60px; object-fit:cover; border-radius:5px; background:#eee;">
+                    <img src="${p.image || p.thumbnail || "https://placehold.co/100x100?text=No+Image"}" onerror="this.src='https://placehold.co/100x100?text=No+Image'" style="width:60px; height:60px; object-fit:cover; border-radius:5px; background:#eee;">
                     <div class="flex-grow-1">
                         <h5 class="m-0 fw-bold">${p.title}</h5>
                         <small class="text-muted">${p.category}</small>
@@ -558,6 +567,11 @@ if (statForm) {
   document.getElementById("statIconInput").addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 3 * 1024 * 1024) {
+        window.showToast("Icon size limit is 3MB", "danger");
+        e.target.value = "";
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (evt) => {
         document.getElementById("statIconValue").value = evt.target.result;
@@ -737,8 +751,8 @@ window.loadSkills = async function () {
             <div class="card p-3 shadow-sm border-0 h-100">
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
-                        ${s.icon
-            ? `<img src="${s.icon.startsWith('http') || s.icon.startsWith('data:') ? s.icon : '../' + s.icon}" style="width:40px; height:40px; object-fit:contain;">`
+                        ${s.icon && s.icon.trim() !== ''
+            ? `<img src="${s.icon.startsWith('http') || s.icon.startsWith('data:') ? s.icon : '../' + s.icon}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width:40px; height:40px; object-fit:contain;"><div class="bg-light rounded p-2" style="display:none;"><i class="fas fa-code"></i></div>`
             : '<div class="bg-light rounded p-2"><i class="fas fa-code"></i></div>'
           }
                         <div>
@@ -1088,7 +1102,7 @@ window.loadGallery = async function () {
     list.innerHTML = items.map((g) => `
         <div class="gallery-card shadow-sm">
             <div style="height: 180px; overflow: hidden; background: #f8f9fa;">
-                <img src="${g.image}" alt="${g.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="${g.image || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" alt="${g.title}" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="card-body p-3 d-flex flex-column" style="flex: 1;">
                 <h6 class="text-truncate mb-3 fw-bold" title="${g.title || ''}">${g.title || "Untitled"}</h6>
@@ -1283,7 +1297,7 @@ window.loadBlogs = async function () {
     list.innerHTML = `<div class="row g-3">` + items.map(b => `
       <div class="col-md-6 col-lg-4 mb-3">
         <div class="card h-100 border-0 shadow-sm">
-          <img src="${b.image}" class="card-img-top" style="height: 150px; object-fit: cover;">
+          <img src="${b.image || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" class="card-img-top" style="height: 150px; object-fit: cover;">
           <div class="card-body p-3">
             <h6 class="fw-bold text-truncate">${b.title}</h6>
             <p class="small text-muted mb-3">${b.category || 'Uncategorized'}</p>
