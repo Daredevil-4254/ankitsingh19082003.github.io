@@ -1441,16 +1441,14 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 // --- LOGOUT FUNCTIONALITY ---
 window.handleLogout = function () {
-  if (confirm("Are you sure you want to logout from Atul's CMS?")) {
-    // 1. Clear the Auth Token
-    localStorage.removeItem("token");
+  // 1. Clear the Auth Token
+  localStorage.removeItem("token");
 
-    // 2. Show a quick confirmation toast if your system uses them
-    if (window.showToast) window.showToast("Logged out successfully", "info");
+  // 2. Show a quick confirmation toast if your system uses them
+  if (window.showToast) window.showToast("Logged out successfully", "info");
 
-    // 3. Redirect to login page
-    setTimeout(() => {
-      window.location.href = "login.html"; // Ensure this matches your login filename
-    }, 500);
-  }
+  // 3. Redirect to login page
+  setTimeout(() => {
+    window.location.href = "login.html"; // Ensure this matches your login filename
+  }, 500);
 };
