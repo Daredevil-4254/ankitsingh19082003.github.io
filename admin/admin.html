@@ -18,7 +18,7 @@
     <!-- BLOCKING AUTH CHECK: Prevents UI from rendering if unauthenticated -->
     <script>
       (function() {
-        if (!window.location.pathname.includes("login") && !sessionStorage.getItem("token")) {
+        if (!window.location.pathname.includes("login") && !localStorage.getItem("token")) {
           window.location.replace("login.html");
         }
       })();

@@ -12,7 +12,7 @@ const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE)
 // Authorization Header
 const getAuthHeaders = () => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${sessionStorage.getItem(TOKEN_KEY)}`,
+  Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
 });
 
 // Clean relative image URLs (images/...) -> /images/...
@@ -67,7 +67,7 @@ function setupImagePreview(inputId, hiddenId, previewId, containerId) {
 // --- 2. AUTHENTICATION -----------------------------------
 async function checkAuth() {
   if (window.location.pathname.includes("login")) return;
-  const token = sessionStorage.getItem(TOKEN_KEY);
+  const token = localStorage.getItem(TOKEN_KEY);
   if (!token) {
     window.location.href = "./login.html";
     return;
@@ -86,14 +86,14 @@ async function checkAuth() {
     document.body.style.display = "block";
   } catch (err) {
     console.error("Auth check failed:", err);
-    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
     window.location.href = "./login.html";
   }
 }
 checkAuth();
 
 window.logout = function () {
-  sessionStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(TOKEN_KEY);
   window.location.href = "login.html";
 };
 
@@ -102,7 +102,7 @@ const originalFetch = window.fetch;
 window.fetch = async function (...args) {
   const response = await originalFetch(...args);
   if (response.status === 401 && !window.location.pathname.includes("login")) {
-    sessionStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(TOKEN_KEY);
     if (window.showToast) window.showToast("Session expired. Please log in again.", "danger");
     setTimeout(() => { window.location.href = "login.html"; }, 1000);
   }
@@ -1484,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- LOGOUT FUNCTIONALITY ---
 window.handleLogout = function () {
   // 1. Clear the Auth Token
-  sessionStorage.removeItem("token");
+  localStorage.removeItem("token");
 
   // 2. Show a quick confirmation toast if your system uses them
   if (window.showToast) window.showToast("Logged out successfully", "info");
