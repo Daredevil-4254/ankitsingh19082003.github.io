@@ -15,7 +15,18 @@
       rel="stylesheet"
     />
 
+    <!-- BLOCKING AUTH CHECK: Prevents UI from rendering if unauthenticated -->
+    <script>
+      (function() {
+        if (!window.location.pathname.includes("login") && !localStorage.getItem("token")) {
+          window.location.replace("login.html");
+        }
+      })();
+    </script>
+
     <style>
+      /* Hide body by default to prevent UI flashing. Admin.js will unhide. */
+      body { display: none; }
       /* --- CRITICAL LAYOUT STYLES --- */
       body {
         background-color: #f4f6f9;

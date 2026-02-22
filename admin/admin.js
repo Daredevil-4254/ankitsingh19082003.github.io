@@ -15,6 +15,13 @@ const getAuthHeaders = () => ({
   Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
 });
 
+// Clean relative image URLs (images/...) -> /images/...
+const resolveImageURL = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  return '/' + url;
+};
+
 // Generic Toast Notification
 window.showToast = function (msg, type = "success") {
   const container = document.getElementById("toast-container");
@@ -75,6 +82,8 @@ async function checkAuth() {
     if (!res.ok) {
       throw new Error("Invalid token");
     }
+    // Auth succeeded! Display the CMS
+    document.body.style.display = "block";
   } catch (err) {
     console.error("Auth check failed:", err);
     localStorage.removeItem(TOKEN_KEY);
@@ -334,7 +343,7 @@ window.loadProjects = async function () {
         (p) => `
             <div class="card p-3 mb-3 shadow-sm border-0">
                 <div class="d-flex align-items-center gap-3">
-                    <img src="${p.image || p.thumbnail || "https://placehold.co/100x100?text=No+Image"}" onerror="this.src='https://placehold.co/100x100?text=No+Image'" style="width:60px; height:60px; object-fit:cover; border-radius:5px; background:#eee;">
+                    <img src="${resolveImageURL(p.image || p.thumbnail) || "https://placehold.co/100x100?text=No+Image"}" onerror="this.src='https://placehold.co/100x100?text=No+Image'" style="width:60px; height:60px; object-fit:cover; border-radius:5px; background:#eee;">
                     <div class="flex-grow-1">
                         <h5 class="m-0 fw-bold">${p.title}</h5>
                         <small class="text-muted">${p.category}</small>
@@ -784,7 +793,7 @@ window.loadSkills = async function () {
                 <div class="d-flex justify-content-between align-items-center">
                     <div class="d-flex align-items-center gap-3">
                         ${s.icon && s.icon.trim() !== ''
-            ? `<img src="${s.icon.startsWith('http') || s.icon.startsWith('data:') ? s.icon : '../' + s.icon}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width:40px; height:40px; object-fit:contain;"><div class="bg-light rounded p-2" style="display:none;"><i class="fas fa-code"></i></div>`
+            ? `<img src="${resolveImageURL(s.icon)}" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="width:40px; height:40px; object-fit:contain;"><div class="bg-light rounded p-2" style="display:none;"><i class="fas fa-code"></i></div>`
             : '<div class="bg-light rounded p-2"><i class="fas fa-code"></i></div>'
           }
                         <div>
@@ -1134,7 +1143,7 @@ window.loadGallery = async function () {
     list.innerHTML = items.map((g) => `
         <div class="gallery-card shadow-sm">
             <div style="height: 180px; overflow: hidden; background: #f8f9fa;">
-                <img src="${g.image || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" alt="${g.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="${resolveImageURL(g.image) || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" alt="${g.title}" style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div class="card-body p-3 d-flex flex-column" style="flex: 1;">
                 <h6 class="text-truncate mb-3 fw-bold" title="${g.title || ''}">${g.title || "Untitled"}</h6>
@@ -1172,7 +1181,7 @@ window.prepareEditGallery = async function (id) {
     const previewContainer = document.getElementById("galImgPreview");
     previewContainer.innerHTML = `
       <div class="d-inline-block position-relative m-2">
-        <img src="${item.image}" style="height: 120px; width: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #b1b493;">
+        <img src="${resolveImageURL(item.image)}" style="height: 120px; width: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #b1b493;">
         <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle shadow-sm">Editing</span>
       </div>`;
     previewContainer.classList.remove("hidden");
@@ -1329,7 +1338,7 @@ window.loadBlogs = async function () {
     list.innerHTML = `<div class="row g-3">` + items.map(b => `
       <div class="col-md-6 col-lg-4 mb-3">
         <div class="card h-100 border-0 shadow-sm">
-          <img src="${b.image || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" class="card-img-top" style="height: 150px; object-fit: cover;">
+          <img src="${resolveImageURL(b.image) || 'https://placehold.co/400x300?text=No+Image'}" onerror="this.src='https://placehold.co/400x300?text=No+Image'" class="card-img-top" style="height: 150px; object-fit: cover;">
           <div class="card-body p-3">
             <h6 class="fw-bold text-truncate">${b.title}</h6>
             <p class="small text-muted mb-3">${b.category || 'Uncategorized'}</p>
