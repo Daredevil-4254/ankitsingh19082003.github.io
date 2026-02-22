@@ -60,7 +60,7 @@
     <!-- Security: redirect already-authenticated users away from login page -->
     <script>
       (function () {
-        if (localStorage.getItem("token")) {
+        if (sessionStorage.getItem("token")) {
           window.location.replace("admin.html");
         }
       })();
@@ -109,7 +109,7 @@
             const data = await res.json();
 
             if (res.ok) {
-              localStorage.setItem("token", data.token);
+              sessionStorage.setItem("token", data.token);
               window.location.href = "admin.html";
             } else {
               errorMsg.textContent = data.error || "Invalid credentials";

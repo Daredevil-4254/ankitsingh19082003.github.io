@@ -12,7 +12,7 @@ const API_BASE = (window.portfolioConfig && window.portfolioConfig.API_BASE)
 // Authorization Header
 const getAuthHeaders = () => ({
   "Content-Type": "application/json",
-  Authorization: `Bearer ${localStorage.getItem(TOKEN_KEY)}`,
+  Authorization: `Bearer ${sessionStorage.getItem(TOKEN_KEY)}`,
 });
 
 // Clean relative image URLs (images/...) -> /images/...
@@ -67,7 +67,7 @@ function setupImagePreview(inputId, hiddenId, previewId, containerId) {
 // --- 2. AUTHENTICATION -----------------------------------
 async function checkAuth() {
   if (window.location.pathname.includes("login")) return;
-  const token = localStorage.getItem(TOKEN_KEY);
+  const token = sessionStorage.getItem(TOKEN_KEY);
   if (!token) {
     window.location.href = "./login.html";
     return;
@@ -86,14 +86,14 @@ async function checkAuth() {
     document.body.style.display = "block";
   } catch (err) {
     console.error("Auth check failed:", err);
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     window.location.href = "./login.html";
   }
 }
 checkAuth();
 
 window.logout = function () {
-  localStorage.removeItem(TOKEN_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
   window.location.href = "login.html";
 };
 
@@ -102,7 +102,7 @@ const originalFetch = window.fetch;
 window.fetch = async function (...args) {
   const response = await originalFetch(...args);
   if (response.status === 401 && !window.location.pathname.includes("login")) {
-    localStorage.removeItem(TOKEN_KEY);
+    sessionStorage.removeItem(TOKEN_KEY);
     if (window.showToast) window.showToast("Session expired. Please log in again.", "danger");
     setTimeout(() => { window.location.href = "login.html"; }, 1000);
   }
@@ -124,7 +124,7 @@ window.renderGalleryPreviews = function () {
       "position: relative; display: inline-block; margin-right: 10px; margin-bottom: 10px;";
 
     wrapper.innerHTML = `
-      <img src="${imgSrc}" style="width:60px; height:60px; object-fit:cover; border-radius:4px; border: 1px solid #ddd;">
+      <img src="${resolveImageURL(imgSrc)}" style="width:60px; height:60px; object-fit:cover; border-radius:4px; border: 1px solid #ddd;">
       <button type="button" onclick="removeGalleryImage(${index})" 
         style="position: absolute; top: -5px; right: -5px; background: #ff4d4d; color: white; border: none; border-radius: 50%; width: 20px; height: 20px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
         &times;
@@ -224,7 +224,7 @@ window.editHighlight = async function (id) {
 
     if (item.image) {
       document.getElementById("poster-hidden-value").value = item.image;
-      document.getElementById("poster-preview-img").src = item.image;
+      document.getElementById("poster-preview-img").src = resolveImageURL(item.image);
       document
         .getElementById("poster-preview-container")
         .classList.remove("hidden");
@@ -1180,9 +1180,10 @@ window.prepareEditGallery = async function (id) {
 
     const previewContainer = document.getElementById("galImgPreview");
     previewContainer.innerHTML = `
-      <div class="d-inline-block position-relative m-2">
-        <img src="${resolveImageURL(item.image)}" style="height: 120px; width: 120px; object-fit: cover; border-radius: 8px; border: 2px solid #b1b493;">
-        <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle shadow-sm">Editing</span>
+      <div class="position-relative d-inline-block m-2">
+      <img src="${resolveImageURL(item.image)}" 
+           style="width: 100px; height: 100px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd;">
+      <span class="badge bg-warning text-dark position-absolute top-0 start-100 translate-middle shadow-sm">Editing</span>
       </div>`;
     previewContainer.classList.remove("hidden");
 
@@ -1483,7 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // --- LOGOUT FUNCTIONALITY ---
 window.handleLogout = function () {
   // 1. Clear the Auth Token
-  localStorage.removeItem("token");
+  sessionStorage.removeItem("token");
 
   // 2. Show a quick confirmation toast if your system uses them
   if (window.showToast) window.showToast("Logged out successfully", "info");
