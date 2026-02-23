@@ -158,6 +158,12 @@ function renderHighlights(highlights, showAll = false) {
     const dateStr = h.eventDate ? new Date(h.eventDate).toLocaleDateString("en-US", dateOptions).toUpperCase() : "";
     const meta = [h.category, h.status, dateStr].filter(Boolean).join(" | ").toUpperCase();
 
+    // Helper to safely strip HTML tags from scraped DB content 
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = h.content || h.description || "No summary available.";
+    const plainText = tempDiv.textContent || tempDiv.innerText || "";
+    const safeSnippet = plainText.length > 150 ? plainText.substring(0, 150) + "..." : plainText;
+
     return `
       <div class="col-lg-4 col-md-6 mb-4 ftco-animate fadeInUp ftco-animated">
         <div class="card highlight-card h-100 border-0 shadow-sm" style="transition: transform 0.3s ease;">
@@ -168,7 +174,7 @@ function renderHighlights(highlights, showAll = false) {
             <div class="mb-2 small font-weight-bold" style="color: #b1b493; letter-spacing: 1px; font-size: 0.75rem;">${meta}</div>
             <h5 class="card-title font-weight-bold mb-3 text-dark">${h.title}</h5>
             <p class="card-text text-muted flex-grow-1" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 4.5em;">
-              ${h.content || "No summary available."}
+              ${safeSnippet}
             </p>
             <div class="mt-4 pt-3 border-top d-flex justify-content-between align-items-center">
                 <a href="highlight-details.html?id=${h._id}" class="font-weight-bold small text-uppercase" style="color: #b1b493; letter-spacing: 2px; text-decoration: none; font-size: 0.75rem;">

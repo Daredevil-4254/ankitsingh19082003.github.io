@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const container = document.getElementById("highlights-container");
     // This targets the specific "Highlights" text block in your index.html
     const staticHeader = document.querySelector("#highlights-section .heading-section");
-   
+
     if (!container) return;
 
     try {
@@ -18,10 +18,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (tagFilter) {
             // 1. Hide the Static Header "Highlights / Recent activities"
-            if(staticHeader) staticHeader.style.display = 'none';
+            if (staticHeader) staticHeader.style.display = 'none';
 
             // 2. Filter Projects
-            projects = projects.filter(p => 
+            projects = projects.filter(p =>
                 p.tags && p.tags.some(t => t.toLowerCase() === tagFilter.toLowerCase())
             );
 
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 `;
                 container.parentNode.insertBefore(filterHeader, container);
             }
-            
+
             setTimeout(() => {
                 document.getElementById('highlights-section').scrollIntoView({ behavior: 'smooth' });
             }, 500);
@@ -52,6 +52,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                 const year = dateObj.getFullYear();
                 const imgUrl = (project.image && project.image.trim() !== "") ? project.image : 'images/bg_1.jpg';
                 const mainTag = (project.tags && project.tags.length > 0) ? project.tags[0] : 'Project';
+
+                // Helper to safely strip HTML tags from scraped DB content
+                const tempDiv = document.createElement("div");
+                tempDiv.innerHTML = project.content || project.description || "";
+                const plainText = tempDiv.textContent || tempDiv.innerText || "";
+                const safeSnippet = plainText.length > 100 ? plainText.substring(0, 100) + "..." : plainText;
 
                 return `
                 <div class="col-md-4 d-flex ftco-animate fadeInUp">
@@ -74,7 +80,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                                 </p>
                             </div>
                             <h3 class="heading mb-3">${project.title}</h3>
-                            <p>${(project.description || '').substring(0, 100)}...</p>
+                            <p>${safeSnippet}</p>
                             
                             <div class="d-flex flex-wrap mt-3">
                                 ${(project.tags || []).slice(0, 3).map(tag => `
@@ -90,17 +96,17 @@ document.addEventListener("DOMContentLoaded", async () => {
                 </div>
                 `;
             }).join("");
-            
+
             // Re-trigger animations manually since content is dynamic
-            if(window.jQuery && window.jQuery.fn.waypoint) {
-                 window.jQuery('.ftco-animate').waypoint(function(direction) {
-                    if(direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
+            if (window.jQuery && window.jQuery.fn.waypoint) {
+                window.jQuery('.ftco-animate').waypoint(function (direction) {
+                    if (direction === 'down' && !$(this.element).hasClass('ftco-animated')) {
                         $(this.element).addClass('item-animate');
-                        setTimeout(() => { $('body .ftco-animate.item-animate').each(function(k){ var el = $(this); setTimeout( function () { el.addClass('fadeInUp ftco-animated'); el.removeClass('item-animate'); }, k * 50, 'easeInOutExpo' ); }); }, 100);
+                        setTimeout(() => { $('body .ftco-animate.item-animate').each(function (k) { var el = $(this); setTimeout(function () { el.addClass('fadeInUp ftco-animated'); el.removeClass('item-animate'); }, k * 50, 'easeInOutExpo'); }); }, 100);
                     }
                 }, { offset: '95%' });
             }
-            
+
         } else {
             container.innerHTML = `<div class="col-12 text-center py-5"><h4 class="text-muted">No projects found.</h4><a href="index.html" class="btn btn-primary mt-3">View All</a></div>`;
         }
