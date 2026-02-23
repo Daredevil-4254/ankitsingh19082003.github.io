@@ -24,97 +24,142 @@
     />
 
     <style>
-      .hero-wrap {
-        width: 100%;
-        height: 55vh;
-        min-height: 450px;
-        position: relative;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-attachment: fixed;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background-color: #222;
-      }
-      .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1;
-      }
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        width: 100%;
-        max-width: 900px;
-        padding: 0 20px;
-      }
-      #highlight-title {
-        color: #ffffff;
-        font-family: "Poppins", sans-serif;
-        font-weight: 800;
-        font-size: 3rem;
-        line-height: 1.2;
-        margin-bottom: 10px;
-        text-shadow: 0px 4px 15px rgba(0, 0, 0, 0.8);
-      }
-      #highlight-category {
-        display: inline-block;
-        color: #58633c;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        font-size: 14px;
-        margin-bottom: 15px;
-        text-shadow: 0px 2px 5px rgba(0, 0, 0, 0.8);
-      }
-
-      /* Meta bar styling */
-      .meta-details {
-        background: rgba(177, 180, 147, 0.08);
-        border-radius: 8px;
-        border-left: 4px solid #58633c;
-      }
-      /* Ensure the Nav doesn't float over the text awkwardly */
-      .ftco-navbar-light.scrolled.awake {
-        background: #fff !important;
-        padding: 10px 0 !important;
-        box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.05) !important;
-      }
-
-      /* Push the Hero/Content down so it doesn't hide behind the Nav */
-      .hero-wrap {
-        margin-top: 0;
-        padding-top: 80px; /* Adjust this value based on your navbar height */
-      }
-
-      /* Fix the specific brand overlap seen in screenshots */
-      .navbar-brand {
-        z-index: 1001;
-        position: relative;
-        display: flex;
-        align-items: center;
-      }
-
-      /* Ensure the Detail section doesn't crash into the top on mobile */
-      #details-section {
-        padding-top: 4em !important;
-      }
-
-      @media (max-width: 768px) {
-        #highlight-title {
-          font-size: 2.2rem;
+        /* 1. IMMERSIVE HERO SECTION (Like Portfolio Details) */
+        .hero-wrap.project-hero {
+            height: 500px !important;
+            position: relative;
+            background-size: cover !important;
+            background-position: center center !important;
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0;
+            background-color: #333;
         }
-        .hero-wrap {
-          height: 45vh;
+
+        .hero-wrap.project-hero .overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.7) !important;
+            z-index: 1;
         }
-      }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        /* 2. TYPOGRAPHY */
+        .project-category-badge {
+            display: inline-block;
+            background: #58633c; 
+            color: #fff;
+            padding: 5px 15px;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            border-radius: 50px;
+            margin-bottom: 20px;
+        }
+
+        .project-title {
+            color: #fff !important;
+            font-weight: 800;
+            font-size: 3.5rem;
+            line-height: 1.1;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: transparent !important;
+        }
+
+        /* 3. CONTENT AREA */
+        .content-section {
+            padding: 80px 0;
+            background: #fcfcfc;
+        }
+
+        .meta-details {
+            background: rgba(177, 180, 147, 0.1);
+            border-radius: 8px;
+            border-left: 4px solid #58633c;
+            padding: 20px;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .meta-details div {
+            display: flex;
+            align-items: center;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .meta-details i {
+            color: #58633c;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .content-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #444;
+            white-space: pre-line;
+            background: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            border: 1px solid #eee;
+        }
+
+        /* Sidebar Styling */
+        .sidebar-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.02);
+            margin-bottom: 30px;
+        }
+
+        .sidebar-heading {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #58633c;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* Generic UI Tweaks */
+        #highlight-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            background: #b1b493 !important;
+            border: none;
+            color: #fff;
+            font-weight: 600;
+            letter-spacing: 1px;
+            padding: 15px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        #highlight-links a:hover {
+            background: #9a9d7b !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(177,180,147,0.4);
+        }
     </style>
   </head>
 
@@ -145,15 +190,15 @@
       </div>
   </nav>
 
-    <section class="hero-wrap" id="hero-bg">
-      <div class="hero-overlay"></div>
-      <div class="hero-content">
-        <span id="highlight-category">HIGHLIGHT</span>
-        <h1 id="highlight-title">Loading...</h1>
+    <section class="hero-wrap project-hero" id="hero-bg" style="background-image: url('images/bg_1.jpg');">
+      <div class="overlay"></div>
+      <div class="container hero-content">
+        <span class="project-category-badge" id="highlight-category">HIGHLIGHT</span>
+        <h1 class="project-title" id="highlight-title">Loading...</h1>
       </div>
     </section>
 
-    <section class="ftco-section bg-light" id="details-section">
+    <section class="content-section" id="details-section">
       <div class="container">
         <div id="loading-spinner" class="text-center py-5">
           <div class="spinner-border text-secondary" role="status"></div>
@@ -161,55 +206,45 @@
 
         <div id="main-content" class="row d-none">
           <div class="col-lg-8 pr-lg-5">
-            <div
-              class="meta-details p-3 mb-4 d-flex flex-wrap align-items-center"
-            >
-              <div class="mr-4 mb-2 mb-md-0">
-                <i class="fas fa-calendar-alt mr-2" style="color: #58633c"></i>
-                <span id="highlight-date" class="font-weight-bold text-dark"
-                  >--/--/----</span
-                >
+            <div class="meta-details">
+              <div>
+                <i class="fas fa-calendar-alt"></i>
+                <span id="highlight-date">--/--/----</span>
               </div>
               <div>
-                <i
-                  class="fas fa-map-marker-alt mr-2"
-                  style="color: #58633c"
-                ></i>
-                <span id="highlight-location" class="text-secondary italic"
-                  >Location loading...</span
-                >
+                <i class="fas fa-map-marker-alt"></i>
+                <span id="highlight-location">Location loading...</span>
               </div>
             </div>
 
-            <div class="mb-5 bg-white p-4 rounded shadow-sm border-0">
-              <h4 class="mb-4 font-weight-bold">Abstract / Summary</h4>
-              <div
-                id="highlight-desc"
-                style="color: #555; line-height: 1.8; font-size: 1.05rem"
-              ></div>
+            <div class="mb-5">
+              <h3 class="font-weight-bold mb-4">Abstract / Summary</h3>
+              <div id="highlight-desc" class="content-text"></div>
             </div>
 
             <div class="mb-5">
-              <h5 class="mb-3 font-weight-bold">Resources & Links</h5>
-              <div id="highlight-links" class="d-flex flex-wrap gap-2"></div>
-            </div>
-
-            <div class="mb-5">
-              <h5 class="mb-3 font-weight-bold">Project Gallery</h5>
+              <h3 class="font-weight-bold mb-4">Gallery</h3>
               <div id="project-gallery" class="gallery-grid-container"></div>
             </div>
           </div>
 
           <div class="col-lg-4">
+            
+            <div class="sidebar-box mb-4">
+              <h3 class="sidebar-heading">Resources & Links</h3>
+              <div id="highlight-links" class="d-flex flex-column gap-2 mt-3"></div>
+            </div>
+
             <div class="sidebar-box">
               <h3 class="sidebar-heading">Tech Stack</h3>
-              <div class="tagcloud" id="highlight-tags"></div>
+              <div class="tagcloud mt-3" id="highlight-tags"></div>
             </div>
 
             <div class="sidebar-box">
               <h3 class="sidebar-heading">Related Work</h3>
-              <div id="related-highlights"></div>
+              <div id="related-highlights" class="mt-3"></div>
             </div>
+
           </div>
         </div>
       </div>
