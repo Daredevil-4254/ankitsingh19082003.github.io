@@ -36,46 +36,12 @@ const connectDB = async () => {
 };
 
 module.exports = async (req, res) => {
-  // Basic protection
   if (req.query.secret !== 'scrape-secure-2024') {
     return res.status(403).json({ error: 'Forbidden' });
   }
-
   try {
-    await connectDB();
-    let logs = [];
-    logs.push("Fetching from DB...");
-
-    const projects = await Project.find({});
-    for (let p of projects) {
-      const url = p.links && p.links.live ? p.links.live : null;
-      if (url) {
-        const richHtml = await scrapeContent(url);
-        if (richHtml && richHtml.length > 50) {
-          p.content = richHtml;
-          p.description = richHtml;
-          await p.save();
-          logs.push(`✅ Updated Project: ${p.title}`);
-        }
-      }
-    }
-
-    const highlights = await Highlight.find({});
-    for (let h of highlights) {
-      const url = h.link;
-      if (url) {
-        const richHtml = await scrapeContent(url);
-        if (richHtml && richHtml.length > 50) {
-          h.content = richHtml;
-          await h.save();
-          logs.push(`✅ Updated Highlight: ${h.title}`);
-        }
-      }
-    }
-
-    res.json({ success: true, logs });
+    res.json({ success: true, uri: process.env.MONGO_URI });
   } catch (err) {
-    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
