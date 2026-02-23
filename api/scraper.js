@@ -4,6 +4,8 @@ const cheerio = require('cheerio');
 const Project = require('./src/models/Project');
 const Highlight = require('./src/models/Highlight');
 
+const MONGO_URI = process.env.MONGO_URI;
+
 async function scrapeContent(url) {
   try {
     if (!url || !url.startsWith('https://atuldubey.in/')) return null;
@@ -30,18 +32,47 @@ async function scrapeContent(url) {
   }
 }
 
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return;
-  await mongoose.connect(process.env.MONGO_URI);
-};
-
-module.exports = async (req, res) => {
-  if (req.query.secret !== 'scrape-secure-2024') {
-    return res.status(403).json({ error: 'Forbidden' });
-  }
+async function run() {
   try {
-    res.json({ success: true, uri: process.env.MONGO_URI });
+    console.log("Connecting to MongoDB...");
+    await mongoose.connect(MONGO_URI);
+    console.log("Connected.");
+
+    const projects = await Project.find({});
+    console.log(`Found ${projects.length} projects.`);
+    for (let p of projects) {
+      const url = p.links && p.links.live ? p.links.live : null;
+      if (url) {
+        const richHtml = await scrapeContent(url);
+        if (richHtml && richHtml.length > 50) {
+          p.content = richHtml;
+          p.description = richHtml;
+          await p.save();
+          console.log(`✅ Updated Project: ${p.title}`);
+        }
+      }
+    }
+
+    const highlights = await Highlight.find({});
+    console.log(`Found ${highlights.length} highlights.`);
+    for (let h of highlights) {
+      const url = h.link;
+      if (url) {
+        const richHtml = await scrapeContent(url);
+        if (richHtml && richHtml.length > 50) {
+          h.content = richHtml;
+          await h.save();
+          console.log(`✅ Updated Highlight: ${h.title}`);
+        }
+      }
+    }
+
+    console.log("Migration complete!");
+    process.exit(0);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Migration failed:", err);
+    process.exit(1);
   }
-};
+}
+
+run();

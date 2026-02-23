@@ -27,14 +27,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     const allHighlights = Array.isArray(json) ? json : (json.data || []);
     const item = allHighlights.find((h) => String(h._id) === String(id));
 
-    if (!item) { 
-        if (titleEl) titleEl.innerText = "Project Not Found"; 
-        return; 
+    if (!item) {
+      if (titleEl) titleEl.innerText = "Project Not Found";
+      return;
     }
 
     // 1. HEADER & HERO
     if (titleEl) titleEl.innerText = item.title;
-    if (categoryEl) categoryEl.innerText = item.category || "Highlight"; 
+    if (categoryEl) categoryEl.innerText = item.category || "Highlight";
     if (bgEl) {
       bgEl.style.backgroundImage = `url('${item.image && item.image.trim() ? item.image : 'images/bg_1.jpg'}')`;
     }
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     // 5. LINKS
-    if (linksEl && item.link) {
+    if (linksEl && item.link && !item.link.includes('atuldubey.in/portfolio')) {
       linksEl.innerHTML = `
             <a href="${item.link}" target="_blank" class="btn btn-primary py-2 px-4 shadow-sm" style="background: #b1b493; border:none; border-radius: 50px; font-weight: 600;">
                 <i class="fas fa-external-link-alt mr-2"></i> View Project / Source
@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (galleryEl) {
       let allImages = [];
       if (item.image && item.image.trim().length > 10) allImages.push(item.image);
-      
+
       if (item.gallery && Array.isArray(item.gallery)) {
         const validGallery = item.gallery.filter(img => img && typeof img === 'string' && img.length > 10);
         allImages = [...allImages, ...validGallery];
