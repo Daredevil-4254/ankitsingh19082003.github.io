@@ -62,7 +62,7 @@ async function run() {
         if (richHtml && richHtml.length > 50) {
           h.content = richHtml;
           await h.save();
-          console.log(`✅ Updated Highlight: ${h.title}`);
+          console.log(`Updated Highlight: ${h.title}`);
         }
       }
     }

@@ -25,7 +25,9 @@ app.use(cors({
         'http://localhost:5500',
         'https://ankitsingh19082003.github.io',
         'https://daredevil-4254.github.io',
-        'https://atul-dubey-github-io.vercel.app'
+        'https://atul-dubey-github-io.vercel.app',
+        'https://atuldubey.in',
+        'https://www.atuldubey.in'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
