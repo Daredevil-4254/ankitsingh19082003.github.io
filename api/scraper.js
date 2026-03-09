@@ -13,17 +13,33 @@ async function scrapeContent(url) {
     const response = await axios.get(url);
     const $ = cheerio.load(response.data);
 
-    let contentHtml = $('.col-lg-8').first().html();
-    if (!contentHtml) {
-      contentHtml = $('.col-md-8').first().html(); // fallback
+    let contentNode = $('.col-lg-8').first();
+    if (contentNode.length === 0) {
+      contentNode = $('.col-md-8').first(); // fallback
     }
 
-    if (contentHtml) {
-      // Fix image relative paths
-      contentHtml = contentHtml.replace(/(?:\.\.\/)+images\//g, 'images/');
-      // Remove the first Summary heading
-      contentHtml = contentHtml.replace(/<h2[^>]*>Summary<\/h2>/i, '');
-      return contentHtml.trim();
+    if (contentNode.length > 0) {
+      // Remove the Summary heading
+      contentNode.find('h2').filter(function () { return $(this).text().trim() === 'Summary'; }).remove();
+
+      // Replace <br> and <hr> with newlines
+      contentNode.find('br, hr').replaceWith('\n');
+
+      // Add a newline after block-level elements and lists to preserve structure
+      contentNode.find('p, div, li, h1, h2, h3, h4, h5, h6').each(function () {
+        $(this).append('\n');
+      });
+
+      // Extract raw text
+      let text = contentNode.text();
+
+      // Clean up whitespace:
+      // 1. Convert any horizontal tabs/spaces into a single space
+      text = text.replace(/[ \t]+/g, ' ');
+      // 2. Collapse multiple vertical newlines (with optional spaces) into exactly two newlines
+      text = text.replace(/\n\s*\n\s*/g, '\n\n');
+
+      return text.trim();
     }
     return null;
   } catch (err) {
