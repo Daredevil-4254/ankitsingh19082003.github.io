@@ -1,0 +1,350 @@
+/* ==========================================
+   1. VARIABLES & RESET
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --primary: #2563eb;
+    --sidebar-bg: #0f172a;
+    --bg-main: #f8fafc;
+    --white: #ffffff;
+    --border: #e2e8f0;
+    --text-muted: #94a3b8;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --success: #10b981;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: var(--bg-main);
+    display: flex; /* Sidebar + Main */
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ==========================================
+   2. SIDEBAR (Layout & Navigation)
+   ========================================== */
+.sidebar {
+    width: 260px;
+    background: var(--sidebar-bg);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    height: 100vh;
+    flex-shrink: 0;
+    z-index: 1000;
+    box-sizing: border-box;
+    transition: left 0.3s ease; /* For mobile slide-in */
+}
+
+.sidebar-header h3 {
+    margin: 0 0 2rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+/* Hide mobile-only elements on Desktop */
+.close-btn, .menu-btn, .sidebar-overlay {
+    display: none !important;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.nav-btn {
+    background: transparent;
+    color: var(--text-muted);
+    border: none;
+    padding: 12px 16px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: 0.2s ease;
+}
+
+.nav-btn:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white);
+}
+
+.nav-btn.active {
+    background: var(--primary);
+    color: var(--white);
+}
+
+.nav-btn i {
+    width: 20px;
+    text-align: center;
+}
+
+.logout-btn {
+    margin-top: auto; /* Push to bottom */
+    background: var(--danger);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ==========================================
+   3. MAIN CONTENT AREA
+   ========================================== */
+main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 2.5rem;
+    height: 100vh;
+    box-sizing: border-box;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+.page-section.hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   4. COMPONENTS: Cards & Forms
+   ========================================== */
+.card, .form-card {
+    background: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5rem;
+}
+
+label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #64748b;
+    margin-bottom: 8px;
+}
+
+input, select, textarea {
+    padding: 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+/* ==========================================
+   5. COMPONENT: Gallery Grid & Cards
+   ========================================== */
+#galleryList {
+    display: grid;
+    /* This creates the responsive grid automatically */
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+    gap: 20px;
+    padding: 10px 0;
+    width: 100%; /* Ensure it takes full width */
+}
+
+.gallery-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #eee !important;
+    display: flex;
+    flex-direction: column;
+    /* No width set here, the Grid handles it */
+}
+
+.gallery-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Ensure images don't stretch the card */
+.gallery-card img {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* ==========================================
+   6. COMPONENT: Toasts & Buttons
+   ========================================== */
+.custom-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 9999;
+    min-width: 300px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    color: #fff;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.toast-success { background-color: var(--success) !important; border-left: 6px solid #065f46; }
+.toast-danger  { background-color: var(--danger) !important; border-left: 6px solid #991b1b; }
+.toast-warning { background-color: var(--warning) !important; border-left: 6px solid #92400e; }
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.btn-warning {
+    background-color: #f39c12 !important;
+    border: none !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+.btn-warning:hover { background-color: #e67e22 !important; }
+
+/* ==========================================
+   7. UTILITIES & MODAL
+   ========================================== */
+.hidden { display: none !important; }
+
+/* Simple Modal Override (if needed) */
+.modal {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+.modal-content {
+    border: none;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+}
+
+/* Skeleton Loading Animation */
+.skeleton-loader {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: skeleton-pulse 1.5s infinite ease-in-out;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+@keyframes skeleton-pulse {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ==========================================
+   8. RESPONSIVE (Mobile Layout)
+   ========================================== */
+@media (max-width: 991px) {
+    /* Stack layout vertically */
+    body {
+        flex-direction: column;
+        height: auto;
+        overflow-y: auto;
+    }
+
+    /* Sidebar becomes a top header or hidden drawer */
+    .sidebar {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+        position: relative;
+    }
+    
+    /* Show mobile menu triggers if implemented */
+    .menu-btn { display: block !important; }
+
+    /* Main content takes full width */
+    main {
+        width: 100%;
+        padding: 1.5rem;
+        height: auto;
+    }
+
+    /* Gallery Adjustments */
+    #galleryList {
+    display: grid;
+    /* This creates the responsive grid automatically */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+    gap: 20px;
+    padding: 10px 0;
+    width: 100%; /* Ensure it spans the container width */
+}
+
+    .gallery-card .d-flex.gap-2 {
+        flex-direction: column; /* Stack Edit/Delete buttons on mobile */
+    }
+}
+
+@media (max-width: 576px) {
+    #galleryList {
+        grid-template-columns: 1fr; /* Single column for gallery on tiny screens */
+    }
+    .gallery-card img {
+        height: 200px;
+    }
+}
+/* Sidebar Container */
+.sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    background: #1e293b; /* Your sidebar color */
+    color: white;
+}
+
+/* Primary Nav: This fills all available empty space */
+nav.flex-grow-1 {
+    flex: 1 0 auto;
+    overflow-y: auto; /* Adds a scrollbar if you add even MORE buttons later */
+}
+
+/* Individual Buttons */
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    border: none;
+    background: transparent;
+    color: #cbd5e1;
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    transition: 0.3s;
+}
+
+.nav-btn:hover, .nav-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Fix Logout Overlap */
+.sidebar-footer {
+    margin-top: auto; /* Push to bottom */
+    background: rgba(0,0,0,0.1); /* Subtle distinction */
+}
+
+.logout-btn:hover {
+    background: #dc3545 !important;
+    color: white !important;
+}

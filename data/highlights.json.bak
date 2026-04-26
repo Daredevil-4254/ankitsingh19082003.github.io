@@ -1,0 +1,48 @@
+[
+  {
+    "id": "proteinbert-icmla-2024",
+    "title": "Enhancing Allergy Prediction Accuracy through Machine Learning and ProteinBERT",
+    "type": "Research Paper",
+    "status": "published",
+    "date": "2024-12-18",
+    "event": "ICMLA 2024, Miami, USA",
+    "image": "images/allergy.webp",
+    "link": "highlight.html?id=proteinbert-icmla-2024",
+    "summary": "Food allergies pose significant health risks globally, affecting a substantial portion of the population. This work leverages classical ML and ProteinBERT embeddings to significantly improve allergy prediction accuracy, achieving over 90% accuracy with models like KNN and Voting Classifier.",
+    "tags": ["Machine Learning", "NLP", "ProteinBERT"],
+    "gallery": [
+      "images/allergy.webp"
+    ]
+  },
+  {
+    "id": "wildfire-ieee-firesense-2024",
+    "title": "Wildfire Detection using Deep Learning",
+    "type": "Research Paper",
+    "status": "published",
+    "date": "2024-08-12",
+    "event": "IEEE FireSense 2024",
+    "image": "images/ieee_firesense/wildfire.jpg",
+    "link": "highlight.html?id=wildfire-ieee-firesense-2024",
+    "summary": "This work presents a deep learning based approach for early wildfire detection using computer vision techniques to improve response time and reduce damage.",
+    "tags": ["Deep Learning", "Computer Vision", "Wildfire"],
+    "gallery": [
+      "images/ieee_firesense/wildfire.jpg",
+      "images/ieee_firesense/image10.jpg"
+    ]
+  },
+  {
+    "id": "coral-bleaching-jsr-2024",
+    "title": "Coral Bleaching Detection using CNNs",
+    "type": "Research Paper",
+    "status": "published",
+    "date": "2024-03-05",
+    "event": "JSR 2024",
+    "image": "images/coral.jpg",
+    "link": "highlight.html?id=coral-bleaching-jsr-2024",
+    "summary": "A CNN-based approach to detect coral bleaching from underwater imagery, helping monitor reef health and climate impact.",
+    "tags": ["Deep Learning", "Computer Vision", "Climate"],
+    "gallery": [
+      "images/coral.jpg"
+    ]
+  }
+]

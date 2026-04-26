@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+  <title>Device to monitor Muscle potential (Electromyography)</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <link rel="stylesheet" href="../../css/animate.css">
+
+  <link rel="stylesheet" href="../../css/owl.carousel.min.css">
+  <link rel="stylesheet" href="../../css/owl.theme.default.min.css">
+  <link rel="stylesheet" href="../../css/magnific-popup.css">
+
+  <link rel="stylesheet" href="../../css/flaticon.css">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" type="text/css" href="../../prism.css">
+  <script src="../../prism.js"></script>
+
+</head>
+
+<body data-spy="scroll" data-target=".site-navbar-target" data-offset="300">
+
+  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light site-navbar-target"
+    id="ftco-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="../../index.html">Atul<span>.</span></a>
+      <button class="navbar-toggler js-fh5co-nav-toggle fh5co-nav-toggle" type="button" data-toggle="collapse"
+        data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="oi oi-menu"></span> Menu
+      </button>
+
+      <div class="collapse navbar-collapse" id="ftco-nav">
+        <ul class="navbar-nav nav ml-auto">
+          <li class="nav-item"><a href="../../index.html#home-section" class="nav-link"><span>Home</span></a></li>
+          <li class="nav-item"><a href="../../index.html#services-section" class="nav-link"><span>I am good at</span></a>
+          </li>
+          <li class="nav-item"><a href="../../index.html#projects-section" class="nav-link"><span>Portfolio</span></a></li>
+          <li class="nav-item"><a href="../../index.html#blog-section" class="nav-link"><span>Blog</span></a></li>
+          <li class="nav-item"><a href="../../index.html" class="nav-link"><span>Contact</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero-wrap hero-wrap-2" style="background-image: url('../../images/tech_projects/emg_device/emg15.jpg"
+    data-stellar-background-ratio="0.5">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row no-gutters slider-text align-items-end justify-content-center">
+        <div class="col-md-9 ftco-animate pb-5 text-center">
+          <h1 class="mb-0">Device to monitor Muscle potential (Electromyography)</h1>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ftco-section">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 ftco-animate">
+          <h2 class="mb-3">Summary</h2>
+          <p>The project involves developing an Internet of Things (IoT) device that measures electromyography (EMG) 
+            signals—electrical activities produced by skeletal muscles. This device captures real-time muscle activity data and 
+            transmits it wirelessly via Bluetooth Low Energy (BLE) to a mobile or web application. The use of BLE ensures efficient, 
+            low-power communication, making the device portable and suitable for continuous monitoring.</br></br>
+
+            The collected EMG data can be utilized for various applications, such as controlling prosthetic limbs, monitoring muscle health in rehabilitation, enhancing athletic performance through muscle analysis, or enabling gesture-based controls in interactive systems. By integrating EMG signal acquisition with IoT connectivity, the device offers a versatile platform for advanced muscle analysis and remote data accessibility.
+          </p>
+
+          <h2 class="mb-3">Circuit Design</h2>
+            <p>I have used ESP32S3 base development board to process the EMG signal. The EMG sensor is BioAmp EXG pill from Upside down labs.
+              The sensor itself is capable of monitoring EMG, ECG, and EEG signal with a tiny configuration. I have also included motion sensor
+              (MPU6050) in the device to calibrate the EMG data with actual motion signal. The circuit was designed using KiCAD EDA.
+            </p>
+            <div class="row">
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/schematic.png" alt="Snow" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/pcb.png" alt="Forest" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/pcb_3d.png" alt="Mountains" style="width:100%">
+              </div>
+            </div>
+          </br></br>
+            <p>
+              The final circuit was then printed on a board using toner transfer method. The below images show the sequence of steps from
+              printing to final etching of the circuit using Ferric Chloride.
+            </p>
+            <div class="row">
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg11.jpg" alt="Snow" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg10.jpg" alt="Forest" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg8.jpg" alt="Mountains" style="width:100%">
+              </div>
+            </div></br></br>
+            Finally, the component were soldered on the board and I tested for the faults using continuity tester.
+            <div class="row">
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg9.jpg" alt="Snow" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg4.jpg" alt="Forest" style="width:100%">
+              </div>
+            </div></br></br>
+            <h2 class="mb-3">Casing Design</h2>
+            <p>
+              The casing for the device was designed using Fusion360. The casing consists of 2 parts, bottom and lid. The final design was 
+              then printed using Bambu Lab A1 3D printer.
+            </p>
+            <div class="row">
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg12.png" alt="Snow" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg13.png" alt="Forest" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg14.jpg" alt="Mountains" style="width:100%">
+              </div>
+            </div></br></br>
+
+            <h2 class="mb-3">Final Assembly</h2>
+            The PCB board is placed inside the bottom and then lid is closed as per the defined slots. The EMG electrodes for the device 
+            are placed in a band that can be wore as the muscle potential measurement requirement.
+            <div class="row">
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg1.jpg" alt="Snow" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg2.jpg" alt="Forest" style="width:100%">
+              </div>
+              <div class="column" style="width:33.3%">
+                <img src="../../images/tech_projects/emg_device/emg3.jpg" alt="Mountains" style="width:100%">
+              </div>
+            </div></br></br>
+
+
+            <h2 class="mb-3">Firmware for reading data and transmitting signal</h2>
+            <p>
+              As per requirement, the firmware is designed to read the EMG signal and motion sensor data and broadcast it over a specified
+              address over BLE channel. To test the transmission I have created a python script that used Bleak python module and receives 
+              and visualizes the sensor data.
+
+          </p>
+
+        </div> <!-- .col-md-8 -->
+
+
+        <div class="col-lg-4 sidebar ftco-animate">
+
+          <div class="sidebar-box ftco-animate">
+            <h3 class="heading-sidebar">Tag Cloud</h3>
+            <div class="tagcloud">
+              <a href="" class="tag-cloud-link">Electromyography</a>
+              <a href="" class="tag-cloud-link">ESP32S3</a>
+              <a href="" class="tag-cloud-link">Arduino</a>
+              <a href="" class="tag-cloud-link">Bio signal</a>
+              <a href="" class="tag-cloud-link">Motion sensing</a>
+            </div>
+          </div>
+          <div class="sidebar-box ftco-animate">
+            <h3 class="heading-sidebar">Source code</h3>
+            <div class="tagcloud">
+              <a href="" class="tag-cloud-link" target="_blank">Github</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+            <!-- Bootstrap Image Gallery -->
+            <div class="row">
+              <div class="col-md-12">
+                <h2 class="mb-3 mt-5">Image Gallery</h2>
+                <div class="row">
+                  <!-- <div class="col-lg-3 col-md-4 col-6">
+                    <a href="../../images/textile_compass_2024/comparison.png" class="d-block mb-4 h-100" data-toggle="modal" data-target="#galleryModal" data-img-url="../../images/textile_compass_2024/comparison.png">
+                      <img class="img-fluid img-thumbnail" src="../../images/textile_compass_2024/comparison.png" alt="">
+                    </a>
+                  </div>
+                  <div class="col-lg-3 col-md-4 col-6">
+                    <a href="../../images/textile_compass_2024/1.png" class="d-block mb-4 h-100" data-toggle="modal" data-target="#galleryModal" data-img-url="../../images/textile_compass_2024/1.png">
+                      <img class="img-fluid img-thumbnail" src="../../images/textile_compass_2024/1.png" alt="">
+                    </a>
+                  </div> -->
+                </div>
+              </div>
+            </div>
+      
+            <!-- Gallery Modal -->
+            <div class="modal fade" id="galleryModal" tabindex="-1" role="dialog" aria-labelledby="galleryModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="galleryModalLabel">Image Gallery</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <img id="galleryModalImg" class="img-fluid" src="" alt="">
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+  </section> <!-- .section -->
+
+
+  	<!-- Footer -->
+	<footer class="ftco-footer ftco-section">
+		<div class="container">
+			<div class="row mb-5">
+				<div class="col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Lets talk about</h2>
+						<p>Building this world a better place</p>
+						<!-- <p><a href="#" class="btn btn-primary">Learn more</a></p> -->
+					</div>
+				</div>
+				<div class="col-md">
+					<!-- <div class="ftco-footer-widget mb-4 ml-md-4">
+						<h2 class="ftco-heading-2">Latest projects</h2>
+						<ul class="list-unstyled">
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Home</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>About</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Services</a></li>
+						</ul>
+					</div> -->
+				</div>
+				<div class="col-md">
+					<!-- <div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Latest Trainings</h2>
+						<ul class="list-unstyled">
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Web Design</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Web Development</a></li>
+							<li><a href="#"><span class="fa fa-chevron-right mr-2"></span>Business Strategy</a></li>
+						</ul>
+					</div> -->
+				</div>
+				<div class="col-md">
+					<div class="ftco-footer-widget mb-4">
+						<h2 class="ftco-heading-2">Have a Questions?</h2>
+						<div class="block-23 mb-3">
+							<ul>
+								<!-- <li><span class="icon fa fa-map marker"></span><span class="text">203 Fake St. Mountain
+										View, San Francisco, California, USA</span></li> -->
+								<li><a href="#"><span class="icon fa fa-phone"></span><span
+											class="text">(+91) 80726 85710</span></a></li>
+								<li><a href="#"><span class="icon fa fa-paper-plane pr-4"></span><span
+											class="text">hi@atuldubey.in</span></a></li>
+							</ul>
+						</div>
+						<ul class="ftco-footer-social list-unstyled mt-2">
+							<li class="ftco-animate"><a href="https://www.linkedin.com/in/atul-dubey" target="_blank"><span
+										class="fa fa-linkedin"></span></a></li>
+							<!-- <li class="ftco-animate"><a href="https://www.facebook.com/atuldubey01"
+									target="_blank"><span class="fa fa-facebook"></span></a></li> -->
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12 text-center">
+
+					<p>
+						&copy;
+						<script>document.write(new Date().getFullYear());</script> Atul Dubey
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+
+
+  <!-- loader -->
+  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+      <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
+      <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
+        stroke="#F96D00" />
+    </svg></div>
+
+
+  <script src="../../js/jquery.min.js"></script>
+  <script src="../../js/jquery-migrate-3.0.1.min.js"></script>
+  <script src="../../js/popper.min.js"></script>
+  <script src="../../js/bootstrap.min.js"></script>
+  <script src="../../js/jquery.easing.1.3.js"></script>
+  <script src="../../js/jquery.waypoints.min.js"></script>
+  <script src="../../js/jquery.stellar.min.js"></script>
+  <script src="../../js/owl.carousel.min.js"></script>
+  <script src="../../js/jquery.magnific-popup.min.js"></script>
+  <script src="../../js/jquery.animateNumber.min.js"></script>
+  <script src="../../js/scrollax.min.js"></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
+  <script src="../../js/google-map.js"></script>
+
+  <script src="../../js/main.js"></script>
+  <script>
+    $('#galleryModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var imgUrl = button.data('img-url') // Extract info from data-* attributes
+      var modal = $(this)
+      modal.find('.modal-body img').attr('src', imgUrl)
+    })
+  </script>
+</body>
+
+</html>
